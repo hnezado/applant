@@ -12,14 +12,15 @@ import DeleteUser from "../DeleteUser/DeleteUser";
 import NewPlant from "../NewPlant/NewPlant";
 import EditPlant from "../EditPlant/EditPlant";
 import DeletePlant from "../DeletePlant/DeletePlant";
-// import NewPost from '../NewPost/NewPost'
-// import EditPost from '../EditPost/EditPost'
-// import DeletePost from '../DeletePost/DeletePost'
+import NewPost from "../NewPost/NewPost";
+import EditPost from "../EditPost/EditPost";
+import DeletePost from "../DeletePost/DeletePost";
 
 const ModalComponent = (props) => {
   const {
     users,
     plants,
+    posts,
     modal,
     modalOpened,
     modalAction,
@@ -112,40 +113,47 @@ const ModalComponent = (props) => {
           </Modal>
         </div>
       );
+    } else if (modal === "new-post") {
+      return (
+        <div>
+          <Modal open={modalOpened} onClose={() => modalAction("close")}>
+            <NewPost
+              modalAction={modalAction}
+              adminAction={adminAction}
+              addMsg={addMsg}
+            />
+          </Modal>
+        </div>
+      );
+    } else if (modal.includes("edit-post")) {
+      return (
+        <div>
+          <Modal open={modalOpened} onClose={() => modalAction("close")}>
+            <EditPost
+              posts={posts}
+              modal={modal}
+              modalAction={modalAction}
+              adminAction={adminAction}
+              addMsg={addMsg}
+            />
+          </Modal>
+        </div>
+      );
+    } else if (modal.includes("delete-post")) {
+      return (
+        <div>
+          <Modal open={modalOpened} onClose={() => modalAction("close")}>
+            <DeletePost
+              posts={posts}
+              modal={modal}
+              modalAction={modalAction}
+              adminAction={adminAction}
+              addMsg={addMsg}
+            />
+          </Modal>
+        </div>
+      );
     }
-    // } else if(this.props.modal === 'new-post'){
-    //   return(
-    //     <div>
-    //       <Modal open={this.props.modalOpened} onClose={()=>this.props.modalAction('close')}>
-    //         <NewPost
-    //           {...this.props}
-    //         />
-    //       </Modal>
-    //     </div>
-    //   )
-    // }
-    // } else if(this.props.modal.includes('edit-post')){
-    //   return(
-    //     <div>
-    //       <Modal open={this.props.modalOpened} onClose={()=>this.props.modalAction('close')}>
-    //         <EditPost
-    //           {...this.props}
-    //         />
-    //       </Modal>
-    //     </div>
-    //   )
-    // }
-    // } else if(this.props.modal.includes('delete-post')){
-    //   return(
-    //     <div>
-    //       <Modal open={this.props.modalOpened} onClose={()=>this.props.modalAction('close')}>
-    //         <DeletePost
-    //           {...this.props}
-    //         />
-    //       </Modal>
-    //     </div>
-    //   )
-    // }
     // } else if(this.props.modal === 'payment'){
     //  const promise = loadStripe(
     //    "pk_test_51IrpUwINyfw3Ussjr5TrEoNC8GW0dM1LdTMSLYsAIhofMEO44bCM8br241Ywwi96IRkCNMgKI4kMoSI8nugv9CSA0097t9atRk"

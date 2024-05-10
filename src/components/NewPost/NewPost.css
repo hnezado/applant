@@ -522,4 +522,13 @@ table td {
   border-radius: 16px;
 }
 
-/*# sourceMappingURL=DeleteUser.css.map */
+.NewPost h2 {
+  color: red;
+}
+.NewPost #new-post-textarea {
+  min-width: 171px;
+  height: 100px;
+  min-height: 15px;
+}
+
+/*# sourceMappingURL=NewPost.css.map */

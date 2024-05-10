@@ -5,8 +5,10 @@ import { Link } from "react-router-dom";
 import { VscGithub } from "react-icons/vsc";
 import { GrLinkedin } from "react-icons/gr";
 
-// component
-const Footer = ({ modalAction }) => {
+const Footer = ({ modalAction, addMsg }) => {
+  const unavailable = () => {
+    addMsg("Option unavailable");
+  };
   return (
     <div className="Footer">
       <div>
@@ -20,6 +22,7 @@ const Footer = ({ modalAction }) => {
                 </td>
                 <td>
                   <Link
+                    title="Visit Hector's Github"
                     to="https://github.com/hnezado"
                     target="_blank"
                     className="icons"
@@ -29,6 +32,7 @@ const Footer = ({ modalAction }) => {
                 </td>
                 <td>
                   <Link
+                    title="Visit Hector's LinkedIn"
                     to="https://www.linkedin.com/in/hector-md/"
                     target="_blank"
                     className="icons"
@@ -43,6 +47,7 @@ const Footer = ({ modalAction }) => {
                 </td>
                 <td>
                   <Link
+                    title="Visit Raquel's Github"
                     to="https://github.com/srtamaciel"
                     target="_blank"
                     className="icons"
@@ -52,6 +57,7 @@ const Footer = ({ modalAction }) => {
                 </td>
                 <td>
                   <Link
+                    title="Visit Raquel's LinkedIn"
                     to="https://www.linkedin.com/in/raquel-rodriguez-diaz/"
                     target="_blank"
                     className="icons"
@@ -66,6 +72,7 @@ const Footer = ({ modalAction }) => {
                 </td>
                 <td>
                   <Link
+                    title="Visit German's Github"
                     to="https://github.com/GermanDG6"
                     target="_blank"
                     className="icons"
@@ -75,6 +82,7 @@ const Footer = ({ modalAction }) => {
                 </td>
                 <td>
                   <Link
+                    title="Visit German's LinkedIn"
                     to="https://www.linkedin.com/in/germandelgadogarcia/"
                     target="_blank"
                     className="icons"
@@ -101,19 +109,19 @@ const Footer = ({ modalAction }) => {
       <div>
         <h5>About</h5>
         <div className="About">
-          <Link className="link" to="#">
+          <Link className="link" onClick={unavailable} to="#">
             FAQ
           </Link>
-          <Link className="link" to="#">
+          <Link className="link" onClick={unavailable} to="#">
             Terms of Service
           </Link>
-          <Link className="link" to="#">
+          <Link className="link" onClick={unavailable} to="#">
             Privacy Policy
           </Link>
-          <Link className="link" to="#">
+          <Link className="link" onClick={unavailable} to="#">
             Returns and Delivery
           </Link>
-          <Link className="link" to="#">
+          <Link className="link" onClick={unavailable} to="#">
             Cookies
           </Link>
         </div>

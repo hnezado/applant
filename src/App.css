@@ -94,9 +94,11 @@ body::-webkit-scrollbar {
 }
 
 .actions-cell {
+  min-width: calc(100% - 4px);
+}
+.actions-cell .actions-cell-content {
   display: flex;
   justify-content: space-evenly;
-  min-width: calc(100% - 4px);
 }
 
 .link {

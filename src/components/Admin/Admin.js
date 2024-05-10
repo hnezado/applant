@@ -66,15 +66,18 @@ const Admin = ({
                 user && (
                   <tr key={user._id}>
                     <td>{user.username}</td>
-                    <td>
-                      <Link
-                        className="link"
-                        onClick={() =>
-                          modalAction("open", `delete-user/${user._id}`)
-                        }
-                      >
-                        <img src="/icons/delete-icon.png" alt="delete-icon" />
-                      </Link>
+                    <td className="actions-cell">
+                      <div className="actions-cell-content">
+                        <Link
+                          title="Delete user"
+                          className="link"
+                          onClick={() =>
+                            modalAction("open", `delete-user/${user._id}`)
+                          }
+                        >
+                          <img src="/icons/delete-icon.png" alt="delete-icon" />
+                        </Link>
+                      </div>
                     </td>
                   </tr>
                 )
@@ -118,22 +121,26 @@ const Admin = ({
                       {plant.stock ? `${plant.stock}` : null}
                     </td>
                     <td className="actions-cell">
-                      <Link
-                        className="link"
-                        onClick={() =>
-                          modalAction("open", `edit-plant/${plant._id}`)
-                        }
-                      >
-                        <img src="/icons/edit-icon.png" alt="edit-icon" />
-                      </Link>
-                      <Link
-                        className="link"
-                        onClick={() =>
-                          modalAction("open", `delete-plant/${plant._id}`)
-                        }
-                      >
-                        <img src="/icons/delete-icon.png" alt="delete-icon" />
-                      </Link>
+                      <div className="actions-cell-content">
+                        <Link
+                          title="Edit plant"
+                          className="link"
+                          onClick={() =>
+                            modalAction("open", `edit-plant/${plant._id}`)
+                          }
+                        >
+                          <img src="/icons/edit-icon.png" alt="edit-icon" />
+                        </Link>
+                        <Link
+                          title="Delete plant"
+                          className="link"
+                          onClick={() =>
+                            modalAction("open", `delete-plant/${plant._id}`)
+                          }
+                        >
+                          <img src="/icons/delete-icon.png" alt="delete-icon" />
+                        </Link>
+                      </div>
                     </td>
                   </tr>
                 )
@@ -170,15 +177,27 @@ const Admin = ({
                   <tr key={post._id}>
                     <td>{toUpper(post.title)}</td>
                     <td>{toUpper(post.content)}</td>
-                    <td>
-                      <Link
-                        className="link"
-                        onClick={() =>
-                          modalAction("open", `edit-post/${post._id}`)
-                        }
-                      >
-                        <img src="/icons/edit-icon.png" alt="edit-icon" />
-                      </Link>
+                    <td className="actions-cell">
+                      <div className="actions-cell-content">
+                        <Link
+                          title="Edit post"
+                          className="link"
+                          onClick={() =>
+                            modalAction("open", `edit-post/${post._id}`)
+                          }
+                        >
+                          <img src="/icons/edit-icon.png" alt="edit-icon" />
+                        </Link>
+                        <Link
+                          title="Delete post"
+                          className="link"
+                          onClick={() =>
+                            modalAction("open", `delete-post/${post._id}`)
+                          }
+                        >
+                          <img src="/icons/delete-icon.png" alt="delete-icon" />
+                        </Link>
+                      </div>
                     </td>
                   </tr>
                 )

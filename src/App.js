@@ -189,7 +189,10 @@ function App() {
         //   this.editStateFromNewPost(body, message)
         // }
       />
-      <Footer modalAction={(action, mod) => modalAction(action, mod)} />
+      <Footer
+        modalAction={(action, mod) => modalAction(action, mod)}
+        addMsg={addMsg}
+      />
     </div>
   );
 }

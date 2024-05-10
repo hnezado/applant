@@ -94,9 +94,11 @@ body::-webkit-scrollbar {
 }
 
 .actions-cell {
+  min-width: calc(100% - 4px);
+}
+.actions-cell .actions-cell-content {
   display: flex;
   justify-content: space-evenly;
-  min-width: calc(100% - 4px);
 }
 
 .link {
@@ -535,7 +537,12 @@ table td {
   background-color: rgb(150, 150, 150);
   padding: 5px 20px;
 }
+.Admin table tr {
+  min-height: 34px;
+  align-items: center;
+}
 .Admin table td {
+  height: 100%;
   background-color: rgb(200, 200, 200);
 }
 .Admin table td img {
@@ -584,6 +591,8 @@ table td {
   display: block;
   background-color: rgb(200, 200, 200);
   text-align: center;
+  padding: 5px;
+  border-radius: 50%;
   transition: 1s;
 }
 .Admin .link:hover {
