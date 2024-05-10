@@ -54,13 +54,17 @@ const Admin = ({
           New user
         </button>
         <table>
+          <thead>
+            <tr>
+              <th>Username</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
           <tbody>
-            <th>Username</th>
-            <th>Actions</th>
             {users.map((user, index) => {
               return (
                 user && (
-                  <tr>
+                  <tr key={user._id}>
                     <td>{user.username}</td>
                     <td>
                       <Link
@@ -93,18 +97,25 @@ const Admin = ({
           New plant
         </button>
         <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Sale</th>
+              <th>Stock</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
           <tbody>
-            <th>Name</th>
-            <th>Stock</th>
-            <th>Actions</th>
             {plants.map((plant, index) => {
               return (
                 plant && (
-                  <tr>
+                  <tr key={plant._id}>
                     <td>{toUpper(plant.commonName)} </td>
-                    <td className="stock">
+                    <td className="on-store">
                       {plant.inStore ? <BiBasket /> : null}
-                      {plant.inStore ? ` (${plant.stock} uds)` : null}
+                    </td>
+                    <td className="stock">
+                      {plant.stock ? `${plant.stock}` : null}
                     </td>
                     <td className="actions-cell">
                       <Link
@@ -145,14 +156,18 @@ const Admin = ({
           New post
         </button>
         <table>
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Content</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
           <tbody>
-            <th>Title</th>
-            <th>Content</th>
-            <th>Actions</th>
             {posts.map((post, index) => {
               return (
                 post && (
-                  <tr>
+                  <tr key={post._id}>
                     <td>{toUpper(post.title)}</td>
                     <td>{toUpper(post.content)}</td>
                     <td>

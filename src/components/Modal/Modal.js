@@ -10,8 +10,8 @@ import Login from "../Login/Login";
 import Signup from "../Signup/Signup";
 import DeleteUser from "../DeleteUser/DeleteUser";
 import NewPlant from "../NewPlant/NewPlant";
-// import EditPlant from '../EditPlant/EditPlant'
-// import DeletePlant from '../DeletePlant/DeletePlant'
+import EditPlant from "../EditPlant/EditPlant";
+import DeletePlant from "../DeletePlant/DeletePlant";
 // import NewPost from '../NewPost/NewPost'
 // import EditPost from '../EditPost/EditPost'
 // import DeletePost from '../DeletePost/DeletePost'
@@ -19,9 +19,11 @@ import NewPlant from "../NewPlant/NewPlant";
 const ModalComponent = (props) => {
   const {
     users,
+    plants,
     modal,
     modalOpened,
     modalAction,
+    addMsg,
     authAction,
     onSignup,
     onLogin,
@@ -73,33 +75,44 @@ const ModalComponent = (props) => {
       return (
         <div>
           <Modal open={modalOpened} onClose={() => modalAction("close")}>
-            <NewPlant {...props} />
+            <NewPlant
+              adminAction={adminAction}
+              updateState={updateState}
+              modalAction={modalAction}
+              addMsg={addMsg}
+            />
+          </Modal>
+        </div>
+      );
+    } else if (modal.includes("edit-plant")) {
+      return (
+        <div>
+          <Modal open={modalOpened} onClose={() => modalAction("close")}>
+            <EditPlant
+              plants={plants}
+              modal={modal}
+              modalAction={modalAction}
+              adminAction={adminAction}
+              addMsg={addMsg}
+            />
+          </Modal>
+        </div>
+      );
+    } else if (modal.includes("delete-plant")) {
+      return (
+        <div>
+          <Modal open={modalOpened} onClose={() => modalAction("close")}>
+            <DeletePlant
+              plants={plants}
+              modal={modal}
+              modalAction={modalAction}
+              adminAction={adminAction}
+              addMsg={addMsg}
+            />
           </Modal>
         </div>
       );
     }
-    // } else if(this.props.modal.includes('edit-plant')){
-    //   return(
-    //     <div>
-    //       <Modal open={this.props.modalOpened} onClose={()=>this.props.modalAction('close')}>
-    //         <EditPlant
-    //           {...this.props}
-    //         />
-    //       </Modal>
-    //     </div>
-    //   )
-    // }
-    // } else if(this.props.modal.includes('delete-plant')){
-    //   return(
-    //     <div>
-    //       <Modal open={this.props.modalOpened} onClose={()=>this.props.modalAction('close')}>
-    //         <DeletePlant
-    //           {...this.props}
-    //         />
-    //       </Modal>
-    //     </div>
-    //   )
-    // }
     // } else if(this.props.modal === 'new-post'){
     //   return(
     //     <div>

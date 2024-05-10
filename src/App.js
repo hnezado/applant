@@ -38,7 +38,7 @@ function App() {
   }, []);
 
   useEffect(() => {
-    console.log("user updated to:", user);
+    // console.log("user updated to:", user);
   }, [user]);
 
   const updateState = (url) => {

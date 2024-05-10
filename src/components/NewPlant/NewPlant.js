@@ -1,37 +1,76 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./NewPlant.scss";
 
-const NewPlant = ({ adminAction, updateState, modalAction }) => {
-  const [newPlant, setNewPlant] = useState({});
+const NewPlant = ({ adminAction, updateState, modalAction, addMsg }) => {
+  const [newPlant, setNewPlant] = useState({
+    commonName: "testName",
+    botanicalName: "",
+    maintenance: "",
+    water: "",
+    type: [],
+    purifying: false,
+    safety: "",
+    about: "",
+    image: "",
+    exposure: [],
+    price: 0,
+    stock: 0,
+    inStore: true,
+  });
+
+  useEffect(() => {
+    console.log("newPlant:", newPlant);
+  }, [newPlant]);
+
+  const validateData = (plantData) => {
+    let valid = true;
+    Object.keys(plantData).forEach((key) => {
+      const value = plantData[key];
+      if (
+        (typeof value === "string" && !value.trim()) ||
+        (Array.isArray(value) && !value.length)
+      ) {
+        valid = false;
+      }
+    });
+    return valid;
+  };
 
   const createPlant = (event) => {
     event.preventDefault();
-    adminAction(newPlant, "new-plant");
-    modalAction("close");
-    window.location.reload();
+    if (validateData(newPlant)) {
+      adminAction(newPlant, "new-plant");
+      addMsg("New plant created successfully");
+      modalAction("close");
+      setTimeout(() => {
+        window.location.reload();
+      }, 2200);
+    } else {
+      addMsg("Please fill out all fields before submitting");
+    }
   };
 
   const handleInput = (event) => {
-    const newPlantDetails = newPlant;
-    const { name, value } = event.target;
+    const newPlantCopy = { ...newPlant };
+    const { name, value, checked } = event.target;
     if (name === "type") {
-      newPlantDetails[name] =
+      newPlantCopy[name] =
         value === "all" ? ["indoors", "outdoors"] : value.split(" ");
     } else if (name === "exposure") {
-      newPlantDetails[name] =
+      newPlantCopy[name] =
         value === "all" ? ["low", "medium", "high"] : value.split(" ");
     } else if (name === "purifying" || name === "inStore") {
-      newPlantDetails[name] = value ? true : false;
+      newPlantCopy[name] = checked;
     } else {
-      newPlantDetails[name] = value;
+      newPlantCopy[name] = value;
     }
-    setNewPlant(newPlantDetails);
+    setNewPlant(newPlantCopy);
   };
 
   const getNewPlantForm = () => {
     return (
       <div className="PlantDetails">
-        <form className="form" onSubmit={(event) => createPlant(event)}>
+        <form className="form" onSubmit={createPlant}>
           <h2>New plant</h2>
           <table>
             <tbody>
@@ -43,6 +82,7 @@ const NewPlant = ({ adminAction, updateState, modalAction }) => {
                     onChange={(event) => handleInput(event)}
                     type="text"
                     name="image"
+                    value={newPlant.image}
                   />
                 </td>
               </tr>
@@ -54,6 +94,7 @@ const NewPlant = ({ adminAction, updateState, modalAction }) => {
                     onChange={(event) => handleInput(event)}
                     type="text"
                     name="commonName"
+                    value={newPlant.commonName}
                   />
                 </td>
               </tr>
@@ -65,6 +106,7 @@ const NewPlant = ({ adminAction, updateState, modalAction }) => {
                     onChange={(event) => handleInput(event)}
                     type="text"
                     name="botanicalName"
+                    value={newPlant.botanicalName}
                   />
                 </td>
               </tr>
@@ -76,6 +118,7 @@ const NewPlant = ({ adminAction, updateState, modalAction }) => {
                     onChange={(event) => handleInput(event)}
                     type="text"
                     name="type"
+                    value={newPlant.type}
                   />
                 </td>
               </tr>
@@ -87,6 +130,7 @@ const NewPlant = ({ adminAction, updateState, modalAction }) => {
                     onChange={(event) => handleInput(event)}
                     type="text"
                     name="maintenance"
+                    value={newPlant.maintenance}
                   />
                 </td>
               </tr>
@@ -98,6 +142,7 @@ const NewPlant = ({ adminAction, updateState, modalAction }) => {
                     onChange={(event) => handleInput(event)}
                     type="text"
                     name="water"
+                    value={newPlant.water}
                   />
                 </td>
               </tr>
@@ -109,6 +154,7 @@ const NewPlant = ({ adminAction, updateState, modalAction }) => {
                     onChange={(event) => handleInput(event)}
                     type="text"
                     name="exposure"
+                    value={newPlant.exposure}
                   />
                 </td>
               </tr>
@@ -120,6 +166,7 @@ const NewPlant = ({ adminAction, updateState, modalAction }) => {
                     onChange={(event) => handleInput(event)}
                     type="text"
                     name="safety"
+                    value={newPlant.safety}
                   />
                 </td>
               </tr>
@@ -131,6 +178,7 @@ const NewPlant = ({ adminAction, updateState, modalAction }) => {
                     onChange={(event) => handleInput(event)}
                     type="checkbox"
                     name="purifying"
+                    checked={newPlant.purifying}
                   />
                 </td>
               </tr>
@@ -141,6 +189,7 @@ const NewPlant = ({ adminAction, updateState, modalAction }) => {
                     onChange={(event) => handleInput(event)}
                     name="about"
                     type="text"
+                    value={newPlant.about}
                   />
                 </td>
               </tr>
@@ -152,6 +201,7 @@ const NewPlant = ({ adminAction, updateState, modalAction }) => {
                     onChange={(event) => handleInput(event)}
                     type="number"
                     name="price"
+                    value={newPlant.price}
                   />
                 </td>
               </tr>
@@ -163,6 +213,7 @@ const NewPlant = ({ adminAction, updateState, modalAction }) => {
                     onChange={(event) => handleInput(event)}
                     type="number"
                     name="stock"
+                    value={newPlant.stock}
                   />
                 </td>
               </tr>
@@ -174,6 +225,7 @@ const NewPlant = ({ adminAction, updateState, modalAction }) => {
                     onChange={(event) => handleInput(event)}
                     type="checkbox"
                     name="inStore"
+                    checked={newPlant.inStore}
                   />
                 </td>
               </tr>
