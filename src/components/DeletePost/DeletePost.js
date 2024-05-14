@@ -1,22 +1,17 @@
 import { useState } from "react";
 import "./DeletePost.scss";
 
-const DeletePost = ({ posts, modal, modalAction, adminAction, addMsg }) => {
+const DeletePost = ({ posts, modal, apiPostAction, modalAction, addMsg }) => {
   const [deletingPost, setDeletingPost] = useState(
     posts.filter((post) => modal.split("/")[1] === post._id)[0]
   );
-  // state = {
-  //   post: this.props.posts.filter((post)=>{
-  //     return this.props.modal.split('/')[1] === post._id
-  //   })[0]
-  // }
 
   const toUpper = (word) => {
     if (word) return word[0].toUpperCase() + word.slice(1);
   };
 
   const deletePost = () => {
-    adminAction(null, `delete-post/${deletingPost._id}`);
+    apiPostAction(null, `delete-post/${deletingPost._id}`, ["posts"]);
     addMsg("Post deleted successfully");
     modalAction("close");
     setTimeout(() => {

@@ -1,0 +1,44 @@
+@import '../../App.scss';
+
+
+.PlantDetails {
+    display:flex;
+    flex-direction: column;
+    margin-top: 30px;
+    padding: 30px;
+    .PlantDetailsUp{
+        display:flex;
+        flex-direction: row;
+    }
+    .infoPlantDetails {
+      display:flex;
+      flex-direction: column;
+      width: 100vw;
+      h2{
+        color: rgb(82, 82, 82);
+      }
+      h3 {
+        line-height: 0.02;
+      }
+      margin-left: 4rem;
+    }
+    img {
+        object-fit: cover;
+        width: 50vw;
+    }
+    button {
+      border-radius: 10px;
+      width: 120px;
+      height: 60px;
+      margin: 10px;
+      &:hover{
+        color: $dark-green;
+      }
+    }
+    .buttons{
+      display:flex;
+      flex-direction: row;
+      margin-bottom: 8vh;
+      
+    }
+}

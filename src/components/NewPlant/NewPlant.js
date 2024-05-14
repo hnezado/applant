@@ -1,25 +1,25 @@
 import { useState, useEffect } from "react";
 import "./NewPlant.scss";
 
-const NewPlant = ({ adminAction, updateState, modalAction, addMsg }) => {
+const NewPlant = ({ apiPostAction, modalAction, addMsg }) => {
   const [newPlant, setNewPlant] = useState({
     commonName: "testName",
-    botanicalName: "",
-    maintenance: "",
-    water: "",
-    type: [],
+    botanicalName: "testBotanicalName",
+    maintenance: "testMaintenance",
+    water: "testWater",
+    type: ["testType1", "testType2"],
     purifying: false,
-    safety: "",
-    about: "",
-    image: "",
-    exposure: [],
+    safety: "testSafety",
+    about: "testAbout",
+    image: "testImage",
+    exposure: ["testExposure1", "testExposure2"],
     price: 0,
     stock: 0,
     inStore: true,
   });
 
   useEffect(() => {
-    console.log("newPlant:", newPlant);
+    // console.log("newPlant:", newPlant);
   }, [newPlant]);
 
   const validateData = (plantData) => {
@@ -39,7 +39,7 @@ const NewPlant = ({ adminAction, updateState, modalAction, addMsg }) => {
   const createPlant = (event) => {
     event.preventDefault();
     if (validateData(newPlant)) {
-      adminAction(newPlant, "new-plant");
+      apiPostAction(newPlant, "new-plant", ["plants"]);
       addMsg("New plant created successfully");
       modalAction("close");
       setTimeout(() => {

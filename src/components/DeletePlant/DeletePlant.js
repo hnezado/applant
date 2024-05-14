@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "./DeletePlant.scss";
 
-const DeletePlant = ({ plants, modal, modalAction, adminAction, addMsg }) => {
+const DeletePlant = ({ plants, modal, apiPostAction, modalAction, addMsg }) => {
   const [deletingPlant] = useState(
     plants.filter((plant) => modal.split("/")[1] === plant._id)[0]
   );
@@ -11,7 +11,7 @@ const DeletePlant = ({ plants, modal, modalAction, adminAction, addMsg }) => {
   };
 
   const deletePlant = () => {
-    adminAction(null, `delete-plant/${deletingPlant._id}`);
+    apiPostAction(null, `delete-plant/${deletingPlant._id}`, ["plants"]);
     modalAction("close");
     addMsg("Plant deleted successfully");
     setTimeout(() => {

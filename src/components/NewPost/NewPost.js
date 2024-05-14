@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import "./NewPost.scss";
 
-const NewPost = ({ modalAction, adminAction, addMsg }) => {
+const NewPost = ({ apiPostAction, modalAction, addMsg }) => {
   const [newPost, setNewPost] = useState({
     title: "",
     image: "",
@@ -24,7 +24,7 @@ const NewPost = ({ modalAction, adminAction, addMsg }) => {
   const createPost = (event) => {
     event.preventDefault();
     if (validateData(newPost)) {
-      adminAction(newPost, "new-post");
+      apiPostAction(newPost, "new-post", "posts");
       addMsg("New post created successfully");
       modalAction("close");
       setTimeout(() => {
@@ -34,24 +34,6 @@ const NewPost = ({ modalAction, adminAction, addMsg }) => {
       addMsg("Please fill out all fields before submitting");
     }
   };
-
-  // handleSubmit(event, data, url) {
-  //   event.preventDefault()
-  //   axios({
-  //     method: 'post',
-  //     url: `${process.env.REACT_APP_URL}/app/${url}`,
-  //     data: data,
-  //     withCredentials: true,
-  //   })
-  //     .then((result) => {
-  //       this.props.addMsg(result.data.data.message)
-  //       this.props.updateState('posts')
-  //       this.props.modalAction('close')
-  //     })
-  //     .catch((err) => {
-  //       console.log(err)
-  //     })
-  // }
 
   const handleInput = (event) => {
     console.log("handling input!!!!!!!!");
@@ -64,11 +46,7 @@ const NewPost = ({ modalAction, adminAction, addMsg }) => {
   const getNewPostForm = () => {
     return (
       <div className="form-container">
-        <form
-          className="form"
-          onSubmit={createPost}
-          // onSubmit={(ev) => handleSubmit(ev, this.state.newPost, 'new-post')}
-        >
+        <form className="form" onSubmit={createPost}>
           <h2>New post</h2>
           <table>
             <tbody>

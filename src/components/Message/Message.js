@@ -1,5 +1,4 @@
 import "./Message.scss";
-import React from "react";
 
 import { BsFillInfoCircleFill } from "react-icons/bs";
 

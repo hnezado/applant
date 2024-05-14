@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import "./EditPlant.scss";
 
-const EditPlant = ({ plants, modal, modalAction, adminAction, addMsg }) => {
+const EditPlant = ({ plants, modal, apiPostAction, modalAction, addMsg }) => {
   const [editedPlant, setEditedPlant] = useState(
     plants.filter((plant) => modal.split("/")[1] === plant._id)[0]
   );
@@ -27,7 +27,7 @@ const EditPlant = ({ plants, modal, modalAction, adminAction, addMsg }) => {
   const editPlant = (event) => {
     event.preventDefault();
     if (validateData) {
-      adminAction(editedPlant, `edit-plant/${editedPlant._id}`);
+      apiPostAction(editedPlant, `edit-plant/${editedPlant._id}`, ["plants"]);
       addMsg("Plant edited successfully");
       modalAction("close");
       setTimeout(() => {

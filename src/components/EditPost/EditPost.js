@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
 import "./EditPost.scss";
 
-const EditPost = ({ posts, modal, modalAction, adminAction, addMsg }) => {
+const EditPost = ({ posts, modal, apiPostAction, modalAction, addMsg }) => {
   const [editingPost, setEditingPost] = useState(
     posts.filter((post) => modal.split("/")[1] === post._id)[0]
   );
 
   useEffect(() => {
-    console.log("editingPost:", editingPost);
+    // console.log("editingPost:", editingPost);
   }, [editingPost]);
 
   const validateData = (postData) => {
@@ -22,7 +22,7 @@ const EditPost = ({ posts, modal, modalAction, adminAction, addMsg }) => {
   const editPost = (event) => {
     event.preventDefault();
     if (validateData(editingPost)) {
-      adminAction(editingPost, `edit-post/${editingPost._id}`);
+      apiPostAction(editingPost, `edit-post/${editingPost._id}`, ["posts"]);
       addMsg("Post edited successfully");
       modalAction("close");
       setTimeout(() => {
@@ -82,9 +82,10 @@ const EditPost = ({ posts, modal, modalAction, adminAction, addMsg }) => {
               </tr>
             </tbody>
           </table>
-          <button>Edit post</button>
+          <button className="button">Edit post</button>
         </form>
         <button
+          className="button"
           onClick={() => modalAction("open", `delete-post/${editingPost._id}`)}
         >
           Delete post

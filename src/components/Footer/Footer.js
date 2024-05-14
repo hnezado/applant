@@ -1,9 +1,8 @@
 // imports
-import "./Footer.scss";
-import React from "react";
 import { Link } from "react-router-dom";
 import { VscGithub } from "react-icons/vsc";
 import { GrLinkedin } from "react-icons/gr";
+import "./Footer.scss";
 
 const Footer = ({ modalAction, addMsg }) => {
   const unavailable = () => {

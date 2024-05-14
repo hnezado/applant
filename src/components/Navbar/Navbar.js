@@ -1,15 +1,8 @@
-import "./Navbar.scss";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { TiShoppingCart } from "react-icons/ti";
+import "./Navbar.scss";
 
-const Navbar = ({ authAction, userInfo, modalAction }) => {
-  const navigate = useNavigate();
-
-  const logout = () => {
-    authAction(null, "logout");
-    navigate("/");
-  };
-
+const Navbar = ({ userInfo, modalAction, logout }) => {
   const AdminLink = () => {
     return (
       <Link className="nav-btn" to="/admin">
@@ -19,9 +12,11 @@ const Navbar = ({ authAction, userInfo, modalAction }) => {
   };
 
   const ProfileLink = () => {
-    <Link className="nav-btn" to="/profile">
-      Profile
-    </Link>;
+    return (
+      <Link className="nav-btn" to="/profile">
+        Profile
+      </Link>
+    );
   };
 
   const CartLink = () => {
@@ -48,7 +43,7 @@ const Navbar = ({ authAction, userInfo, modalAction }) => {
     );
   };
 
-  const getNavbar = (logged, admin) => {
+  const getNavbar = () => {
     return (
       <div className="navbar-child">
         <div className="nav-left">
@@ -86,7 +81,7 @@ const Navbar = ({ authAction, userInfo, modalAction }) => {
     );
   };
 
-  return <nav className="Navbar">{getNavbar(false, false)}</nav>;
+  return <nav className="Navbar">{getNavbar()}</nav>;
 };
 
 export default Navbar;

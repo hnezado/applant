@@ -2,15 +2,15 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "./Store.scss";
 
-const Store = ({ allPlants }) => {
+const Store = ({ plants }) => {
   const [filteredStoreItems, setFilteredStoreItems] = useState([]);
 
   useEffect(() => {
-    setFilteredStoreItems(allPlants.filter((plant) => plant.inStore));
-  }, [allPlants]);
+    setFilteredStoreItems(plants.filter((plant) => plant.inStore));
+  }, [plants]);
 
   const filterStoreItems = (event, by, type) => {
-    const itemsInStock = allPlants.filter((plant) => plant.inStore);
+    const itemsInStock = plants.filter((plant) => plant.inStore);
     let filteredItems, value;
     if (by === "commonName") {
       value = event.target.value.toLowerCase();

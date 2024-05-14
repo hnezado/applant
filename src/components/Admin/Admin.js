@@ -2,43 +2,7 @@ import { Link } from "react-router-dom";
 import { BiBasket } from "react-icons/bi";
 import "./Admin.scss";
 
-const Admin = ({
-  addMsg,
-  modalAction,
-  userInfo,
-  adminAction,
-  users,
-  plants,
-  posts,
-}) => {
-  // state = {
-  //   user: {
-  //     _id: "",
-  //     username: "",
-  //     password: "",
-  //     admin: false,
-  //     favoritePlants: [],
-  //     cart: [],
-  //     totalPrice: 0,
-  //   },
-  //   newPlant: {
-  //     commonName: "",
-  //     botanicalName: "",
-  //     type: [],
-  //     maintenance: [],
-  //     water: [],
-  //     exposure: [],
-  //     safety: "",
-  //     purifying: false,
-  //     about: "",
-  //     price: 0,
-  //     stock: 0,
-  //     inStore: false,
-  //   },
-  //   newPost: {},
-  //   adminPermissions: false,
-  // };
-
+const Admin = ({ userInfo, users, plants, posts, modalAction }) => {
   const toUpper = (word) => {
     if (word) return word[0].toUpperCase() + word.slice(1);
   };

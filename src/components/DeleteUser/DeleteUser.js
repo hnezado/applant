@@ -1,12 +1,12 @@
 import "./DeleteUser.scss";
 
-const DeleteUser = ({ users, modal, adminAction, modalAction }) => {
+const DeleteUser = ({ users, modal, apiPostAction, modalAction }) => {
   const user = users.filter((user) => {
     return modal.split("/")[1] === user._id;
   })[0];
 
   const deleteUser = () => {
-    adminAction(null, `delete-user/${user._id}`);
+    apiPostAction(null, `delete-user/${user._id}`, ["users"]);
     modalAction("close");
     window.location.reload();
   };

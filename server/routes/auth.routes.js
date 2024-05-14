@@ -77,7 +77,7 @@ router.post("/login", (req, res) => {
   })(req, res);
 });
 
-//------------ Check if the user is logged ----------- //
+//---- Check if the user is logged => req.user is from Passport ---- //
 router.get("/user", (req, res) => {
   if (req.user) {
     User.findById(req.user._id)

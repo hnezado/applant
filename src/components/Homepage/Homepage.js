@@ -1,26 +1,25 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import Parallax from "../Parallax/Parallax";
 import "./Homepage.scss";
 
-import Parallax from "../Parallax/Parallax";
-
-const Homepage = ({ allPlants }) => {
-  const [filteredPlants, setFilteredPlants] = useState([...allPlants]);
+const Homepage = ({ plants }) => {
+  const [filteredPlants, setFilteredPlants] = useState([...plants]);
 
   useEffect(() => {
-    setFilteredPlants(allPlants);
-  }, [allPlants]);
+    filterPlants(null);
+  }, [plants]);
 
   const filterPlants = (event, by, type) => {
     let value;
     let filteredPlants;
     if (by === "commonName") {
       value = event.target.value.toLowerCase();
-      filteredPlants = allPlants.filter((plant) => plant[by].includes(value));
+      filteredPlants = plants.filter((plant) => plant[by].includes(value));
     } else if (by === "type") {
-      filteredPlants = allPlants.filter((plant) => plant.type.includes(type));
+      filteredPlants = plants.filter((plant) => plant.type.includes(type));
     } else {
-      filteredPlants = allPlants;
+      filteredPlants = plants;
     }
     setFilteredPlants(filteredPlants);
   };

@@ -23,38 +23,32 @@ const ModalComponent = (props) => {
     posts,
     modal,
     modalOpened,
-    modalAction,
-    addMsg,
-    authAction,
-    onSignup,
-    onLogin,
     newUsername,
-    adminAction,
-    updateState,
+    apiPostAction,
+    modalAction,
+    authAction,
+    signup,
+    login,
+    addMsg,
   } = props;
   const showModal = () => {
-    if (modal === "login") {
+    if (modal === "signup") {
+      return (
+        <div>
+          <Modal open={modalOpened} onClose={() => modalAction("close")}>
+            <Signup modalAction={modalAction} signup={signup} />
+          </Modal>
+        </div>
+      );
+    } else if (modal === "login") {
       return (
         <div>
           <Modal open={modalOpened} onClose={() => modalAction("close")}>
             <Login
-              authAction={authAction}
-              modalAction={modalAction}
               newUsername={newUsername}
-              onLogin={onLogin}
-            />
-          </Modal>
-        </div>
-      );
-    } else if (modal === "signup") {
-      return (
-        <div>
-          <Modal open={modalOpened} onClose={() => modalAction("close")}>
-            <Signup
-              authAction={authAction}
               modalAction={modalAction}
-              onSignup={onSignup}
-              updateState={(url) => updateState(url)}
+              authAction={authAction}
+              login={login}
             />
           </Modal>
         </div>
@@ -66,7 +60,7 @@ const ModalComponent = (props) => {
             <DeleteUser
               users={users}
               modal={modal}
-              adminAction={adminAction}
+              apiPostAction={apiPostAction}
               modalAction={modalAction}
             />
           </Modal>
@@ -77,8 +71,7 @@ const ModalComponent = (props) => {
         <div>
           <Modal open={modalOpened} onClose={() => modalAction("close")}>
             <NewPlant
-              adminAction={adminAction}
-              updateState={updateState}
+              apiPostAction={apiPostAction}
               modalAction={modalAction}
               addMsg={addMsg}
             />
@@ -92,8 +85,8 @@ const ModalComponent = (props) => {
             <EditPlant
               plants={plants}
               modal={modal}
+              apiPostAction={apiPostAction}
               modalAction={modalAction}
-              adminAction={adminAction}
               addMsg={addMsg}
             />
           </Modal>
@@ -106,8 +99,8 @@ const ModalComponent = (props) => {
             <DeletePlant
               plants={plants}
               modal={modal}
+              apiPostAction={apiPostAction}
               modalAction={modalAction}
-              adminAction={adminAction}
               addMsg={addMsg}
             />
           </Modal>
@@ -118,8 +111,8 @@ const ModalComponent = (props) => {
         <div>
           <Modal open={modalOpened} onClose={() => modalAction("close")}>
             <NewPost
+              apiPostAction={apiPostAction}
               modalAction={modalAction}
-              adminAction={adminAction}
               addMsg={addMsg}
             />
           </Modal>
@@ -132,8 +125,8 @@ const ModalComponent = (props) => {
             <EditPost
               posts={posts}
               modal={modal}
+              apiPostAction={apiPostAction}
               modalAction={modalAction}
-              adminAction={adminAction}
               addMsg={addMsg}
             />
           </Modal>
@@ -146,8 +139,8 @@ const ModalComponent = (props) => {
             <DeletePost
               posts={posts}
               modal={modal}
+              apiPostAction={apiPostAction}
               modalAction={modalAction}
-              adminAction={adminAction}
               addMsg={addMsg}
             />
           </Modal>

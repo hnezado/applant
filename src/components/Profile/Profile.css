@@ -522,81 +522,45 @@ table td {
   border-radius: 16px;
 }
 
-.Blog {
+.Profile {
+  max-width: 100vw;
+  min-height: 50vh;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  background-size: 100%;
-  background-color: #e8eae6;
+  margin-top: 30px;
+  padding: 30px;
 }
-.Blog .post-container {
-  padding-bottom: 10vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-}
-.Blog .post-container button {
-  margin: 20px;
-}
-.Blog .post-container .post {
+.Profile .ProfileUp {
   display: flex;
   flex-direction: row;
-  justify-content: flex-start;
-  align-items: start;
-  border-radius: 16px;
-  width: 60vw;
-  margin: 20px;
-  padding: 50px;
-  /* border: 2px solid #7c9473; */
-  background-color: white;
 }
-.Blog .post-container .post h2 {
-  color: #7c9473;
+.Profile .Details {
+  display: flex;
+  flex-direction: column;
+  margin-left: 4rem;
 }
-.Blog .post-container .post img {
+.Profile img {
   object-fit: cover;
-  width: 200px;
-  height: 200px;
+  width: 50vw;
 }
-.Blog .post-container .post .post-text {
-  width: 100%;
-  height: 100%;
-}
-.Blog .post-container .post .post-content {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: start;
-  margin-left: 20px;
-  width: 100%;
-  height: 200px;
-}
-.Blog .post-container .post .post-content .like-container {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
-  align-items: flex-end;
-  width: 100%;
-  height: 30px;
-}
-.Blog .post-container .post .post-content .like-container span {
-  padding: 0 10px 2px;
-}
-.Blog .post-container .post .post-content .like-container .like-btn {
-  transition: 0.3s;
-}
-.Blog .post-container .post .post-content .like-container .like-btn.inactive {
-  color: black;
-}
-.Blog .post-container .post .post-content .like-container .like-btn.active {
+.Profile h1 {
+  text-align: center;
   color: #7c9473;
 }
-.Blog .post-container .post .post-content .like-container .like-btn:hover {
-  color: #cfdac8;
-  transform: scale(1.5);
+.Profile .p {
+  text-align: center;
+  font-size: 1.5rem;
+  margin-top: 10px;
+  color: #7c9473;
+}
+.Profile h2 {
+  font-size: 1.5rem;
+}
+.Profile h3 {
+  font-size: 1.2rem;
+}
+.Profile .ProfileDown p {
+  font-size: 1.2rem;
 }
 
-/*# sourceMappingURL=Blog.css.map */
+/*# sourceMappingURL=Profile.css.map */

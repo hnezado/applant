@@ -1,9 +1,8 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import "./Login.scss";
 
-import { Link } from "react-router-dom";
-
-const Login = ({ authAction, modalAction, onLogin, newUsername }) => {
+const Login = ({ newUsername, modalAction, login }) => {
   const [user, setUser] = useState({
     username: newUsername,
     password: "",
@@ -14,29 +13,21 @@ const Login = ({ authAction, modalAction, onLogin, newUsername }) => {
     [newUsername]
   );
 
-  const login = async (event) => {
-    event.preventDefault();
-    const result = await authAction(user, "login");
-    if (result.data && result.data.successLogin) {
-      onLogin();
-      modalAction("close");
-    }
-  };
-
   const handleInput = (event) => {
     const { name, value } = event.target;
     setUser({ ...user, [name]: value });
   };
 
-  const redirectToSignup = () => {
-    modalAction("open", "signup");
+  const handleLogin = (event) => {
+    event.preventDefault();
+    login(user);
   };
 
   const getLoginForm = () => {
     return (
       <div className="form-container">
         <h2>Login</h2>
-        <form onSubmit={login}>
+        <form onSubmit={handleLogin}>
           <label className="label-form" htmlFor="username">
             Username
           </label>
@@ -61,7 +52,7 @@ const Login = ({ authAction, modalAction, onLogin, newUsername }) => {
         <span>Don't you have an account yet?</span>
         <span>
           Register by clicking{" "}
-          <Link className="link" onClick={redirectToSignup}>
+          <Link className="link" onClick={() => modalAction("open", "signup")}>
             here
           </Link>
         </span>

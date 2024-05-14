@@ -28,9 +28,36 @@
         width: 200px;
         height: 200px;
       }
+      .post-text {
+        width: 100%;
+        height: 100%;
+      }
       .post-content{
         @include flexCenter(column, center, start);
         margin-left: 20px;
+        width: 100%;
+        height: 200px;
+        .like-container {
+          @include flexCenter(row, flex-end, flex-end);
+          width: 100%;
+          height: 30px;
+          span {
+            padding: 0 10px 2px;
+          }
+          .like-btn {
+            transition: 0.3s;
+            &.inactive {
+              color: black;
+            }
+            &.active {
+              color: $dark-green;
+            }
+            &:hover {
+              color: $soft-green;
+              transform: scale(1.5);
+            }
+          }
+        }
       }
     }
   }
