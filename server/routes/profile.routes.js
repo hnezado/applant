@@ -77,47 +77,27 @@ router.post("/add-to-cart/:_productId", async (req, res) => {
     const { quantity } = req.body;
     const userId = req.user._id;
 
-    // const newCartItem = { productId, quantity };
-    // console.log("newCartItem:", newCartItem);
-
-    // await User.findOneAndUpdate(
-    //   { _id: userId },
-    //   { $push: { cart: newCartItem } },
-    //   (err) => {
-    //     if (err) console.error(err);
-    //   }
-    // );
-
     const user = await User.findById(userId);
-
-    if (user) {
-      await User.findByIdAndUpdate(
-        userId,
-        { $inc: { "cart.$[elem].quantity": quantity } },
-        { upsert: true, arrayFilters: [{ "elem.productId": productId }] }
-      );
-      // let productExists = false;
-      // user.cart.forEach((item) => {
-      //   if (item.productId === productId) {
-      //     console.log("existingItem:", item);
-      //     item.quantity += quantity;
-      //     productExists = true;
-      //     console.log("Modified user (not new):", user);
-      //   }
-      // });
-      // if (!productExists) {
-      //   const newData = { productId, quantity };
-      //   await user.cart.push(newData);
-      //   console.log("Pushed user (new):", user);
-      // }
-
-      // const updatedUser = await user.save();
-      const msg = `Product added to cart`;
-      res.status(200).json({ msg });
-    } else {
+    if (!user) {
       const msg = `User not found`;
       return res.status(400).json({ msg });
     }
+
+    const productIndex = user.cart.findIndex(
+      (item) => item.productId.toString() === productId
+    );
+    if (productIndex !== -1) {
+      await User.findOneAndUpdate(
+        { _id: userId, "cart.productId": productId },
+        { $inc: { "cart.$.quantity": quantity } }
+      );
+    } else {
+      await User.findByIdAndUpdate(userId, {
+        $push: { cart: { productId, quantity } },
+      });
+    }
+    const msg = `Product added to cart`;
+    res.status(200).json({ msg });
   } catch (err) {
     const msg = `Error adding item to cart`;
     console.error(msg, err);
