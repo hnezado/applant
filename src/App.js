@@ -89,10 +89,12 @@ function App() {
         withCredentials: true,
       });
       // addMsg(response.data.message);
-      if (update && Array.isArray(update) && update.length) {
+      if (Array.isArray(update)) {
         update.forEach((stateToUpdate) => updateState(stateToUpdate));
+      } else {
+        console.error("Required update or incorrect format");
       }
-      return response.data.data;
+      return response;
     } catch (err) {
       console.error(err);
     }

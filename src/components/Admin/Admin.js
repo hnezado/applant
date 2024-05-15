@@ -1,4 +1,6 @@
 import { Link } from "react-router-dom";
+import { FaPen } from "react-icons/fa";
+import { MdDeleteForever } from "react-icons/md";
 import { BiBasket } from "react-icons/bi";
 import "./Admin.scss";
 
@@ -39,7 +41,8 @@ const Admin = ({ userInfo, users, plants, posts, modalAction }) => {
                             modalAction("open", `delete-user/${user._id}`)
                           }
                         >
-                          <img src="/icons/delete-icon.png" alt="delete-icon" />
+                          {/* <img src="/icons/delete-icon.png" alt="delete-icon" /> */}
+                          <MdDeleteForever className="delete-icon" />
                         </Link>
                       </div>
                     </td>
@@ -79,7 +82,9 @@ const Admin = ({ userInfo, users, plants, posts, modalAction }) => {
                   <tr key={plant._id}>
                     <td>{toUpper(plant.commonName)} </td>
                     <td className="on-store">
-                      {plant.inStore ? <BiBasket /> : null}
+                      {plant.inStore ? (
+                        <BiBasket className="sale-icon" />
+                      ) : null}
                     </td>
                     <td className="stock">
                       {plant.stock ? `${plant.stock}` : null}
@@ -93,7 +98,8 @@ const Admin = ({ userInfo, users, plants, posts, modalAction }) => {
                             modalAction("open", `edit-plant/${plant._id}`)
                           }
                         >
-                          <img src="/icons/edit-icon.png" alt="edit-icon" />
+                          {/* <img src="/icons/edit-icon.png" alt="edit-icon" /> */}
+                          <FaPen className="edit-icon" />
                         </Link>
                         <Link
                           title="Delete plant"
@@ -102,7 +108,8 @@ const Admin = ({ userInfo, users, plants, posts, modalAction }) => {
                             modalAction("open", `delete-plant/${plant._id}`)
                           }
                         >
-                          <img src="/icons/delete-icon.png" alt="delete-icon" />
+                          {/* <img src="/icons/delete-icon.png" alt="delete-icon" /> */}
+                          <MdDeleteForever className="delete-icon" />
                         </Link>
                       </div>
                     </td>
@@ -150,7 +157,8 @@ const Admin = ({ userInfo, users, plants, posts, modalAction }) => {
                             modalAction("open", `edit-post/${post._id}`)
                           }
                         >
-                          <img src="/icons/edit-icon.png" alt="edit-icon" />
+                          {/* <img src="/icons/edit-icon.png" alt="edit-icon" /> */}
+                          <FaPen className="edit-icon" />
                         </Link>
                         <Link
                           title="Delete post"
@@ -159,7 +167,8 @@ const Admin = ({ userInfo, users, plants, posts, modalAction }) => {
                             modalAction("open", `delete-post/${post._id}`)
                           }
                         >
-                          <img src="/icons/delete-icon.png" alt="delete-icon" />
+                          {/* <img src="/icons/delete-icon.png" alt="delete-icon" /> */}
+                          <MdDeleteForever className="delete-icon" />
                         </Link>
                       </div>
                     </td>

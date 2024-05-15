@@ -118,14 +118,15 @@ body::-webkit-scrollbar {
   border: 2px solid #7c9473;
   margin: 0;
   padding: 5px 10px;
+  font: inherit;
   font-size: 1.1rem;
   text-decoration: none;
-  font: inherit;
   font-weight: 700;
-  cursor: pointer;
+  text-align: center;
+  box-sizing: border-box;
   outline: inherit;
   transition: 0.5s;
-  text-align: center;
+  cursor: pointer;
 }
 .button:hover {
   background-color: #e6efe0;
@@ -467,8 +468,9 @@ table td {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-top: 20vh;
-  margin-bottom: 30vh;
+  position: absolute;
+  width: 100%;
+  height: calc(100% - 360px);
 }
 .StoreItem .item {
   display: flex;
@@ -476,50 +478,57 @@ table td {
   border: 1px solid #7c9473;
   padding: 20px;
 }
-.StoreItem .item img {
-  object-fit: cover;
-  width: 250px;
-  height: 250px;
+.StoreItem .item .item-left {
+  height: 300px;
 }
-.StoreItem .item .item-info {
+.StoreItem .item .item-left img {
+  object-fit: cover;
+  height: 300px;
+}
+.StoreItem .item .item-right {
   display: flex;
   flex-direction: column;
-  justify-content: left;
-  align-items: left;
-  margin-left: 8vh;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+  width: 300px;
+  min-height: 300px;
+  padding-left: 20px;
+  box-sizing: border-box;
 }
-.StoreItem .item .item-info h2 {
-  margin-bottom: 8px;
+.StoreItem .item .item-right .item-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
 }
-.StoreItem .item .item-info p {
-  margin-top: 0px;
+.StoreItem .item .item-right .item-info .price {
+  margin: 5px 0;
 }
-.StoreItem .item .item-info input {
-  margin-bottom: 2vh;
+.StoreItem .item .item-right .item-actions {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
 }
-.StoreItem .item .item-info .link {
-  text-align: center;
-  text-decoration: none;
-  margin-top: 2vh;
-  font-weight: 700;
-  width: 200px;
-  background: none;
-  background-color: white;
-  color: #7c9473;
-  border: 2px solid #7c9473;
-  padding: 10px 0px;
-  font-size: 1.1rem;
-  font: inherit;
-  cursor: pointer;
-  outline: inherit;
-  /*  transition: 0.5s; */
+.StoreItem .item .item-right .item-actions .input-qty {
+  align-self: center;
+  width: 70px;
+  margin-bottom: 5px;
 }
-.StoreItem .item .item-info .link:hover {
-  color: #7c9473;
-  background-color: #cfdac8;
-  border: 2px solid transparent;
-  /* padding: 10px 20px; */
-  border-radius: 16px;
+.StoreItem .item .item-right .item-actions .btns-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin: 5px 0;
+  align-self: flex-end;
+}
+.StoreItem .item .item-right .item-actions .btns-container .button {
+  width: 150px;
+  margin-bottom: 4px;
 }
 
 .Signup .label-form {

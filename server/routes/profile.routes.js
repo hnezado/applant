@@ -71,142 +71,86 @@ router.post("/remove-from-favorites/:_id", (req, res) => {
 });
 
 // -------------- Put item into cart ------------------ //
-router.post("/add-to-cart", (req, res) => {
-  const productId = req.body.productId;
-  const quantity = req.body.quantity;
+router.post("/add-to-cart/:_productId", async (req, res) => {
+  try {
+    const productId = req.params._productId;
+    const { quantity } = req.body;
+    const userId = req.user._id;
 
-  // console.log("req:", req);
-  // console.log("req.user:", req.user);
-  // console.log("req.body:", req.body);
-  // console.log("productId:", productId);
-  // console.log("quantity:", quantity);
+    // const newCartItem = { productId, quantity };
+    // console.log("newCartItem:", newCartItem);
 
-  Plant.findById(productId).then((plant) => {
-    if (req.body.user) {
-      const cartPlants = req.body.user.cart.map((item) => {
-        return item.plant;
-      });
-      if (!cartPlants.includes(productId)) {
-        User.findByIdAndUpdate(
-          req.body.user._id,
-          { $push: { cart: { plant: productId, quantity } } },
-          { new: true }
-        )
-          .populate("cart")
-          .populate("cart.plant")
-          .then(() => {
-            User.findById(req.user._id)
-              .populate("cart")
-              .populate("cart.plant")
-              .then((updatedUser) => {
-                const totalPrice = updatedUser.cart.reduce(
-                  (accumulator, element) => {
-                    return accumulator + element.plant.price * element.quantity;
-                  },
-                  0
-                );
-                User.findByIdAndUpdate(
-                  req.user._id,
-                  { totalPrice },
-                  { new: true }
-                ).then((user) => {
-                  res.send({
-                    message: `${toUpper(plant.commonName)} added to your cart`,
-                    user,
-                    updatedPlant: "",
-                  });
-                });
-              });
-          });
-      } else {
-        User.findById(req.user._id)
-          .populate("cart")
-          .populate("cart.plant")
-          .then((userBeforeUpdating) => {
-            const repeatedItem = userBeforeUpdating.cart.filter((item) => {
-              return item.plant._id === productId;
-            })[0];
-            const updatedItem = {
-              plant: repeatedItem.plant,
-              quantity: Number(repeatedItem.quantity) + Number(quantity),
-            };
-            const cartWithoutUpdatingPlant = userBeforeUpdating.cart.filter(
-              (item) => {
-                return item.plant._id !== productId.toString();
-              }
-            );
+    // await User.findOneAndUpdate(
+    //   { _id: userId },
+    //   { $push: { cart: newCartItem } },
+    //   (err) => {
+    //     if (err) console.error(err);
+    //   }
+    // );
 
-            const updatedCart = [...cartWithoutUpdatingPlant];
-            updatedCart.unshift(updatedItem);
+    const user = await User.findById(userId);
 
-            User.findByIdAndUpdate(
-              req.user._id,
-              { cart: updatedCart },
-              { new: true }
-            ).then(() => {
-              User.findById(req.user._id)
-                .populate("cart")
-                .populate("cart.plant")
-                .then((updatedUser) => {
-                  const totalPrice = updatedUser.cart.reduce(
-                    (accumulator, element) => {
-                      return (
-                        accumulator + element.plant.price * element.quantity
-                      );
-                    },
-                    0
-                  );
-                  User.findByIdAndUpdate(
-                    req.user._id,
-                    { totalPrice },
-                    { new: true }
-                  ).then((user) => {
-                    res.send({
-                      message: `${toUpper(
-                        plant.commonName
-                      )} added to your cart`,
-                      user,
-                      updatedPlant: updatedItem,
-                    });
-                  });
-                });
-            });
-          });
-      }
+    if (user) {
+      await User.findByIdAndUpdate(
+        userId,
+        { $inc: { "cart.$[elem].quantity": quantity } },
+        { upsert: true, arrayFilters: [{ "elem.productId": productId }] }
+      );
+      // let productExists = false;
+      // user.cart.forEach((item) => {
+      //   if (item.productId === productId) {
+      //     console.log("existingItem:", item);
+      //     item.quantity += quantity;
+      //     productExists = true;
+      //     console.log("Modified user (not new):", user);
+      //   }
+      // });
+      // if (!productExists) {
+      //   const newData = { productId, quantity };
+      //   await user.cart.push(newData);
+      //   console.log("Pushed user (new):", user);
+      // }
+
+      // const updatedUser = await user.save();
+      const msg = `Product added to cart`;
+      res.status(200).json({ msg });
+    } else {
+      const msg = `User not found`;
+      return res.status(400).json({ msg });
     }
-  });
+  } catch (err) {
+    const msg = `Error adding item to cart`;
+    console.error(msg, err);
+    return res.status(500).json({ msg, err });
+  }
 });
 
 // -------------- Remove store item from cart ------------------ //
-router.post("/remove-from-cart/:_id", (req, res) => {
-  User.findByIdAndUpdate(
-    req.user._id,
-    { $pull: { cart: { plant: req.params._id } } },
-    { new: true }
-  )
-    .then(() => {
-      User.findById(req.user._id)
-        .populate("cart")
-        .populate("cart.plant")
-        .then((updatedUser) => {
-          const totalPrice = updatedUser.cart.reduce((accumulator, element) => {
-            return accumulator + element.plant.price * element.quantity;
-          }, 0);
-          User.findByIdAndUpdate(
-            req.user._id,
-            { totalPrice },
-            { new: true }
-          ).then((user) => {
-            res.send({
-              message: "The plant has been removed from the shopping cart",
-            });
-          });
-        });
-    })
-    .catch((err) => {
-      console.log(err);
-      res.send(err);
-    });
+router.post("/remove-from-cart/:_id", async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const productId = req.params._id;
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { $pull: { cart: { product: productId } } },
+      { new: true }
+    ).populate("cart.product");
+    if (updatedUser) {
+      const msg = `The product has been removed from the shopping cart`;
+      res.status(200).json({
+        msg,
+        user: updatedUser,
+      });
+    } else {
+      const msg = `User not found`;
+      console.error(msg);
+      res.status(404).json({ msg });
+    }
+  } catch (err) {
+    const msg = `Error removing item from cart`;
+    console.error(msg, err);
+    res.status(500).json({ msg, err });
+  }
 });
 
 module.exports = router;

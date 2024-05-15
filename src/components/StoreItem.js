@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link, Redirect, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 const StoreItem = ({
   userInfo,
@@ -8,8 +8,8 @@ const StoreItem = ({
   modalAction,
   addMsg,
 }) => {
-  const [productId, setProductId] = useState(useParams()._id);
-  const [selectedProduct, setSelectedProduct] = useState(
+  const [productId] = useState(useParams()._id);
+  const [selectedProduct] = useState(
     plants.filter((plant) => {
       return productId === plant._id;
     })[0]
@@ -24,6 +24,7 @@ const StoreItem = ({
   // }
 
   useEffect(() => {
+    // console.log("userInfo cart:", userInfo.cart);
     console.log("userInfo:", userInfo);
   }, [userInfo]);
 
@@ -34,18 +35,22 @@ const StoreItem = ({
   const handleInput = (event) => {
     const inputQuantity = event.target.value;
     if (userInfo) {
-      if (inputQuantity) setQuantity(inputQuantity);
+      if (inputQuantity) setQuantity(parseInt(inputQuantity));
     }
   };
 
   const addToCart = () => {
     if (userInfo) {
       if (quantity) {
-        apiPostAction({ user: userInfo, productId, quantity }, "add-to-cart", [
-          "user",
-        ]).then((result) => {
-          addMsg(result.message);
-        });
+        // apiPostAction({ quantity }, `add-to-cart/1234`, ["user"])
+        apiPostAction({ quantity }, `add-to-cart/${productId}`, ["user"]).then(
+          (result) => {
+            if (result) {
+              addMsg(result.data.msg);
+              console.log("result:", result);
+            }
+          }
+        );
         // .catch((err) => {
         //   console.warn(err);
         // });
@@ -63,34 +68,42 @@ const StoreItem = ({
       {selectedProduct && (
         <div className="item">
           {/* filtro para asegurarse de que selectedProduct tiene datos y no es undefined */}
-          <img src={selectedProduct.image} alt={selectedProduct.commonName} />
-          <div className="item-info">
-            <h2>{toUpper(selectedProduct.commonName)}</h2>
-            <p>
-              <i>{toUpper(selectedProduct.botanicalName)}</i>
-            </p>
-            <strong>
-              <h3>
+          <div className="item-left">
+            <img src={selectedProduct.image} alt={selectedProduct.commonName} />
+          </div>
+          <div className="item-right">
+            <div className="item-info">
+              <div>
+                <h2>{toUpper(selectedProduct.commonName)}</h2>
+                <p>
+                  <i>{toUpper(selectedProduct.botanicalName)}</i>
+                </p>
+              </div>
+              <h3 className="price">
                 {selectedProduct.price.toLocaleString("es-ES", {
                   minimumFractionDigits: 2,
                 })}
                 €
               </h3>
-            </strong>
-            <input
-              className="input"
-              type="number"
-              placeholder="Quantity"
-              min="0"
-              name="quantity"
-              onChange={handleInput}
-            />
-            <button className="button" onClick={addToCart}>
-              Add to cart
-            </button>
-            <Link className="button" to={`/plant-details/${productId}`}>
-              View details
-            </Link>
+            </div>
+            <div className="item-actions">
+              <input
+                className="input-form input-qty"
+                type="number"
+                placeholder="Quantity"
+                min="0"
+                name="quantity"
+                onChange={handleInput}
+              />
+              <div className="btns-container">
+                <button className="button" onClick={addToCart}>
+                  Add to cart
+                </button>
+                <Link className="button" to={`/plant-details/${productId}`}>
+                  View details
+                </Link>
+              </div>
+            </div>
           </div>
         </div>
       )}

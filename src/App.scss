@@ -24,7 +24,8 @@
  $soft-green: #cfdac8;
  $softer-green: #e6efe0;
  $soft-grey: #e8eae6;
- $dark-grey: #cdd0cb;
+ $light-grey: #cdd0cb;
+ $dark-grey: #999999;
 
 #root{
   display: flex;
@@ -71,20 +72,19 @@ body {
   align-items: center;
   min-width: 250px;
   form {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-  }
-  
-  .label-form {
-    
-    font-weight: 500;
-    color: $dark-green;
-  }
-  .input-form {
     display: flex;
-    padding: 5px 10px;
+    flex-direction: column;
+    align-items: center;
+  }
+}
+  
+.label-form {
+  font-weight: 500;
+  color: $dark-green;
+}
+.input-form {
+  display: flex;
+  padding: 5px 10px;
   // color: $soft-green;
   border: 2px solid $dark-green;
   transition: box-shadow 0.5s, border-radius 0.5s;
@@ -95,64 +95,65 @@ body {
   }
   &:focus {
     outline: none;
-      border-radius: 5px;
-      box-shadow: 0px 2px 3px 2px rgba(0, 0, 0, 0.15);
-    }
+    border-radius: 5px;
+    box-shadow: 0px 2px 3px 2px rgba(0, 0, 0, 0.15);
   }
+}
   
-  .nav-btn {
-    font-weight: bold;
-    text-align: center;
-    text-decoration: none;
-    width: 150px;
-    min-height: 50px;
-    padding: 0 10px;
-    font-size: 1.4rem;
-    margin: 5px 0;
-    transition: 0.3s;
-    color: whitesmoke;
-    &:hover {
-      color: $dark-green;
-      background-color: $soft-green;
-    }
+.nav-btn {
+  font-weight: bold;
+  text-align: center;
+  text-decoration: none;
+  width: 150px;
+  min-height: 50px;
+  padding: 0 10px;
+  font-size: 1.4rem;
+  margin: 5px 0;
+  transition: 0.3s;
+  color: whitesmoke;
+  &:hover {
+    color: $dark-green;
+    background-color: $soft-green;
   }
-  .applant-logo {
-    width: 100px;
-    padding: 0 20px 0 0;
-  }
+}
+.applant-logo {
+  width: 100px;
+  padding: 0 20px 0 0;
+}
 
-  .actions-cell {
-    min-width: calc(100% - 4px);
-    .actions-cell-content{
-      display: flex;
-      justify-content: space-evenly;
-    }
+.actions-cell {
+  min-width: calc(100% - 4px);
+  .actions-cell-content{
+    display: flex;
+    justify-content: space-evenly;
   }
+}
 
-  .link {
-    color: black;
-    transition: 0.3s;
-  }
-  .link:hover {
-    color: $soft-green;
-  }
+.link {
+  color: black;
+  transition: 0.3s;
+}
+.link:hover {
+  color: $soft-green;
+}
   
-  .button {
-    width: 150px;
+.button {
+  width: 150px;
   background: none;
   background-color: $soft-green;
   color: $dark-green;
   border: 2px solid $dark-green;
   margin: 0;
   padding: 5px 10px;
+  font: inherit;
   font-size: 1.1rem;
   text-decoration: none;
-  font: inherit;
   font-weight: 700;
-  cursor: pointer;
+  text-align: center;
+  box-sizing: border-box;
   outline: inherit;
   transition: 0.5s;
-  text-align: center;
+  cursor: pointer;
   &:hover {
     background-color: $softer-green;
     border-radius: 4px;
@@ -500,52 +501,52 @@ table {
 
  .StoreItem{
   @include flexCenter(column, center, center);
-  margin-top: 20vh;
-  margin-bottom: 30vh;
+  position: absolute;
+  width: 100%;
+  height: calc(100% - 360px);
   .item{
     display: flex;
     align-items: center;
     border: 1px solid $dark-green;
     padding: 20px;
-    img {
+    .item-left {
+      height: 300px;
+      img {
       object-fit: cover;
-      width: 250px;
-      height: 250px;
-    }
-    .item-info{
-      @include flexCenter(column, left, left);
-      margin-left: 8vh;
-      h2 {
-        margin-bottom: 8px;
+      height: 300px;
+      // box-sizing: border-box;
       }
-      p{
-        margin-top: 0px;
+  }
+    .item-right {
+      @include flexCenter(column, space-between, flex-start);
+      width: 100%;
+      width: 300px;
+      min-height: 300px;
+      padding-left: 20px;
+      box-sizing: border-box;
+      .item-info {
+        @include flexCenter(column, flex-start, flex-start);
+        .price {
+          margin: 5px 0;
+        }
       }
-      input{
-        margin-bottom: 2vh;
-      }
-      .link {
-        text-align: center;
-        text-decoration: none;
-        margin-top:2vh;
-        font-weight: 700;
-        width: 200px;
-        background: none;
-        background-color: white;
-        color: $dark-green;
-        border: 2px solid $dark-green;
-        padding: 10px 0px;
-        font-size: 1.1rem;
-        font: inherit;
-        cursor: pointer;
-        outline: inherit;
-       /*  transition: 0.5s; */
-        &:hover {
-          color: $dark-green;
-          background-color: $soft-green;
-          border: 2px solid transparent;
-          /* padding: 10px 20px; */
-          border-radius: 16px;
+      .item-actions {
+        @include flexCenter(column, center, center);
+        width: 100%;
+        .input-qty {
+          align-self: center;
+          width: 70px;
+          margin-bottom: 5px;
+        }
+        .btns-container {
+          @include flexCenter(column, center, center);
+          width: 100%;
+          margin: 5px 0;
+          align-self: flex-end;
+          .button {
+            width: 150px;
+            margin-bottom: 4px;
+          }
         }
       }
     }
