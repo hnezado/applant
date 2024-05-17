@@ -13,6 +13,7 @@ import Store from "./components/Store/Store";
 import StoreItem from "./components/StoreItem";
 import Admin from "./components/Admin/Admin";
 import Profile from "./components/Profile/Profile";
+import ShoppingCart from "./components/ShoppingCart";
 
 function App() {
   const navigate = useNavigate();
@@ -34,9 +35,9 @@ function App() {
   const [modalOpened, setModalOpened] = useState(false);
   const [message, setMessage] = useState("");
 
-  // useEffect(() => {
-  //   console.log("userInfo updated to:", userInfo);
-  // }, [userInfo]);
+  useEffect(() => {
+    console.log("userInfo updated to:", userInfo);
+  }, [userInfo]);
 
   // useEffect(() => {
   //   console.log("plants updated to:", plants);
@@ -59,7 +60,8 @@ function App() {
   }, []);
 
   const updateState = async (state) => {
-    const value = await apiGetAction(state);
+    let value = await apiGetAction(state);
+    value = value.data;
     if (state === "user") setUserInfo(value);
     else if (state === "users") setUsers(value);
     else if (state === "plants") setPlants(value);
@@ -73,8 +75,8 @@ function App() {
         url: `http://localhost:5000/server/${url}`,
         withCredentials: true,
       });
-      // console.log(`Returning retrieved data (${url}):`, response.data.data);
-      return response.data.data;
+      // console.log(`Returning retrieved data (${url}):`, response);
+      return response.data;
     } catch (err) {
       throw err;
     }
@@ -88,7 +90,6 @@ function App() {
         data: data,
         withCredentials: true,
       });
-      // addMsg(response.data.message);
       if (Array.isArray(update)) {
         update.forEach((stateToUpdate) => updateState(stateToUpdate));
       } else {
@@ -125,7 +126,7 @@ function App() {
       withCredentials: true,
     })
       .then((result) => {
-        addMsg(result.data.message);
+        addMsg(result.data.msg);
         return result;
       })
       .catch((err) => {
@@ -213,6 +214,17 @@ function App() {
           path="/profile"
           element={
             <Profile userInfo={userInfo} apiPostAction={apiPostAction} />
+          }
+        />
+        <Route
+          path="/shopping-cart"
+          element={
+            <ShoppingCart
+              userInfo={userInfo}
+              apiPostAction={apiPostAction}
+              modalAction={modalAction}
+              addMsg={addMsg}
+            />
           }
         />
       </Routes>

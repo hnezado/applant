@@ -16,15 +16,7 @@ const StoreItem = ({
   );
   const [quantity, setQuantity] = useState(0);
 
-  // state = {
-  //   selectedPlantId: [],
-  //   quantity: 0,
-  //   totalPrice: 0,
-  //   toCartLoggedStatus: undefined,
-  // }
-
   useEffect(() => {
-    // console.log("userInfo cart:", userInfo.cart);
     console.log("userInfo:", userInfo);
   }, [userInfo]);
 
@@ -42,18 +34,14 @@ const StoreItem = ({
   const addToCart = () => {
     if (userInfo) {
       if (quantity) {
-        // apiPostAction({ quantity }, `add-to-cart/1234`, ["user"])
         apiPostAction({ quantity }, `add-to-cart/${productId}`, ["user"]).then(
           (result) => {
             if (result) {
               addMsg(result.data.msg);
-              console.log("result:", result);
+              console.log("Adding to cart, then the Result:", result);
             }
           }
         );
-        // .catch((err) => {
-        //   console.warn(err);
-        // });
       } else {
         addMsg("Quantity required");
       }
@@ -67,7 +55,6 @@ const StoreItem = ({
     <div className="StoreItem">
       {selectedProduct && (
         <div className="item">
-          {/* filtro para asegurarse de que selectedProduct tiene datos y no es undefined */}
           <div className="item-left">
             <img src={selectedProduct.image} alt={selectedProduct.commonName} />
           </div>
