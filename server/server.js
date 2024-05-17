@@ -81,12 +81,12 @@ passport.use(
         .then((user) => {
           if (!user) {
             return next(null, false, {
-              message: `Incorrect username or password`,
+              msg: `Incorrect username or password`,
             });
           }
           if (!bcrypt.compareSync(password, user.password)) {
             return next(null, false, {
-              message: `Incorrect username or password`,
+              msg: `Incorrect username or password`,
             });
           }
           return next(null, user);

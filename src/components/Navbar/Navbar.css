@@ -365,11 +365,11 @@ table td {
   background: white;
   box-sizing: border-box;
 }
-.CheckoutForm .result-message {
+.CheckoutForm .result-msg {
   line-height: 22px;
   font-size: 16px;
 }
-.CheckoutForm .result-message a {
+.CheckoutForm .result-msg a {
   color: rgb(89, 111, 214);
   font-weight: 600;
   text-decoration: none;

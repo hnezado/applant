@@ -8,7 +8,7 @@ const Message = ({ message, cleanMsg }) => {
       cleanMsg();
     }, 2000);
     return (
-      <div className="message-container">
+      <div className="msg-container">
         <BsFillInfoCircleFill />
         <article>{message}</article>
       </div>

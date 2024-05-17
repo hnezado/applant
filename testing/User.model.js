@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
 
-const userCartSchema = new Schema([
+const userCartSchema = new Schema(
   {
     product: {
       type: Schema.Types.ObjectId,
@@ -13,8 +13,8 @@ const userCartSchema = new Schema([
       default: 0,
     },
   },
-  { _id: false },
-]);
+  { _id: false }
+);
 
 const userSchema = new Schema(
   {
@@ -34,6 +34,7 @@ const userSchema = new Schema(
         ref: "Plant",
       },
     ],
+    // cart: [],
     cart: [userCartSchema],
     posts: [
       {

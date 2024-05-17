@@ -10,22 +10,22 @@ const Plant = require("../models/Plant.model");
 router.post("/signup", (req, res, next) => {
   const { username, password } = req.body;
   if (username === "" || password === "") {
-    res.send({ message: "You must fill all the fields" });
+    res.send({ msg: "You must fill all the fields" });
   } else if (password.length < 6) {
-    res.send({ message: "The password must be at least 6 digits long" });
+    res.send({ msg: "The password must be at least 6 digits long" });
   } else {
     User.findOne({ username })
       .then((user) => {
         if (user) {
           res.send({
-            message: `User ${user.username} already exists`,
+            msg: `User ${user.username} already exists`,
             alreadyExists: true,
           });
         } else {
           const hashedPassword = bcrypt.hashSync(password, 10);
           User.create({ username, password: hashedPassword }).then((result) => {
             res.send({
-              message: `User ${result.username} created successfully`,
+              msg: `User ${result.username} created successfully`,
               data: result,
               successSignup: true,
             });
@@ -33,7 +33,7 @@ router.post("/signup", (req, res, next) => {
         }
       })
       .catch((err) => {
-        res.send({ message: `Error: ${err}` });
+        res.send({ msg: `Error: ${err}` });
       });
   }
 });
@@ -43,11 +43,11 @@ router.post("/login", (req, res) => {
   passport.authenticate("local", (err, user, failureDetails) => {
     if (err) {
       console.log(err);
-      res.send({ message: "Error with Passport Authentication" });
+      res.send({ msg: "Error with Passport Authentication" });
       return;
     }
     if (!user) {
-      res.send({ message: "Incorrect username or password", failureDetails });
+      res.send({ msg: "Incorrect username or password", failureDetails });
       return;
     }
     res.cookie("sameSite", "none", {
@@ -57,20 +57,20 @@ router.post("/login", (req, res) => {
     req.login(user, (err) => {
       if (err) {
         console.log(err);
-        res.send({ message: "Error logging in" });
+        res.send({ msg: "Error logging in" });
       } else {
         User.findById(user._id)
           .populate("favoritePlants")
           .populate("cart.plant")
           .then((result) => {
             res.send({
-              message: "Logged in successfully",
+              msg: "Logged in successfully",
               data: result,
               successLogin: true,
             });
           })
           .catch(() => {
-            res.send({ message: "Error finding the user" });
+            res.send({ msg: "Error finding the user" });
           });
       }
     });
@@ -78,27 +78,32 @@ router.post("/login", (req, res) => {
 });
 
 //---- Check if the user is logged => req.user is from Passport ---- //
-router.get("/user", (req, res) => {
+router.get("/user", async (req, res) => {
   if (req.user) {
     User.findById(req.user._id)
       .populate("favoritePlants")
-      .populate("cart.plant")
+      .populate({
+        path: "cart.product",
+        model: Plant,
+      })
       .then((user) => {
-        res.send({ message: "User sent", data: user });
+        // console.log("retrieving user:", user);
+        // console.log("cart after populate:", user.cart[0]);
+        res.status(200).json({ data: user });
       })
       .catch((err) => {
         console.log(err);
-        res.send({ message: "Error sending user" });
+        res.status(500).json({ msg: "Error sending user" });
       });
   } else {
-    res.send({ message: "Not authenticated" });
+    res.json({ msg: "Not authenticated" });
   }
 });
 
 // ------ Logout ----------- //
 router.post("/logout", (req, res) => {
   req.logout();
-  res.send({ message: "Logged out successfully" });
+  res.send({ msg: "Logged out successfully" });
 });
 
 module.exports = router;

@@ -1,68 +1,89 @@
-import { useState } from "react";
+// import { useState } from "react";
 import { RiDeleteBinLine } from "react-icons/ri";
 
-const ShoppingCart = ({ userInfo }) => {
-  const [cart, setCart] = useState(userInfo.cart);
+const ShoppingCart = ({ userInfo, apiPostAction, modalAction, addMsg }) => {
+  // const []
 
   const toUpper = (word) => {
     if (word) return word[0].toUpperCase() + word.slice(1);
   };
 
+  const deleteFromCart = () => {};
+
+  const getTotalPrice = () => {
+    if (userInfo) {
+      return userInfo.cart.reduce((total, item) => {
+        return total + item.quantity * item.product.price;
+      }, 0);
+    }
+  };
+
   const getCartItems = () => {
-    if (cart && cart.length) {
-      return cart.map((item, index) => {
+    if (userInfo) {
+      return userInfo.cart.map((item, index) => {
         return (
           <div key={index} className="allItemsCart">
-            <img src={item.plant.image} alt={item.plant.commonName} />
+            <img src={item.product.image} alt={item.product.commonName} />
             <div className="infoItemCart">
               <b>
-                <p>{this.toUpper(item.plant.commonName)}</p>
+                <p>{toUpper(item.product.commonName)}</p>
               </b>
               <p>
                 <b>Qty:</b> {item.quantity}
               </p>
               <p>
-                <b>Price:</b> {item.plant.price}€
+                <b>Price:</b> {item.product.price}€
               </p>
               <p>
                 <b>Total: </b>
-                {item.quantity * item.plant.price}€
+                {item.quantity * item.product.price}€
               </p>
-              <button onClick={() => this.props.deleteFromCart(item.plant._id)}>
+              <button onClick={() => deleteFromCart(item.product._id)}>
                 <RiDeleteBinLine className="removeIcon" />
               </button>
             </div>
           </div>
         );
       });
+    } else {
+      modalAction("open", "login");
+      addMsg("Login required");
     }
   };
 
-  return userInfo ? (
-    userInfo.cart.length ? (
-      <div className="cart">
-        <h1>Cart</h1>
-        <div className="ShoppingCart">
-          <div className="ItemsCart">{this.getCartItems()}</div>
-          <div className="total-price">
-            <p>
-              <b>Total: </b> {this.props.userInfo.totalPrice} €
-            </p>
-            <button
-              onClick={() => {
-                this.props.modalAction("open", "payment");
-              }}
-            >
-              Check out
-            </button>
+  // return <div className="ShoppingCart"></div>;
+
+  return (
+    <div className="ShoppingCart">
+      {userInfo &&
+        userInfo.cart &&
+        Array.isArray(userInfo.cart) &&
+        (userInfo.cart.length ? (
+          <div className="cart">
+            <h1>Cart</h1>
+            <div className="ShoppingCart">
+              <div className="ItemsCart">{getCartItems()}</div>
+              <div className="total-price">
+                <p>
+                  <b>Total: </b> {getTotalPrice()} €
+                </p>
+                <button
+                  className="button"
+                  onClick={() => {
+                    modalAction("open", "payment");
+                  }}
+                >
+                  Check out
+                </button>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
-    ) : (
-      <h1>Your cart it's empty </h1>
-    )
-  ) : (
-    <h1>Login required </h1>
+        ) : (
+          <h1>Your cart it's empty </h1>
+        ))}
+    </div>
+    // ) : (
+    //   <h1>Login required </h1>
   );
 };
 
