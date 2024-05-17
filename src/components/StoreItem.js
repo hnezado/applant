@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 
 const StoreItem = ({
   userInfo,
@@ -15,6 +15,7 @@ const StoreItem = ({
     })[0]
   );
   const [quantity, setQuantity] = useState(0);
+  const navigate = useNavigate();
 
   useEffect(() => {
     console.log("userInfo:", userInfo);
@@ -39,6 +40,7 @@ const StoreItem = ({
             if (result) {
               addMsg(result.data.msg);
               console.log("Adding to cart, then the Result:", result);
+              navigate("/store");
             }
           }
         );

@@ -75,7 +75,7 @@ body {
 
 .table-cart {
   padding-right: 20px;
-  width: 470px;
+  width: 520px;
   th {
     font-size: 1rem;
     text-align: left;
@@ -93,16 +93,37 @@ body {
   .td-name {
     width: 150px;
   }
+  .td-qty {
+    width: 80px;
+    .qty-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      min-height: 35px;
+      // height: 100%;
+      padding: 0 2px;
+      box-sizing: border-box;
+      a {
+        color: black;
+      }
+      svg {
+        &:hover {
+          color: $soft-green;
+        }
+      }
+      &.centered {
+        padding: 0 8px;
+      }
+    }
+  }
   .td-right {
     text-align: end;
   }
-  .td-center {
-    text-align: center;
-  }
   .input-cart {
     display: flex;
-    width: 50px;
-    padding: 5px 10px;
+    width: 40px;
+    padding: 2px 5px;
   border: 2px solid $dark-green;
   transition: box-shadow 0.5s, border-radius 0.5s;
   &::placeholder {
@@ -345,6 +366,7 @@ table {
 }
 .cart{
   h1{
+    // font-style: inherit;
     text-align: center;
     color: $dark-green;
   }

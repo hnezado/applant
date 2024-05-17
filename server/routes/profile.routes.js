@@ -100,6 +100,39 @@ router.post("/add-to-cart/:_productId", async (req, res) => {
   }
 });
 
+router.post("/edit-quantity/:_id", async (req, res) => {
+  try {
+    const userId = req.user?._id;
+    const productId = req.params?._id?.toString();
+    const { quantity } = req.body;
+    const user = await User.findOne({ _id: userId });
+
+    const productIndex = await user.cart.findIndex(
+      (item) => item?.product?.toString() === productId
+    );
+    if (productIndex > -1) {
+      user.cart[productIndex].quantity = quantity;
+      if (user.cart[productIndex].quantity <= 0) {
+        user.cart.splice(productIndex, 1);
+        user.save();
+        const msg = `Removed item from cart successfully`;
+        res.status(200).json({ msg });
+      } else {
+        user.save();
+        const msg = `Edited product quantity successfully`;
+        res.status(200).json({ msg });
+      }
+    } else {
+      const msg = `Product not found in cart`;
+      return res.status(404).json({ msg });
+    }
+  } catch (err) {
+    const msg = `Error editing item quantity`;
+    console.error(msg, err.message);
+    return res.status(500).json({ msg, err });
+  }
+});
+
 // -------------- Remove store item from cart ------------------ //
 router.post("/remove-from-cart/:_id", async (req, res) => {
   try {

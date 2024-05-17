@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@stripe/react-stripe-js": "^2.7.1",
+    "@stripe/stripe-js": "^3.4.0",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
@@ -27,8 +29,8 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "watch-css": "sass src/:src/ --watch",
-    "dev": "concurrently \"npm start\" \"npm run watch-css\"",
-    "dev-full": "concurrently \"npm start\" \"cd server && npm run dev\" \"npm run watch-css\"",
+    "dev-front": "concurrently \"npm start\" \"npm run watch-css\"",
+    "dev": "concurrently \"npm start\" \"cd server && npm run dev\" \"npm run watch-css\"",
     "dev-test": "nodemon testing/test"
   },
   "eslintConfig": {

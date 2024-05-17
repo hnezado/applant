@@ -2,10 +2,6 @@ import { Modal } from "react-responsive-modal";
 import "react-responsive-modal/styles.css";
 import "./Modal.scss";
 
-// import { Elements } from '@stripe/react-stripe-js'
-// import CheckoutForm from '../CheckoutForm'
-// import { loadStripe } from '@stripe/stripe-js'
-
 import Login from "../Login/Login";
 import Signup from "../Signup/Signup";
 import DeleteUser from "../DeleteUser/DeleteUser";
@@ -15,6 +11,10 @@ import DeletePlant from "../DeletePlant/DeletePlant";
 import NewPost from "../NewPost/NewPost";
 import EditPost from "../EditPost/EditPost";
 import DeletePost from "../DeletePost/DeletePost";
+
+import { Elements } from "@stripe/react-stripe-js";
+import CheckoutForm from "../CheckoutForm";
+import { loadStripe } from "@stripe/stripe-js";
 
 const ModalComponent = (props) => {
   const {
@@ -146,23 +146,20 @@ const ModalComponent = (props) => {
           </Modal>
         </div>
       );
+    } else if (modal === "payment") {
+      const publicKey = loadStripe(
+        "pk_test_51IrpUwINyfw3Ussjr5TrEoNC8GW0dM1LdTMSLYsAIhofMEO44bCM8br241Ywwi96IRkCNMgKI4kMoSI8nugv9CSA0097t9atRk"
+      );
+      return (
+        <div>
+          <Modal open={modalOpened} onClose={() => modalAction("close")}>
+            <Elements stripe={publicKey}>
+              <CheckoutForm />
+            </Elements>
+          </Modal>
+        </div>
+      );
     }
-    // } else if(this.props.modal === 'payment'){
-    //  const promise = loadStripe(
-    //    "pk_test_51IrpUwINyfw3Ussjr5TrEoNC8GW0dM1LdTMSLYsAIhofMEO44bCM8br241Ywwi96IRkCNMgKI4kMoSI8nugv9CSA0097t9atRk"
-    //  );
-    //   return(
-    //     <div>
-    //       <Modal open={this.props.modalOpened} onClose={()=>this.props.modalAction('close')}>
-    //         <Elements
-    //           {...this.props}
-    //           stripe={promise}>
-    //           <CheckoutForm {...this.props}/>
-    //         </Elements>
-    //       </Modal>
-    //     </div>
-    //   )
-    // }
   };
 
   return <div className="Modal">{showModal()}</div>;
