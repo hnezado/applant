@@ -17,6 +17,14 @@ body::-webkit-scrollbar {
   display: none;
 }
 
+.App {
+  min-height: calc(100vh - 300px);
+  padding-bottom: 300px;
+}
+.App h1 {
+  font-size: 2rem;
+}
+
 .react-responsive-modal-modal {
   top: 25%;
   left: 0%;
@@ -34,6 +42,51 @@ body::-webkit-scrollbar {
   border: none;
   padding: 0px;
   border-radius: 0px;
+}
+
+.table-cart {
+  padding-right: 20px;
+  width: 470px;
+}
+.table-cart th {
+  font-size: 1rem;
+  text-align: left;
+  background-color: rgb(220, 220, 220);
+  padding: 5px 10px;
+}
+.table-cart tr {
+  align-items: center;
+  background-color: rgb(240, 240, 240);
+}
+.table-cart td {
+  height: 100%;
+  padding: 5px;
+}
+.table-cart .td-name {
+  width: 150px;
+}
+.table-cart .td-right {
+  text-align: end;
+}
+.table-cart .td-center {
+  text-align: center;
+}
+.table-cart .input-cart {
+  display: flex;
+  width: 50px;
+  padding: 5px 10px;
+  border: 2px solid #7c9473;
+  transition: box-shadow 0.5s, border-radius 0.5s;
+}
+.table-cart .input-cart::placeholder {
+  color: #7c9473;
+  font-weight: 500;
+  opacity: 0.5;
+}
+.table-cart .input-cart:focus {
+  outline: none;
+  border-radius: 5px;
+  box-shadow: 0px 2px 3px 2px rgba(0, 0, 0, 0.15);
 }
 
 .form-container {
@@ -93,6 +146,13 @@ body::-webkit-scrollbar {
   padding: 0 20px 0 0;
 }
 
+.login-req {
+  font: inherit;
+  font-size: 4rem;
+  text-align: center;
+  color: red;
+}
+
 .actions-cell {
   min-width: calc(100% - 4px);
 }
@@ -146,14 +206,6 @@ table td {
 
 .text-centered {
   text-align: center;
-}
-
-.App {
-  min-height: calc(100vh - 300px);
-  padding-bottom: 300px;
-}
-.App h1 {
-  font-size: 2rem;
 }
 
 .spinner {

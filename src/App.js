@@ -213,7 +213,12 @@ function App() {
         <Route
           path="/profile"
           element={
-            <Profile userInfo={userInfo} apiPostAction={apiPostAction} />
+            <Profile
+              userInfo={userInfo}
+              apiPostAction={apiPostAction}
+              modalAction={modalAction}
+              addMsg={addMsg}
+            />
           }
         />
         <Route

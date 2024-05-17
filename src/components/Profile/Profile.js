@@ -1,14 +1,22 @@
+import { useEffect } from "react";
 import { GiFlowerPot } from "react-icons/gi";
 import "./Profile.scss";
 
-const Profile = ({ userInfo, apiPostAction }) => {
+const Profile = ({ userInfo, apiPostAction, modalAction, addMsg }) => {
+  useEffect(() => {
+    if (!userInfo) {
+      modalAction("open", "login");
+      addMsg("Login required");
+    }
+  }, [userInfo]);
+
   const toUpper = (word) => {
     if (word) return word[0].toUpperCase() + word.slice(1);
   };
 
   const getFavoritePlants = () => {
     const { favoritePlants } = userInfo;
-    if (favoritePlants.length > 0) {
+    if (favoritePlants && favoritePlants.length > 0) {
       return favoritePlants.map((plant, index) => {
         return (
           <div key={index} className="Profile">
@@ -79,7 +87,7 @@ const Profile = ({ userInfo, apiPostAction }) => {
       <div>{getFavoritePlants()}</div>
     </div>
   ) : (
-    <h1>Login required</h1>
+    <h1 className="login-req">Login required</h1>
   );
 };
 

@@ -3,8 +3,6 @@ const router = express.Router();
 
 const User = require("../models/User.model");
 const Plant = require("../models/Plant.model");
-const Book = require("../models/Book.model");
-const Author = require("../models/Author.model");
 
 const toUpper = (word) => {
   if (word) return word[0].toUpperCase() + word.slice(1);
@@ -75,10 +73,9 @@ router.post("/remove-from-favorites/:_id", (req, res) => {
 // -------------- Put item into cart ------------------ //
 router.post("/add-to-cart/:_productId", async (req, res) => {
   try {
+    const userId = req.user._id;
     const productId = req.params._productId.toString();
     const { quantity } = req.body;
-    const userId = req.user._id;
-
     const user = await User.findOne({ _id: userId });
     if (user) {
       const existingProduct = user.cart.find(
@@ -108,20 +105,22 @@ router.post("/remove-from-cart/:_id", async (req, res) => {
   try {
     const userId = req.user._id;
     const productId = req.params._id;
-    const updatedUser = await User.findByIdAndUpdate(
-      userId,
-      { $pull: { cart: { product: productId } } },
-      { new: true }
-    ).populate("cart.product");
-    if (updatedUser) {
-      const msg = `The product has been removed from the shopping cart`;
-      res.status(200).json({
-        msg,
-        user: updatedUser,
-      });
+    const user = await User.findOne({ _id: userId });
+    if (user) {
+      const productIndex = user.cart.findIndex(
+        (item) => item?.product?.toString() === productId
+      );
+      if (productIndex > -1) {
+        user.cart.splice(productIndex, 1);
+        user.save();
+        const msg = `Removed item from cart successfully`;
+        res.status(200).json({ msg });
+      } else {
+        const msg = `Product not found in cart`;
+        return res.status(404).json({ msg });
+      }
     } else {
       const msg = `User not found`;
-      console.error(msg);
       res.status(404).json({ msg });
     }
   } catch (err) {
@@ -147,18 +146,6 @@ router.get("/get-user/:_id", async (req, res) => {
     console.log(err.message);
     res.status(500).json({ msg: "Error sending user" });
   }
-});
-
-router.get("/book/:_id", async (req, res) => {
-  Book.findById(req.params._id)
-    // .populate("authorId")
-    .then((book) => {
-      res.status(200).json({ data: book });
-    })
-    .catch((err) => {
-      console.log(err.message);
-      res.status(500).json({ msg: "Error sending book" });
-    });
 });
 
 module.exports = router;

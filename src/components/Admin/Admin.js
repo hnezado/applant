@@ -203,10 +203,10 @@ const Admin = ({ userInfo, users, plants, posts, modalAction }) => {
           </div>
         );
       } else {
-        return <h1>Admin user required </h1>;
+        return <h1 className="login-req">Admin user required </h1>;
       }
     } else {
-      return <h1>Login required </h1>;
+      return <h1 className="login-req">Login required </h1>;
     }
   };
 

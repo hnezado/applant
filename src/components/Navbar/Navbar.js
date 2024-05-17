@@ -21,7 +21,11 @@ const Navbar = ({ userInfo, modalAction, logout }) => {
 
   const CartLink = () => {
     return (
-      <Link className="nav-btn" to="/shopping-cart">
+      <Link
+        title="Go to my shopping cart"
+        className="nav-btn"
+        to="/shopping-cart"
+      >
         <TiShoppingCart />
       </Link>
     );
@@ -49,6 +53,7 @@ const Navbar = ({ userInfo, modalAction, logout }) => {
         <div className="nav-left">
           <Link to="/">
             <img
+              title="Go to homepage"
               className="applant-logo"
               // src="../../../public/applant-logo.svg"
               // src="../../../public/applant-logo.png"
