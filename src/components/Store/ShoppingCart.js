@@ -132,9 +132,9 @@ const ShoppingCart = ({ userInfo, apiPostAction, modalAction, addMsg }) => {
                     </div>
                   )}
                 </td>
-                <td className="td-right">{item.product.price}€</td>
+                <td className="td-right">{formatPrice(item.product.price)}€</td>
                 <td className="td-right">
-                  {item.quantity * item.product.price}€
+                  {formatPrice(item.quantity * item.product.price)}€
                 </td>
               </tr>
             </table>
@@ -150,6 +150,10 @@ const ShoppingCart = ({ userInfo, apiPostAction, modalAction, addMsg }) => {
     });
   };
 
+  const formatPrice = (value) => {
+    return value.toLocaleString("es-ES", { minimumFractionDigits: 2 });
+  };
+
   return (
     <div className="ShoppingCart">
       {cartItems ? (
@@ -160,7 +164,7 @@ const ShoppingCart = ({ userInfo, apiPostAction, modalAction, addMsg }) => {
               <div className="ItemsCart">{getCartItems()}</div>
               <div className="total-price">
                 <p>
-                  <b>Total: </b> {getTotalPrice()} €
+                  <b>Total: </b> {formatPrice(getTotalPrice())} €
                 </p>
                 <button
                   className="button"

@@ -1,5 +1,4 @@
 import { useState } from "react";
-import "./DeletePost.scss";
 
 const DeletePost = ({ posts, modal, apiPostAction, modalAction, addMsg }) => {
   const [deletingPost, setDeletingPost] = useState(
@@ -21,7 +20,7 @@ const DeletePost = ({ posts, modal, apiPostAction, modalAction, addMsg }) => {
 
   const getDeletePostForm = () => {
     return (
-      <div className="form-container">
+      <div className="modal">
         <h2>Delete post</h2>
         <h3>
           Are you sure you want to delete the post{" "}

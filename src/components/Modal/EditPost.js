@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import "./EditPost.scss";
 
 const EditPost = ({ posts, modal, apiPostAction, modalAction, addMsg }) => {
   const [editingPost, setEditingPost] = useState(
@@ -42,8 +41,8 @@ const EditPost = ({ posts, modal, apiPostAction, modalAction, addMsg }) => {
 
   const getEditPostForm = () => {
     return (
-      <div className="form-container">
-        <form className="form" onSubmit={editPost}>
+      <div className="modal">
+        <form onSubmit={editPost}>
           <h2>Edit post</h2>
           <table>
             <tbody>

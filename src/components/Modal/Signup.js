@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import "./Signup.scss";
 
 const Signup = ({ modalAction, signup }) => {
   const [user, setUser] = useState({
@@ -23,7 +22,7 @@ const Signup = ({ modalAction, signup }) => {
 
   const getSignupForm = () => {
     return (
-      <div className="form-container">
+      <div className="modal">
         <h2>Sign up</h2>
         <form onSubmit={handleSignup}>
           <label className="label-form" htmlFor="username">

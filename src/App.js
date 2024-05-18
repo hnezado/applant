@@ -8,24 +8,16 @@ import Footer from "./components/Footer/Footer";
 import Modal from "./components/Modal/Modal";
 import Message from "./components/Message/Message";
 import Homepage from "./components/Homepage/Homepage";
-import Blog from "./components/Blog/Blog";
+import PlantDetails from "./components/PlantDetails/PlantDetails";
 import Store from "./components/Store/Store";
-import StoreItem from "./components/StoreItem";
+import StoreItem from "./components/Store/StoreItem";
+import ShoppingCart from "./components/Store/ShoppingCart";
+import Blog from "./components/Blog/Blog";
 import Admin from "./components/Admin/Admin";
 import Profile from "./components/Profile/Profile";
-import ShoppingCart from "./components/ShoppingCart";
 
 function App() {
   const navigate = useNavigate();
-  // const [user, setUser] = useState({
-  //   _id: "",
-  //   username: "",
-  //   password: "",
-  //   admin: false,
-  //   favoritePlants: [],
-  //   cart: [],
-  //   totalPrice: 0,
-  // });
   const [userInfo, setUserInfo] = useState({});
   const [newUsername, setNewUsername] = useState("");
   const [users, setUsers] = useState([]);
@@ -215,6 +207,18 @@ function App() {
           element={
             <Profile
               userInfo={userInfo}
+              apiPostAction={apiPostAction}
+              modalAction={modalAction}
+              addMsg={addMsg}
+            />
+          }
+        />
+        <Route
+          path="/plant-details/:_id"
+          element={
+            <PlantDetails
+              userInfo={userInfo}
+              plants={plants}
               apiPostAction={apiPostAction}
               modalAction={modalAction}
               addMsg={addMsg}

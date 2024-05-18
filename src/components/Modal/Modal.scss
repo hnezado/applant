@@ -1,15 +1,126 @@
 @import '../../App.scss';
-/* .react-responsive-modal-modal{
 
+.react-responsive-modal-modal{
+    top: 25%;
+    left: 0%;
     border-radius: 20px;
-    .react-responsive-modal-closeButton{
-        svg{
 
+    .react-responsive-modal-closeButton{
+      display: flex;
+      flex-wrap: wrap;
+      flex-direction: column;
+      align-content: flex-end;
+      svg {
+        color: green;
+        &:hover{
+            color: $soft-green;
+            background-color: transparent;
+            border: none;
+            padding: 0px;
+            border-radius: 0px;
+          
+        }
+      }
+    }
+    .button {
+        width: 160px;
+        margin: 20px 0;
+    }
+  }
+
+  .modal {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-width: 250px;
+    form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        label {
+            font-weight: 500;
+            color: $dark-green;
         }
     }
-    .form-container{
-        background-color: transparent;
-        box-shadow: none;
+  }
+
+  .Signup {
+    .label-form {
+        margin-top: 5px;
     }
-    react-responsive-modal-closeButton
-} */
+    .button {
+        width: 160px;
+        margin: 20px 0;
+    }
+}
+
+.Login {
+    .label-form {
+        margin-top: 5px;
+    }
+    .button {
+        width: 160px;
+        margin: 20px 0;
+    }
+}
+
+.DeleteUser {
+    .button {
+        margin: 3px 0;
+    }
+}
+
+.NewPlant {
+
+}
+
+.EditPlant{
+    .button {
+        margin: 3px 0;
+    }
+}
+
+.DeletePlant{
+    .button {
+        margin: 3px 0;
+    }
+}
+
+.NewPost{
+    #new-post-textarea{
+        // min-width: 171px;
+        // max-width: 354px;
+        // height: 100px;
+    }
+    textarea {
+        width: 100%;
+        min-height: 25px;
+        border: 2px solid $dark-green;
+        box-sizing: border-box;
+        transition: box-shadow 0.5s, border-radius 0.5s;
+  &::placeholder {
+    color: $dark-green;
+    font-weight: 500;
+    opacity: 0.5;
+  }
+  &:focus {
+    outline: none;
+    border-radius: 5px;
+    box-shadow: 0px 2px 3px 2px rgba(0, 0, 0, 0.15);
+  }
+    }
+}
+
+.EditPost{
+    .button {
+        margin: 3px 0;
+    }
+}
+
+.DeletePost{
+    .button {
+        margin: 3px 0;
+    }
+}
+

@@ -11,6 +11,11 @@
   font-size: 1rem;
 }
 
+@mixin warnTitle {
+  font-size: 2rem;
+  color: red;
+}
+
 @mixin flexCenter($direction, $justify, $align) {
   display: flex;
   flex-direction: $direction;
@@ -26,136 +31,56 @@
  $soft-grey: #e8eae6;
  $light-grey: #cdd0cb;
  $dark-grey: #999999;
-
-#root{
-  display: flex;
-  flex-direction: column;
-}
-html{
-  position: absolute;
-  width: 100%;
-}
+ $charcoal: #333;
 
 body {
+  position: absolute;
+  width: 100%;
   display: flex;
   flex-direction: column;
+  color: $charcoal;
   &::-webkit-scrollbar {
     display: none;
+  }
+  ::selection {
+    background:$dark-green;
+    color:$soft-green;
   }
 }
 
 .App {
   min-height: calc(100vh - 300px);
   padding-bottom: 300px;
-  h1 {
-    @include mainTitle;
-  }
 }
 
-// Modal general
-.react-responsive-modal-modal{
-  top: 25%;
-  left: 0%;
-  border-radius: 20px;
-  .react-responsive-modal-closeButton{
-    display: flex;
-    flex-wrap: wrap;
-    flex-direction: column;
-    align-content: flex-end;
-    &:hover{
-        color: none;
-        background-color: transparent;
-        border: none;
-        padding: 0px;
-        border-radius: 0px;
-      
-    }
-  }
-}
-
-.table-cart {
-  padding-right: 20px;
-  width: 520px;
+table {
+  width: 500px;
+  margin: 10px 0;
   th {
     font-size: 1rem;
     text-align: left;
-    background-color: rgb(220,220,220);
-    padding: 5px 10px;
+    background-color: rgb(150,150,150);
+    padding: 5px 20px;
   }
   tr {
-    align-items: center;
-    background-color: rgb(240,240,240);
+    height: 32px;
   }
   td {
-    height: 100%;
-    padding: 5px;
-  }
-  .td-name {
-    width: 150px;
-  }
-  .td-qty {
-    width: 80px;
-    .qty-content {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      width: 100%;
-      min-height: 35px;
-      // height: 100%;
-      padding: 0 2px;
-      box-sizing: border-box;
-      a {
-        color: black;
-      }
-      svg {
-        &:hover {
-          color: $soft-green;
-        }
-      }
-      &.centered {
-        padding: 0 8px;
-      }
+    background-color: rgb(200, 200, 200);
+    img {
+      width: 20px;
+      padding: 5px;
+      vertical-align: middle;
     }
-  }
-  .td-right {
-    text-align: end;
-  }
-  .input-cart {
-    display: flex;
-    width: 40px;
-    padding: 2px 5px;
-  border: 2px solid $dark-green;
-  transition: box-shadow 0.5s, border-radius 0.5s;
-  &::placeholder {
-    color: $dark-green;
-    font-weight: 500;
-    opacity: 0.5;
-  }
-  &:focus {
-    outline: none;
-    border-radius: 5px;
-    box-shadow: 0px 2px 3px 2px rgba(0, 0, 0, 0.15);
-  }
-  }
-}
-
-.form-container{
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  min-width: 250px;
-  form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    &:last-child {
+      width: 5px;
+    }
+    &:not(:last-child) {
+      padding: 0 10px;
+    }
   }
 }
   
-.label-form {
-  font-weight: 500;
-  color: $dark-green;
-}
 .input-form {
   display: flex;
   padding: 5px 10px;
@@ -201,20 +126,12 @@ body {
   color: red;
 }
 
-.actions-cell {
-  min-width: calc(100% - 4px);
-  .actions-cell-content{
-    display: flex;
-    justify-content: space-evenly;
-  }
-}
-
 .link {
-  color: black;
+  color: $charcoal;
   transition: 0.3s;
-}
-.link:hover {
-  color: $soft-green;
+  &:hover {
+    color: $soft-green;
+  }
 }
   
 .button {
@@ -238,16 +155,6 @@ body {
     background-color: $softer-green;
     border-radius: 4px;
     box-shadow: 0px 2px 4px 1px rgba(0, 0, 5, 0.2);
-  }
-}
-
-table {
-  margin: 10px 0;
-  tr {
-    border: 1px solid black;
-  }
-  td {
-    padding: 2px;
   }
 }
 

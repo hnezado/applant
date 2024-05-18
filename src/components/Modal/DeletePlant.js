@@ -1,5 +1,4 @@
 import { useState } from "react";
-import "./DeletePlant.scss";
 
 const DeletePlant = ({ plants, modal, apiPostAction, modalAction, addMsg }) => {
   const [deletingPlant] = useState(
@@ -21,7 +20,7 @@ const DeletePlant = ({ plants, modal, apiPostAction, modalAction, addMsg }) => {
 
   const getDeletePlantForm = () => {
     return (
-      <div className="form-container">
+      <div className="modal">
         <h2>Delete plant</h2>
         <h3>
           Are you sure you want to delete the plant{" "}

@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { FaPen } from "react-icons/fa";
+import { FaPlus, FaPen } from "react-icons/fa";
 import { MdDeleteForever } from "react-icons/md";
 import { BiBasket } from "react-icons/bi";
 import "./Admin.scss";
@@ -11,14 +11,8 @@ const Admin = ({ userInfo, users, plants, posts, modalAction }) => {
 
   const showUsers = () => {
     return (
-      <div className="form-container">
+      <section className="table-container">
         <h2>List of users</h2>
-        <button
-          className="button"
-          onClick={() => modalAction("open", "signup")}
-        >
-          New user
-        </button>
         <table>
           <thead>
             <tr>
@@ -41,7 +35,6 @@ const Admin = ({ userInfo, users, plants, posts, modalAction }) => {
                             modalAction("open", `delete-user/${user._id}`)
                           }
                         >
-                          {/* <img src="/icons/delete-icon.png" alt="delete-icon" /> */}
                           <MdDeleteForever className="delete-icon" />
                         </Link>
                       </div>
@@ -50,22 +43,26 @@ const Admin = ({ userInfo, users, plants, posts, modalAction }) => {
                 )
               );
             })}
+            <tr>
+              <td title="New user" colSpan={2}>
+                <div className="add-btn">
+                  <FaPlus
+                    className="link add-icon"
+                    onClick={() => modalAction("open", "signup")}
+                  />
+                </div>
+              </td>
+            </tr>
           </tbody>
         </table>
-      </div>
+      </section>
     );
   };
 
   const showPlants = () => {
     return (
-      <div className="form-container">
+      <section className="table-container">
         <h2>List of plants</h2>
-        <button
-          className="button"
-          onClick={() => modalAction("open", "new-plant")}
-        >
-          New plant
-        </button>
         <table>
           <thead>
             <tr>
@@ -98,7 +95,6 @@ const Admin = ({ userInfo, users, plants, posts, modalAction }) => {
                             modalAction("open", `edit-plant/${plant._id}`)
                           }
                         >
-                          {/* <img src="/icons/edit-icon.png" alt="edit-icon" /> */}
                           <FaPen className="edit-icon" />
                         </Link>
                         <Link
@@ -108,7 +104,6 @@ const Admin = ({ userInfo, users, plants, posts, modalAction }) => {
                             modalAction("open", `delete-plant/${plant._id}`)
                           }
                         >
-                          {/* <img src="/icons/delete-icon.png" alt="delete-icon" /> */}
                           <MdDeleteForever className="delete-icon" />
                         </Link>
                       </div>
@@ -117,22 +112,26 @@ const Admin = ({ userInfo, users, plants, posts, modalAction }) => {
                 )
               );
             })}
+            <tr>
+              <td title="New plant" colSpan={4}>
+                <div className="add-btn">
+                  <FaPlus
+                    className="link add-icon"
+                    onClick={() => modalAction("open", "new-plant")}
+                  />
+                </div>
+              </td>
+            </tr>
           </tbody>
         </table>
-      </div>
+      </section>
     );
   };
 
   const showPosts = () => {
     return (
-      <div className="form-container">
+      <section className="table-container">
         <h2>List of Posts</h2>
-        <button
-          className="button"
-          onClick={() => modalAction("open", "new-post")}
-        >
-          New post
-        </button>
         <table>
           <thead>
             <tr>
@@ -157,7 +156,6 @@ const Admin = ({ userInfo, users, plants, posts, modalAction }) => {
                             modalAction("open", `edit-post/${post._id}`)
                           }
                         >
-                          {/* <img src="/icons/edit-icon.png" alt="edit-icon" /> */}
                           <FaPen className="edit-icon" />
                         </Link>
                         <Link
@@ -167,7 +165,6 @@ const Admin = ({ userInfo, users, plants, posts, modalAction }) => {
                             modalAction("open", `delete-post/${post._id}`)
                           }
                         >
-                          {/* <img src="/icons/delete-icon.png" alt="delete-icon" /> */}
                           <MdDeleteForever className="delete-icon" />
                         </Link>
                       </div>
@@ -176,9 +173,19 @@ const Admin = ({ userInfo, users, plants, posts, modalAction }) => {
                 )
               );
             })}
+            <tr>
+              <td title="New post" colSpan={4}>
+                <div className="add-btn">
+                  <FaPlus
+                    className="link add-icon"
+                    onClick={() => modalAction("open", "new-post")}
+                  />
+                </div>
+              </td>
+            </tr>
           </tbody>
         </table>
-      </div>
+      </section>
     );
   };
 
@@ -186,13 +193,14 @@ const Admin = ({ userInfo, users, plants, posts, modalAction }) => {
     if (userInfo) {
       if (userInfo.admin) {
         return (
-          <div className="forms-container">
+          <div className="tables-container">
             <Link
+              title="Go to Stripe dashboard"
               className="button"
               to={`https://dashboard.stripe.com/test/payments`}
               target="_blank"
             >
-              Stripe dashboard
+              View transactions
             </Link>
             <hr />
             {showUsers()}

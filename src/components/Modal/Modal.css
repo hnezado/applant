@@ -1,15 +1,7 @@
 /* COLOR PALETTE */
-#root {
-  display: flex;
-  flex-direction: column;
-}
-
-html {
+body {
   position: absolute;
   width: 100%;
-}
-
-body {
   display: flex;
   flex-direction: column;
 }
@@ -20,28 +12,6 @@ body::-webkit-scrollbar {
 .App {
   min-height: calc(100vh - 300px);
   padding-bottom: 300px;
-}
-.App h1 {
-  font-size: 2rem;
-}
-
-.react-responsive-modal-modal {
-  top: 25%;
-  left: 0%;
-  border-radius: 20px;
-}
-.react-responsive-modal-modal .react-responsive-modal-closeButton {
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: column;
-  align-content: flex-end;
-}
-.react-responsive-modal-modal .react-responsive-modal-closeButton:hover {
-  color: none;
-  background-color: transparent;
-  border: none;
-  padding: 0px;
-  border-radius: 0px;
 }
 
 .table-cart {
@@ -601,19 +571,34 @@ table td {
   margin-bottom: 4px;
 }
 
-/* .react-responsive-modal-modal{
+.react-responsive-modal-modal {
+  top: 25%;
+  left: 0%;
+  border-radius: 20px;
+}
+.react-responsive-modal-modal .react-responsive-modal-closeButton {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  align-content: flex-end;
+}
+.react-responsive-modal-modal .react-responsive-modal-closeButton svg {
+  color: green;
+}
+.react-responsive-modal-modal .react-responsive-modal-closeButton svg:hover {
+  color: #cfdac8;
+  background-color: transparent;
+  border: none;
+  padding: 0px;
+  border-radius: 0px;
+}
 
-    border-radius: 20px;
-    .react-responsive-modal-closeButton{
-        svg{
-
-        }
-    }
-    .form-container{
-        background-color: transparent;
-        box-shadow: none;
-    }
-    react-responsive-modal-closeButton
-} */
+.Signup .label-form {
+  margin-top: 5px;
+}
+.Signup .button {
+  width: 160px;
+  margin: 20px 0;
+}
 
 /*# sourceMappingURL=Modal.css.map */

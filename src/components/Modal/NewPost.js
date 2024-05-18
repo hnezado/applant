@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import "./NewPost.scss";
 
 const NewPost = ({ apiPostAction, modalAction, addMsg }) => {
   const [newPost, setNewPost] = useState({
@@ -45,8 +44,8 @@ const NewPost = ({ apiPostAction, modalAction, addMsg }) => {
 
   const getNewPostForm = () => {
     return (
-      <div className="form-container">
-        <form className="form" onSubmit={createPost}>
+      <div className="modal">
+        <form onSubmit={createPost}>
           <h2>New post</h2>
           <table>
             <tbody>

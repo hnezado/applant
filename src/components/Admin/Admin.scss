@@ -1,48 +1,22 @@
 @import '../../App.scss';
 
 .Admin {
-  @include flexCenter(column, center, center);
-  table {
-    width: 500px;
-    th {
-      font-size: 1rem;
-      text-align: left;
-      background-color: rgb(150,150,150);
-      padding: 5px 20px;
-    }
-    tr {
-      min-height: 34px;
-      align-items: center;
-    }
-    td {
-      height: 100%;
-      background-color: rgb(200, 200, 200);
-      padding: 5px;
-      img {
-        width: 20px;
-        padding: 5px;
-        vertical-align: middle;
-      }
-      &:last-child {
-        width: 5px;
-      }
-      &:not(:last-child) {
-        padding: 0 10px;
-        // background-color: bisque;
-      }
-    }
-    hr {
-      width: 100%;
-      height: 1px;
-    }
-  }
-  .forms-container {
+  @include flexCenter(column, center, center);                          
+  .tables-container {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
   }
-  .form-container {
+  .button {
+    width: 200px;
+    margin: 30px 0 20px;
+  }
+  hr {
+    width: 100%;
+    height: 1px;
+  }
+  .table-container {
     @include flexCenter(column, center, center);
     background-color: lightgray;
     width: 600px;
@@ -55,61 +29,38 @@
     h2 {
       margin: 8px 0;
     }
-  }
-  .button {
-    width: 130px;
-    margin: 30px 0 0;
-  }
-  .sale-icon {
-    padding-top: 2px;
-    font-size: 1.1rem;
-  }
-  .edit-icon {
-    padding-top: 3px;
-    font-size: 1.1rem;
-  }
-  .delete-icon {
-    font-size: 1.4rem;
-  }
-  .link {
-    display: block;
-    background-color: rgb(200, 200, 200);
-    text-align: center;
-    // padding: 5px;
-    // width: 100%;
-    // height: 100%;
-    // border-radius: 50%;
-    transition: 0.3;
-    &:hover {
-      color: $dark-grey;
-      // background-color: rgb(180, 180, 180);
+    .actions-cell {
+      min-width: calc(100% - 4px);
+      .actions-cell-content{
+        display: flex;
+        justify-content: space-evenly;
+      }
     }
-  }
-  // .stripe-link {
-  //   padding: 5px 10px;
-  //   margin: 30px 0 0;
-  //   color: $dark-green;
-  //   background-color: $soft-green;
-  //   border: 2px solid $dark-green;
-  //   font-weight: 500px;
-  //   text-decoration: none;
-  //   transition: 0.5s;
-  //   &:focus{
-  //     border-color:   $dark-green;
-  //     border-radius: 4px;
-  //     outline: none;
-  //     text-decoration: underline;
-  //     box-shadow: 0px 4px 8px 2px rgba(0, 0, 5, 0.2);
-  //   }
-  //   &:hover {
-  //     border-color: $dark-green;
-  //     border-radius: 4px;
-  //     text-decoration: underline;
-  //     box-shadow: 0px 2px 4px 1px rgba(0, 0, 5, 0.2);
-  //   }
-  // }
-  .on-store, .stock {
-    width: 1px;
-    text-align: center;
+    .link:hover {
+      color: $dark-grey;
+    }
+    .sale-icon {
+      padding-top: 2px;
+      font-size: 1.1rem;
+    }
+    .add-btn {
+      display: flex;
+      justify-content: center;
+      .add-icon {
+        font-size: 1.1rem;
+        cursor: pointer;
+      }
+    }
+    .edit-icon {
+      padding-top: 3px;
+      font-size: 1.1rem;
+    }
+    .delete-icon {
+      font-size: 1.4rem;
+    }
+    .on-store, .stock {
+      width: 1px;
+      text-align: center;
+    }
   }
 }

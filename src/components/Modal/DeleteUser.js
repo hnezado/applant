@@ -1,5 +1,3 @@
-import "./DeleteUser.scss";
-
 const DeleteUser = ({ users, modal, apiPostAction, modalAction }) => {
   const user = users.filter((user) => {
     return modal.split("/")[1] === user._id;
@@ -13,7 +11,7 @@ const DeleteUser = ({ users, modal, apiPostAction, modalAction }) => {
 
   const getDeleteUserForm = () => {
     return (
-      <div className="form-container">
+      <div className="modal">
         <h2>Delete user</h2>
         <h3>
           Are you sure you want to delete the user <i>{user.username}</i>?

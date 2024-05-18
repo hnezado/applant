@@ -1,20 +1,20 @@
+import Signup from "./Signup";
+import Login from "./Login";
+import DeleteUser from "./DeleteUser";
+import NewPlant from "./NewPlant";
+import EditPlant from "./EditPlant";
+import DeletePlant from "./DeletePlant";
+import NewPost from "./NewPost";
+import EditPost from "./EditPost";
+import DeletePost from "./DeletePost";
+import CheckoutForm from "./CheckoutForm";
+
 import { Modal } from "react-responsive-modal";
 import "react-responsive-modal/styles.css";
-import "./Modal.scss";
-
-import Login from "../Login/Login";
-import Signup from "../Signup/Signup";
-import DeleteUser from "../DeleteUser/DeleteUser";
-import NewPlant from "../NewPlant/NewPlant";
-import EditPlant from "../EditPlant/EditPlant";
-import DeletePlant from "../DeletePlant/DeletePlant";
-import NewPost from "../NewPost/NewPost";
-import EditPost from "../EditPost/EditPost";
-import DeletePost from "../DeletePost/DeletePost";
-
 import { Elements } from "@stripe/react-stripe-js";
-import CheckoutForm from "../CheckoutForm";
 import { loadStripe } from "@stripe/stripe-js";
+
+import "./Modal.scss";
 
 const ModalComponent = (props) => {
   const {
@@ -53,7 +53,7 @@ const ModalComponent = (props) => {
           </Modal>
         </div>
       );
-    } else if (modal.includes("delete-user")) {
+    } else if (modal && modal.includes("delete-user")) {
       return (
         <div>
           <Modal open={modalOpened} onClose={() => modalAction("close")}>
@@ -78,7 +78,7 @@ const ModalComponent = (props) => {
           </Modal>
         </div>
       );
-    } else if (modal.includes("edit-plant")) {
+    } else if (modal && modal.includes("edit-plant")) {
       return (
         <div>
           <Modal open={modalOpened} onClose={() => modalAction("close")}>
@@ -92,7 +92,7 @@ const ModalComponent = (props) => {
           </Modal>
         </div>
       );
-    } else if (modal.includes("delete-plant")) {
+    } else if (modal && modal.includes("delete-plant")) {
       return (
         <div>
           <Modal open={modalOpened} onClose={() => modalAction("close")}>
@@ -118,7 +118,7 @@ const ModalComponent = (props) => {
           </Modal>
         </div>
       );
-    } else if (modal.includes("edit-post")) {
+    } else if (modal && modal.includes("edit-post")) {
       return (
         <div>
           <Modal open={modalOpened} onClose={() => modalAction("close")}>
@@ -132,7 +132,7 @@ const ModalComponent = (props) => {
           </Modal>
         </div>
       );
-    } else if (modal.includes("delete-post")) {
+    } else if (modal && modal.includes("delete-post")) {
       return (
         <div>
           <Modal open={modalOpened} onClose={() => modalAction("close")}>

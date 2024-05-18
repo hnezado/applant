@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import "./NewPlant.scss";
 
 const NewPlant = ({ apiPostAction, modalAction, addMsg }) => {
   const [newPlant, setNewPlant] = useState({
@@ -69,8 +68,8 @@ const NewPlant = ({ apiPostAction, modalAction, addMsg }) => {
 
   const getNewPlantForm = () => {
     return (
-      <div className="PlantDetails">
-        <form className="form" onSubmit={createPlant}>
+      <div className="modal">
+        <form onSubmit={createPlant}>
           <h2>New plant</h2>
           <table>
             <tbody>

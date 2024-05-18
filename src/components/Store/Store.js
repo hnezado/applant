@@ -73,12 +73,15 @@ const Store = ({ plants }) => {
             )
           </h3>
           <p>
-            <b>PVP</b>{" "}
-            {plant.price.toLocaleString("es-ES", { minimumFractionDigits: 2 })}€
+            <b>PVP</b> {formatPrice(plant.price)}€
           </p>
         </div>
       );
     });
+  };
+
+  const formatPrice = (value) => {
+    return value.toLocaleString("es-ES", { minimumFractionDigits: 2 });
   };
 
   return (

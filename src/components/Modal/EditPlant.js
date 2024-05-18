@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import "./EditPlant.scss";
 
 const EditPlant = ({ plants, modal, apiPostAction, modalAction, addMsg }) => {
   const [editedPlant, setEditedPlant] = useState(
@@ -63,8 +62,8 @@ const EditPlant = ({ plants, modal, apiPostAction, modalAction, addMsg }) => {
 
   const getEditPlantForm = () => {
     return (
-      <div className="form-container">
-        <form className="form" onSubmit={editPlant}>
+      <div className="modal">
+        <form onSubmit={editPlant}>
           <h2>Edit plant</h2>
           <table>
             <tbody>
