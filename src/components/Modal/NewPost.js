@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 const NewPost = ({ apiPostAction, modalAction, addMsg }) => {
   const [newPost, setNewPost] = useState({
@@ -6,10 +6,6 @@ const NewPost = ({ apiPostAction, modalAction, addMsg }) => {
     image: "",
     content: "",
   });
-
-  useEffect(() => {
-    // console.log("newPost:", newPost);
-  }, [newPost]);
 
   const validateData = (postData) => {
     let valid = true;
@@ -23,19 +19,15 @@ const NewPost = ({ apiPostAction, modalAction, addMsg }) => {
   const createPost = (event) => {
     event.preventDefault();
     if (validateData(newPost)) {
-      apiPostAction(newPost, "new-post", "posts");
+      apiPostAction(newPost, "new-post", ["posts"]);
       addMsg("New post created successfully");
       modalAction("close");
-      setTimeout(() => {
-        window.location.reload();
-      }, 2200);
     } else {
       addMsg("Please fill out all fields before submitting");
     }
   };
 
   const handleInput = (event) => {
-    console.log("handling input!!!!!!!!");
     const { name, value } = event.target;
     const newPostCopy = { ...newPost };
     newPostCopy[name] = value;
@@ -45,21 +37,27 @@ const NewPost = ({ apiPostAction, modalAction, addMsg }) => {
   const getNewPostForm = () => {
     return (
       <div className="modal">
-        <form onSubmit={createPost}>
+        <form className="form" onSubmit={createPost}>
           <h2>New post</h2>
-          <table>
+          <table className="table">
             <tbody>
               <tr>
+                <td>Title</td>
                 <td>
                   <input
+                    className="input i-table"
                     onChange={handleInput}
                     type="text"
                     name="title"
                     placeholder="Post title"
                   />
                 </td>
+              </tr>
+              <tr>
+                <td>Image URL</td>
                 <td>
                   <input
+                    className="input i-table"
                     onChange={(event) => handleInput(event)}
                     type="text"
                     name="image"
@@ -68,9 +66,10 @@ const NewPost = ({ apiPostAction, modalAction, addMsg }) => {
                 </td>
               </tr>
               <tr>
+                <td>Content</td>
                 <td colSpan="2">
                   <textarea
-                    id="new-post-textarea"
+                    className="input i-table"
                     onChange={(event) => handleInput(event)}
                     type="text"
                     name="content"

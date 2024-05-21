@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./App.scss";
@@ -27,52 +27,54 @@ function App() {
   const [modalOpened, setModalOpened] = useState(false);
   const [message, setMessage] = useState("");
 
-  useEffect(() => {
-    console.log("userInfo updated to:", userInfo);
-  }, [userInfo]);
+  // useEffect(() => {
+  //   console.log("(Apps.js) userInfo updated to:", userInfo);
+  // }, [userInfo]);
 
   // useEffect(() => {
-  //   console.log("plants updated to:", plants);
+  //   console.log("(Apps.js) plants updated to:", plants);
   // }, [plants]);
 
   // useEffect(() => {
-  //   console.log("State users updated to:", users);
+  //   console.log("(Apps.js) State users updated to:", users);
   // }, [users]);
 
   // useEffect(() => {
-  //   console.log("plants updated to:", plants);
+  //   console.log("(Apps.js) plants updated to:", plants);
   // }, [plants]);
 
-  useEffect(() => {
-    // Checking an active session
-    updateState("user");
-    updateState("users");
-    updateState("plants");
-    updateState("posts");
-  }, []);
-
-  const updateState = async (state) => {
-    let value = await apiGetAction(state);
-    value = value.data;
-    if (state === "user") setUserInfo(value);
-    else if (state === "users") setUsers(value);
-    else if (state === "plants") setPlants(value);
-    else if (state === "posts") setPosts(value);
-  };
-
-  const apiGetAction = async (url) => {
+  const apiGetAction = useCallback(async (url) => {
     try {
       const response = await axios({
         method: "get",
         url: `http://localhost:5000/server/${url}`,
         withCredentials: true,
       });
-      // console.log(`Returning retrieved data (${url}):`, response);
+      // console.log(`(Apps.js) Returning retrieved data (${url}):`, response);
       return response.data;
     } catch (err) {
       throw err;
     }
-  };
+  }, []);
+
+  const updateState = useCallback(
+    async (state) => {
+      let value = await apiGetAction(state);
+      value = value.data;
+      if (state === "user") setUserInfo(value);
+      else if (state === "users") setUsers(value);
+      else if (state === "plants") setPlants(value);
+      else if (state === "posts") setPosts(value);
+    },
+    [apiGetAction]
+  );
+
+  useEffect(() => {
+    updateState("user");
+    updateState("users");
+    updateState("plants");
+    updateState("posts");
+  }, [updateState]);
 
   const apiPostAction = async (data, url, update) => {
     try {
@@ -164,7 +166,10 @@ function App() {
       <Navbar userInfo={userInfo} modalAction={modalAction} logout={logout} />
       <Message message={message} cleanMsg={cleanMsg} />
       <Routes>
-        <Route path="/" element={<Homepage plants={plants} />} />
+        <Route
+          path="/"
+          element={<Homepage userInfo={userInfo} plants={plants} />}
+        />
         <Route
           path="/blog"
           element={
@@ -177,9 +182,12 @@ function App() {
             />
           }
         />
-        <Route path="/store" element={<Store plants={plants} />} />
         <Route
-          path="/store-items/:_id"
+          path="/store"
+          element={<Store userInfo={userInfo} plants={plants} />}
+        />
+        <Route
+          path="/store-item/:_id"
           element={
             <StoreItem
               userInfo={userInfo}
@@ -207,7 +215,6 @@ function App() {
           element={
             <Profile
               userInfo={userInfo}
-              apiPostAction={apiPostAction}
               modalAction={modalAction}
               addMsg={addMsg}
             />

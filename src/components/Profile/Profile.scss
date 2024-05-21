@@ -1,46 +1,56 @@
-@import '../../App.scss';
+@import "../../App.scss";
 
-.Profile {  
-  max-width: 100vw;
-  min-height: 50vh ;
-  display:flex;
-  flex-direction: column;
-  margin-top: 30px;
-  padding: 30px;
-  .ProfileUp{
-    display:flex;
-    flex-direction: row;
-  }
-  .Details{
-    display:flex;
-    flex-direction: column;
-    margin-left: 4rem;
-  }
-  img{
-    object-fit: cover;
-    width: 50vw;
-  }
-  h1{
+.Profile {
+  @include flexCenter(column, center, center);
+  .heading {
+    @include mainTitle();
     text-align: center;
     color: $dark-green;
+    margin: 30px 0 10px;
   }
-  .p{
+  .sub-heading {
+    @include subtitle();
     text-align: center;
-    font-size: 1.5rem;
-    margin-top:10px;
-    
     color: $dark-green;
+    margin: 10px 0 30px;
+    svg {
+      font-size: 2rem;
+    }
   }
-  h2 {
-      @include title;
-      
-  }
-  h3 {
-      @include subtitle;
-  }  
-  .ProfileDown{
-    p{
-      font-size: 1.2rem;
+  .cards-container {
+    @include flexCenter(column, center, center);
+    margin-bottom: 20px;
+    .card {
+      display: grid;
+      grid-template-columns: 180px 250px 200px;
+      max-width: 800px;
+      padding: 20px;
+      margin: 12px;
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0px 10px 16px 2px rgba(0, 0, 0, 0.3);
+      img {
+        object-fit: cover;
+        width: 150px;
+        height: 150px;
+      }
+      .names {
+        @include flexCenter(column, center, flex-start);
+        .common {
+          margin: 0;
+          font-size: 1.6rem;
+        }
+        .botanical {
+          margin: 0;
+          font-size: 1.1rem;
+        }
+      }
+      .btns-container {
+        @include flexCenter(column, space-evenly, center);
+        .button {
+          width: 180px;
+        }
+      }
     }
   }
 }

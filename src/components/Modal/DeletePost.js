@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 const DeletePost = ({ posts, modal, apiPostAction, modalAction, addMsg }) => {
-  const [deletingPost, setDeletingPost] = useState(
+  const [deletingPost] = useState(
     posts.filter((post) => modal.split("/")[1] === post._id)[0]
   );
 
@@ -13,9 +13,6 @@ const DeletePost = ({ posts, modal, apiPostAction, modalAction, addMsg }) => {
     apiPostAction(null, `delete-post/${deletingPost._id}`, ["posts"]);
     addMsg("Post deleted successfully");
     modalAction("close");
-    setTimeout(() => {
-      window.location.reload();
-    }, 2200);
   };
 
   const getDeletePostForm = () => {
@@ -23,15 +20,20 @@ const DeletePost = ({ posts, modal, apiPostAction, modalAction, addMsg }) => {
       <div className="modal">
         <h2>Delete post</h2>
         <h3>
-          Are you sure you want to delete the post{" "}
-          <i>{toUpper(deletingPost.commonName)}</i>?
+          Are you sure you want to delete{" "}
+          <u>
+            <i>{toUpper(deletingPost.title)}</i>
+          </u>
+          ?
         </h3>
-        <button className="button" onClick={deletePost}>
-          DELETE
-        </button>
-        <button className="button" onClick={() => modalAction("close")}>
-          Cancel
-        </button>
+        <div className="btns-container">
+          <button className="button delete" onClick={deletePost}>
+            DELETE
+          </button>
+          <button className="button" onClick={() => modalAction("close")}>
+            Cancel
+          </button>
+        </div>
       </div>
     );
   };

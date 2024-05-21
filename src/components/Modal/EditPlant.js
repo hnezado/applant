@@ -1,13 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 const EditPlant = ({ plants, modal, apiPostAction, modalAction, addMsg }) => {
   const [editedPlant, setEditedPlant] = useState(
     plants.filter((plant) => modal.split("/")[1] === plant._id)[0]
   );
-
-  useEffect(() => {
-    // console.log("editedPlant:", editedPlant);
-  }, [editedPlant]);
 
   const validateData = (plantData) => {
     let valid = true;
@@ -29,9 +25,6 @@ const EditPlant = ({ plants, modal, apiPostAction, modalAction, addMsg }) => {
       apiPostAction(editedPlant, `edit-plant/${editedPlant._id}`, ["plants"]);
       addMsg("Plant edited successfully");
       modalAction("close");
-      setTimeout(() => {
-        window.location.reload();
-      }, 2200);
     } else {
       addMsg("Please fill out all fields before submitting");
     }
@@ -63,14 +56,15 @@ const EditPlant = ({ plants, modal, apiPostAction, modalAction, addMsg }) => {
   const getEditPlantForm = () => {
     return (
       <div className="modal">
-        <form onSubmit={editPlant}>
+        <form className="form" onSubmit={editPlant}>
           <h2>Edit plant</h2>
-          <table>
+          <table className="table">
             <tbody>
               <tr>
                 <td>Image URL</td>
                 <td>
                   <input
+                    className="input i-table"
                     onChange={handleInput}
                     type="text"
                     name="image"
@@ -82,6 +76,7 @@ const EditPlant = ({ plants, modal, apiPostAction, modalAction, addMsg }) => {
                 <td>Common name</td>
                 <td>
                   <input
+                    className="input i-table"
                     onChange={handleInput}
                     type="text"
                     name="commonName"
@@ -93,6 +88,7 @@ const EditPlant = ({ plants, modal, apiPostAction, modalAction, addMsg }) => {
                 <td>Botanical name</td>
                 <td>
                   <input
+                    className="input i-table"
                     onChange={handleInput}
                     type="text"
                     name="botanicalName"
@@ -104,6 +100,7 @@ const EditPlant = ({ plants, modal, apiPostAction, modalAction, addMsg }) => {
                 <td>Type</td>
                 <td>
                   <input
+                    className="input i-table"
                     onChange={handleInput}
                     type="text"
                     name="type"
@@ -115,6 +112,7 @@ const EditPlant = ({ plants, modal, apiPostAction, modalAction, addMsg }) => {
                 <td>Maintenance</td>
                 <td>
                   <input
+                    className="input i-table"
                     onChange={handleInput}
                     type="text"
                     name="maintenance"
@@ -126,6 +124,7 @@ const EditPlant = ({ plants, modal, apiPostAction, modalAction, addMsg }) => {
                 <td>Water</td>
                 <td>
                   <input
+                    className="input i-table"
                     onChange={handleInput}
                     type="text"
                     name="water"
@@ -137,6 +136,7 @@ const EditPlant = ({ plants, modal, apiPostAction, modalAction, addMsg }) => {
                 <td>Exposure</td>
                 <td>
                   <input
+                    className="input i-table"
                     onChange={handleInput}
                     type="text"
                     name="exposure"
@@ -148,6 +148,7 @@ const EditPlant = ({ plants, modal, apiPostAction, modalAction, addMsg }) => {
                 <td>Safety</td>
                 <td>
                   <input
+                    className="input i-table"
                     onChange={handleInput}
                     type="text"
                     name="safety"
@@ -180,6 +181,7 @@ const EditPlant = ({ plants, modal, apiPostAction, modalAction, addMsg }) => {
                 <td>About</td>
                 <td>
                   <textarea
+                    className="input i-table"
                     onChange={handleInput}
                     name="about"
                     value={editedPlant.about}
@@ -190,6 +192,7 @@ const EditPlant = ({ plants, modal, apiPostAction, modalAction, addMsg }) => {
                 <td>Price</td>
                 <td>
                   <input
+                    className="input i-table"
                     onChange={handleInput}
                     type="number"
                     name="price"
@@ -201,6 +204,7 @@ const EditPlant = ({ plants, modal, apiPostAction, modalAction, addMsg }) => {
                 <td>Stock</td>
                 <td>
                   <input
+                    className="input i-table"
                     onChange={handleInput}
                     type="number"
                     name="stock"
@@ -208,33 +212,41 @@ const EditPlant = ({ plants, modal, apiPostAction, modalAction, addMsg }) => {
                   />
                 </td>
               </tr>
-              <td>On sale</td>
-              {editedPlant.inStore ? (
-                <input
-                  onClick={() => swapCheckbox("inStore")}
-                  onChange={handleInput}
-                  type="checkbox"
-                  name="inStore"
-                  checked
-                />
-              ) : (
-                <input
-                  onClick={() => swapCheckbox("inStore")}
-                  onChange={handleInput}
-                  type="checkbox"
-                  name="inStore"
-                />
-              )}
+              <tr>
+                <td>In Store</td>
+                <td>
+                  {editedPlant.inStore ? (
+                    <input
+                      onClick={() => swapCheckbox("inStore")}
+                      onChange={handleInput}
+                      type="checkbox"
+                      name="inStore"
+                      checked
+                    />
+                  ) : (
+                    <input
+                      onClick={() => swapCheckbox("inStore")}
+                      onChange={handleInput}
+                      type="checkbox"
+                      name="inStore"
+                    />
+                  )}
+                </td>
+              </tr>
             </tbody>
           </table>
-          <button className="button">Edit plant</button>
+          <div className="btns-container">
+            <button className="button edit">Edit plant</button>
+            <button
+              className="button pre-delete"
+              onClick={() =>
+                modalAction("open", `delete-plant/${editedPlant._id}`)
+              }
+            >
+              Delete plant
+            </button>
+          </div>
         </form>
-        <button
-          className="button"
-          onClick={() => modalAction("open", `delete-plant/${editedPlant._id}`)}
-        >
-          Delete plant
-        </button>
       </div>
     );
   };

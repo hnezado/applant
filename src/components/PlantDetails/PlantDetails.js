@@ -1,131 +1,189 @@
 import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
-import { MdFavoriteBorder } from "react-icons/md";
-import { MdAddShoppingCart } from "react-icons/md";
+import { MdFavorite, MdAddShoppingCart } from "react-icons/md";
 import "./PlantDetails.scss";
 
-const PlantDetails = ({ plants, apiPostAction }) => {
+const PlantDetails = ({
+  userInfo,
+  plants,
+  apiPostAction,
+  modalAction,
+  addMsg,
+}) => {
   const { _id: plantId } = useParams();
-  const [selectedPlant, setSelectedPlant] = useState(null);
+  const [selectedPlant, setSelectedPlant] = useState();
 
   useEffect(() => {
-    if (plants && plants.length > 0) {
-      retrievePlant();
+    initSelectedPlant();
+  }, [userInfo]);
+
+  const initSelectedPlant = () => {
+    const filteredPlant = plants?.filter((plant) => plant._id === plantId)
+      .length
+      ? plants?.filter((plant) => plant._id === plantId)[0]
+      : [];
+    if (userInfo?.username === "test") {
+      setTimeout(() => {
+        setSelectedPlant(filteredPlant);
+      }, 2000);
+    } else {
+      setSelectedPlant(filteredPlant);
     }
-  }, [plants]);
-
-  useEffect(() => {
-    console.log("selectedPlant:", selectedPlant);
-  }, [selectedPlant]);
-
-  const retrievePlant = () => {
-    const filteredPlant = plants.filter((plant) => plant._id === plantId)[0];
-    setSelectedPlant(filteredPlant);
   };
 
-  // state = {
-  //   plant: {
-  //     ...this.props.allPlants.filter(
-  //       (plant) => this.props.match.params._id === plant._id
-  //     )[0],
-  //   },
-  //   toLikeNotLogged: false,
-  //   redirectToAdmin: false,
-  // };
   const toUpper = (word) => {
-    return word[0].toUpperCase() + word.slice(1);
+    if (word) return word[0].toUpperCase() + word.slice(1);
   };
-  // handleInput(event) {
-  //   const { name, value } = event.target
-  //   this.setState({
-  //     ...this.state,
-  //     plant: { ...selectedPlant, [name]: value },
-  //   })
-  // }
-  // apiPostAction(action) {
-  //   if (action === 'edit') {
-  //     this.props.apiPostAction(
-  //       selectedPlant,
-  //       `edit-plant/${selectedPlant._id}`
-  //     )
-  //   } else if (action === 'delete') {
-  //     this.props.apiPostAction(null, `delete-plant/${selectedPlant._id}`)
-  //     this.setState({ ...this.state, redirectToAdmin: true })
-  //   }
-  // }
-  const likeToFavorites = () => {
-    //   const selectedPlantId = this.props.match.params._id
-    //   if (this.props.userInfo) {
-    //     this.props.addFavoritePlant(selectedPlantId)
-    //   } else {
-    //     this.props.modalAction('open', 'login')
-    //   }
+
+  const toggleFavorite = async () => {
+    if (userInfo) {
+      let url;
+      const existingFavorite = userInfo.favoritePlants.filter(
+        (favorite) => favorite._id === plantId
+      ).length;
+      if (existingFavorite) {
+        url = `remove-from-favorites/${plantId}`;
+      } else {
+        url = `add-to-favorites/${plantId}`;
+      }
+      const res = await apiPostAction(null, url, ["user"]);
+      addMsg(`${res.data.msg}`);
+    } else {
+      modalAction("open", "login");
+      addMsg("Login required");
+    }
   };
-  const showPlantDetails = () => {
-    //   if (this.state.redirectToAdmin) {
-    //     return <Redirect to="/admin" />
-    //   }
+
+  const getFavoriteButton = () => {
+    let existingFavorite;
+    if (userInfo) {
+      existingFavorite = userInfo.favoritePlants?.filter(
+        (favorite) => favorite._id === plantId
+      ).length;
+    } else {
+      existingFavorite = false;
+    }
+
+    let className, title;
+    if (existingFavorite) {
+      className = "btn favorite active";
+      title = "Remove favorite";
+    } else {
+      className = "btn favorite inactive";
+      title = "Add to favorites";
+    }
     return (
-      <div className="PlantDetails">
-        <div className="PlantDetailsUp">
-          <div className="image">
-            <img src={selectedPlant.image} alt={selectedPlant.commonName} />
-          </div>
-          <div className="infoPlantDetails">
-            <div className="buttons">
-              <button className="link-btn" onClick={likeToFavorites}>
-                <MdFavoriteBorder />
-              </button>
-              <Link to={`/store-items/${plantId}`}>
-                <button className="link-btn">
-                  <MdAddShoppingCart />{" "}
-                </button>
-              </Link>
-            </div>
-            <div>
-              <h2>{toUpper(selectedPlant.commonName)}</h2>
-              <i>
-                <h3>{toUpper(selectedPlant.botanicalName)}</h3>
-              </i>
-              <p>
-                <b>Maintenance:</b> {toUpper(selectedPlant.maintenance)}
-              </p>
-              <p>
-                <b>Watering:</b> {toUpper(selectedPlant.water)}
-              </p>
-              <p>
-                <b>Type:</b>{" "}
-                {selectedPlant.type.map((type) => {
-                  return `${toUpper(type)} `;
-                })}
-              </p>
-              <p>
-                <b>Exposure: </b>
-                {selectedPlant.exposure.map((exposure) =>
-                  toUpper(exposure + " ")
-                )}
-              </p>
-              <p>
-                <b>Air purifying:</b> {selectedPlant.purifying ? "Yes" : "No"}
-              </p>
-              <p>
-                <b>Pet/baby safe:</b> {selectedPlant.safety}
-              </p>
-            </div>
-          </div>
+      <Link className={className} title={title} onClick={toggleFavorite}>
+        <MdFavorite />
+      </Link>
+    );
+  };
+
+  const getCartButton = () => {
+    return (
+      <Link
+        title="View in store"
+        className="link btn cart"
+        to={`/store-item/${plantId}`}
+      >
+        <MdAddShoppingCart />
+      </Link>
+    );
+  };
+
+  const getTopInfo = () => {
+    return (
+      <div className="top-info">
+        <div className="image">
+          <img
+            onClick={() => modalAction("open", `enlarger/${plantId}`)}
+            src={selectedPlant?.image}
+            alt={selectedPlant?.commonName}
+          />
         </div>
-        <div className="About">
-          <h3>
-            <b>About {toUpper(selectedPlant.commonName)}</b>
-          </h3>
-          <p>{selectedPlant.about}</p>
+        <div className="summary">
+          <div className="names">
+            <p className="common">{toUpper(selectedPlant.commonName)}</p>
+            <p className="botanical">
+              <i>({toUpper(selectedPlant.botanicalName)})</i>
+            </p>
+          </div>
+          <div className="keys-values">
+            <div className="key-value key">
+              <b>Maintenance:</b>
+            </div>
+            <div className="key-value value">
+              {toUpper(selectedPlant.maintenance)}
+            </div>
+            <div className="key-value key">
+              <b>Watering:</b>
+            </div>
+            <div className="key-value value">
+              {toUpper(selectedPlant.water)}
+            </div>
+            <div className="key-value key">
+              <b>Type: </b>
+            </div>
+            <div className="key-value value">
+              {selectedPlant.type
+                ? selectedPlant.type.map((type) => {
+                    return `${toUpper(type)} `;
+                  })
+                : null}
+            </div>
+            <div className="key-value key">
+              <b>Exposure: </b>
+            </div>
+            <div className="key-value value">
+              {selectedPlant.exposure
+                ? selectedPlant.exposure.map(
+                    (exposure) => toUpper(exposure) + " "
+                  )
+                : null}
+            </div>
+            <div className="key-value key">
+              <b>Air purifying:</b>
+            </div>
+            <div className="key-value value">
+              {selectedPlant.purifying ? "Yes" : "No"}
+            </div>
+            <div className="key-value key">
+              <b>Pet/baby safe:</b>
+            </div>
+            <div className="key-value value">{selectedPlant.safety}</div>
+          </div>
+          <div className="btns-container">
+            {getFavoriteButton()}
+            {getCartButton()}
+          </div>
         </div>
       </div>
     );
   };
 
-  return selectedPlant ? (
-    <div className="PlantDetails">{showPlantDetails()}</div>
+  const getBottomDescription = () => {
+    return (
+      <div className="description">
+        <h3>
+          <b>About {toUpper(selectedPlant?.commonName)}</b>
+        </h3>
+        <p>{selectedPlant?.about}</p>
+      </div>
+    );
+  };
+
+  const getPlantCard = () => {
+    if (selectedPlant)
+      return (
+        <div className="card">
+          {getTopInfo()}
+          {getBottomDescription()}
+        </div>
+      );
+  };
+
+  return selectedPlant && Object.keys(selectedPlant).length ? (
+    <div className="PlantDetails">{getPlantCard()}</div>
   ) : (
     <div className="spinner">
       <div className="lds-ripple">

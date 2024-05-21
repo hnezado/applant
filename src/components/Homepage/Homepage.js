@@ -1,27 +1,41 @@
-import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { useState, useEffect, useCallback } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import Parallax from "../Parallax/Parallax";
 import "./Homepage.scss";
 
-const Homepage = ({ plants }) => {
-  const [filteredPlants, setFilteredPlants] = useState([...plants]);
+const Homepage = ({ userInfo, plants }) => {
+  const navigate = useNavigate();
+  const [filteredPlants, setFilteredPlants] = useState([]);
+
+  const filterPlants = useCallback(
+    (event, by, type) => {
+      let value;
+      let filteredPlants;
+      if (by === "commonName") {
+        value = event.target.value.toLowerCase();
+        filteredPlants = plants?.filter((plant) => plant[by].includes(value));
+      } else if (by === "type") {
+        filteredPlants = plants?.filter((plant) => plant.type.includes(type));
+      } else {
+        filteredPlants = plants;
+      }
+      if (userInfo?.username === "test") {
+        setTimeout(() => {
+          setFilteredPlants(filteredPlants);
+        }, 2000);
+      } else {
+        setFilteredPlants(filteredPlants);
+      }
+    },
+    [userInfo]
+  );
 
   useEffect(() => {
     filterPlants(null);
-  }, [plants]);
+  }, [userInfo, plants, filterPlants]);
 
-  const filterPlants = (event, by, type) => {
-    let value;
-    let filteredPlants;
-    if (by === "commonName") {
-      value = event.target.value.toLowerCase();
-      filteredPlants = plants.filter((plant) => plant[by].includes(value));
-    } else if (by === "type") {
-      filteredPlants = plants.filter((plant) => plant.type.includes(type));
-    } else {
-      filteredPlants = plants;
-    }
-    setFilteredPlants(filteredPlants);
+  const navigateToDetails = (plantId) => {
+    navigate(`/plant-details/${plantId}`);
   };
 
   const getPlants = () => {
@@ -35,43 +49,59 @@ const Homepage = ({ plants }) => {
           ({plant.botanicalName[0].toUpperCase() + plant.botanicalName.slice(1)}
           )
         </h3>
-        <Link className="see-details" to={`/plant-details/${plant._id}`}>
+        <div
+          className="see-details"
+          onClick={() => navigateToDetails(plant._id)}
+        >
           <div>
             <p>See details</p>
           </div>
-        </Link>
+        </div>
       </div>
     ));
   };
 
   return (
-    <div className="Homepage">
-      <Parallax />
-      <div className="filter-buttons">
-        <button className="button" onClick={() => filterPlants()}>
-          All
-        </button>
-        <button
-          className="button"
-          onClick={() => filterPlants(null, "type", "indoors")}
-        >
-          Indoors
-        </button>
-        <button
-          className="button"
-          onClick={() => filterPlants(null, "type", "outdoors")}
-        >
-          Outdoors
-        </button>
-      </div>
-      <input
-        className="inputSearchPlant"
-        type="text"
-        placeholder="Search plant by name"
-        onChange={(event) => filterPlants(event, "commonName")}
-      />
-      <div className="plant-cards-container">{getPlants()}</div>
-    </div>
+    <>
+      {filteredPlants?.length ? (
+        <div className="Homepage">
+          <Parallax />
+          <div className="filter">
+            <div className="filter-btns">
+              <button className="button" onClick={() => filterPlants()}>
+                All
+              </button>
+              <button
+                className="button"
+                onClick={() => filterPlants(null, "type", "indoors")}
+              >
+                Indoors
+              </button>
+              <button
+                className="button"
+                onClick={() => filterPlants(null, "type", "outdoors")}
+              >
+                Outdoors
+              </button>
+            </div>
+            <input
+              className="input search-bar"
+              type="text"
+              placeholder="Search plant by Common Name"
+              onChange={(event) => filterPlants(event, "commonName")}
+            />
+          </div>
+          <div className="plant-cards-container">{getPlants()}</div>
+        </div>
+      ) : (
+        <div className="spinner">
+          <div className="lds-ripple">
+            <div></div>
+            <div></div>
+          </div>
+        </div>
+      )}
+    </>
   );
 };
 export default Homepage;

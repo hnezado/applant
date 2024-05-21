@@ -8,9 +8,11 @@ const Message = ({ message, cleanMsg }) => {
       cleanMsg();
     }, 2000);
     return (
-      <div className="msg-container">
-        <BsFillInfoCircleFill />
-        <article>{message}</article>
+      <div className="msg-outer">
+        <div className="msg-container">
+          <BsFillInfoCircleFill />
+          <article>{message}</article>
+        </div>
       </div>
     );
   };

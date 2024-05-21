@@ -4,24 +4,31 @@ import { FaPen, FaCheck } from "react-icons/fa";
 import { RiDeleteBinLine } from "react-icons/ri";
 
 const ShoppingCart = ({ userInfo, apiPostAction, modalAction, addMsg }) => {
-  const [cartItems, setCartItems] = useState();
+  const [cartItems, setCartItems] = useState([]);
+  const [lastQty, setLastQty] = useState(null);
 
   useEffect(() => {
-    if (!userInfo) {
-      modalAction("open", "login");
-      addMsg("Login required");
-    } else {
-      setEditQty();
-    }
+    initCartItems();
   }, [userInfo]);
 
-  const setEditQty = () => {
-    if (userInfo && Object.keys(userInfo).length) {
-      const cartCopy = [...userInfo.cart];
-      for (let i = 0; i < cartCopy.length; i++) {
-        cartCopy[i].editQuantity = false;
+  const initCartItems = () => {
+    if (userInfo) {
+      if (userInfo.cart?.length) {
+        const cartItemsCopy = [...userInfo.cart];
+        for (let i = 0; i < cartItemsCopy.length; i++) {
+          cartItemsCopy[i].editQuantity = false;
+        }
+        if (userInfo?.username === "test") {
+          setTimeout(() => {
+            setCartItems(cartItemsCopy);
+          }, 2000);
+        } else {
+          setCartItems(cartItemsCopy);
+        }
       }
-      setCartItems(cartCopy);
+    } else {
+      modalAction("open", "login");
+      addMsg("Login required");
     }
   };
 
@@ -33,14 +40,19 @@ const ShoppingCart = ({ userInfo, apiPostAction, modalAction, addMsg }) => {
     if (userInfo) {
       const cartItemsCopy = [...cartItems];
       cartItemsCopy[index].editQuantity = mode;
-      if (mode === false) {
-        const result = await apiPostAction(
-          { quantity: cartItemsCopy[index].quantity },
-          `edit-quantity/${cartItemsCopy[index].product._id}`,
-          ["user", "users"]
-        );
-        addMsg(result.data.msg);
+      if (mode) {
+        setLastQty(cartItemsCopy[index].quantity);
+      } else {
+        if (lastQty !== cartItemsCopy[index].quantity) {
+          const result = await apiPostAction(
+            { quantity: cartItemsCopy[index].quantity },
+            `edit-quantity/${cartItemsCopy[index].product._id}`,
+            ["user", "users"]
+          );
+          addMsg(result?.data.msg);
+        }
       }
+      setCartItems(cartItemsCopy);
     } else {
       modalAction("open", "login");
       addMsg("Login required");
@@ -59,22 +71,91 @@ const ShoppingCart = ({ userInfo, apiPostAction, modalAction, addMsg }) => {
     }
   };
 
+  const formatPrice = (value) => {
+    return value.toLocaleString("es-ES", { minimumFractionDigits: 2 });
+  };
+
   const removeFromCart = async (productId) => {
     if (userInfo) {
-      try {
-        const result = await apiPostAction(
-          null,
-          `remove-from-cart/${productId}`,
-          ["user"]
-        );
-        addMsg(result.data.msg);
-      } catch (err) {
-        addMsg("Error removing item from cart");
-      }
+      modalAction("open", `remove-cart-item/${productId}`);
     } else {
       modalAction("open", "login");
       addMsg("Login required");
     }
+  };
+
+  const getCartItems = () => {
+    return cartItems.map((item, index) => {
+      return (
+        <div key={index} className="cart-item">
+          <Link to={`/plant-details/${item.product._id}`}>
+            <img
+              title={toUpper(
+                `View ${toUpper(item.product.botanicalName)}'s details`
+              )}
+              src={item.product.image}
+              alt={item.product.commonName}
+            />
+          </Link>
+          <div className="table-div">
+            <div className="t-head-row">
+              <div className="t-head-col name">Product name</div>
+              <div className="t-head-col qty">Quantity</div>
+              <div className="t-head-col price">Unit price</div>
+              <div className="t-head-col total">Total price</div>
+            </div>
+            <div className="t-row">
+              <div className="t-col name">
+                {toUpper(item.product.commonName)}
+              </div>
+              <div className="t-col qty">
+                {item.editQuantity ? (
+                  <div className="qty-content">
+                    <div
+                      className="link"
+                      title="Update quantity"
+                      onClick={() => toggleEdit(index, false)}
+                    >
+                      <FaCheck />
+                    </div>
+                    <input
+                      className="input qty"
+                      onChange={(event) => handleInput(event, index)}
+                      type="number"
+                      name="quantity"
+                      value={item.quantity}
+                    />
+                  </div>
+                ) : (
+                  <div className="qty-content">
+                    <div
+                      className="link"
+                      title="Edit quantity"
+                      onClick={() => toggleEdit(index, true)}
+                    >
+                      <FaPen />
+                    </div>
+                    {item.quantity}
+                  </div>
+                )}
+              </div>
+              <div className="t-col price">
+                {formatPrice(item.product.price)}€
+              </div>
+              <div className="t-col total">
+                {formatPrice(item.quantity * item.product.price)}€
+              </div>
+            </div>
+          </div>
+          <div onClick={() => removeFromCart(item.product._id)}>
+            <RiDeleteBinLine
+              title="Delete item from cart"
+              className="link delete"
+            />
+          </div>
+        </div>
+      );
+    });
   };
 
   const getTotalPrice = () => {
@@ -85,105 +166,49 @@ const ShoppingCart = ({ userInfo, apiPostAction, modalAction, addMsg }) => {
     }
   };
 
-  const getCartItems = () => {
-    return cartItems.map((item, index) => {
-      return (
-        <div key={index} className="allItemsCart">
-          <img
-            title={toUpper(item.product.botanicalName)}
-            src={item.product.image}
-            alt={item.product.commonName}
-          />
-          <div className="infoItemCart">
-            <table className="table-cart">
-              <th>Product name</th>
-              <th>Quantity</th>
-              <th>Unit price</th>
-              <th>Total price</th>
-              <tr key="index">
-                <td className="td-name">{toUpper(item.product.commonName)}</td>
-                {/* <td className="td-center">{item.quantity}</td> */}
-                <td className="td-qty">
-                  {item.editQuantity ? (
-                    <div className="qty-content">
-                      <Link
-                        title="Update quantity"
-                        onClick={() => toggleEdit(index, false)}
-                      >
-                        <FaCheck />
-                      </Link>
-                      <input
-                        className="input-cart"
-                        onChange={(event) => handleInput(event, index)}
-                        type="number"
-                        name="quantity"
-                        value={item.quantity}
-                      />
-                    </div>
-                  ) : (
-                    <div className="qty-content centered">
-                      <Link
-                        title="Edit quantity"
-                        onClick={() => toggleEdit(index, true)}
-                      >
-                        <FaPen />
-                      </Link>
-                      {item.quantity}
-                    </div>
-                  )}
-                </td>
-                <td className="td-right">{formatPrice(item.product.price)}€</td>
-                <td className="td-right">
-                  {formatPrice(item.quantity * item.product.price)}€
-                </td>
-              </tr>
-            </table>
-            <button onClick={() => removeFromCart(item.product._id)}>
-              <RiDeleteBinLine
-                title="Delete item from cart"
-                className="removeIcon"
-              />
-            </button>
+  const getShoppingCart = () => {
+    if (cartItems) {
+      if (cartItems.length) {
+        return (
+          <div>
+            <h1>My shopping cart</h1>
+            <div className="cart-items">{getCartItems()}</div>
+            <div className="total-price">
+              <p>
+                <b>Total: </b> {formatPrice(getTotalPrice())} €
+              </p>
+              <button
+                className="button"
+                onClick={() => {
+                  modalAction("open", "payment");
+                }}
+              >
+                Check out
+              </button>
+            </div>
           </div>
-        </div>
-      );
-    });
-  };
-
-  const formatPrice = (value) => {
-    return value.toLocaleString("es-ES", { minimumFractionDigits: 2 });
+        );
+      } else {
+        return <h1>Your cart it's empty </h1>;
+      }
+    } else {
+      return <h1 className="login-req">Login required</h1>;
+    }
   };
 
   return (
-    <div className="ShoppingCart">
-      {cartItems ? (
-        cartItems.length ? (
-          <div className="cart">
-            <h1>My shopping cart</h1>
-            <div className="ShoppingCart">
-              <div className="ItemsCart">{getCartItems()}</div>
-              <div className="total-price">
-                <p>
-                  <b>Total: </b> {formatPrice(getTotalPrice())} €
-                </p>
-                <button
-                  className="button"
-                  onClick={() => {
-                    modalAction("open", "payment");
-                  }}
-                >
-                  Check out
-                </button>
-              </div>
-            </div>
-          </div>
-        ) : (
-          <h1>Your cart it's empty </h1>
-        )
+    <>
+      {cartItems && cartItems.length ? (
+        <div className="ShoppingCart">{getShoppingCart()}</div>
       ) : (
-        <h1 className="login-req">Login required</h1>
+        <div className="spinner">
+          <div className="lds-ripple">
+            <div></div>
+            <div></div>
+          </div>
+        </div>
       )}
-    </div>
+    </>
   );
 };
 

@@ -1,9 +1,27 @@
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { BiSolidLike } from "react-icons/bi";
 import "./Blog.scss";
 
 const Blog = ({ userInfo, posts, apiPostAction, modalAction, addMsg }) => {
-  const toggleLike = (post) => {
+  const [allPosts, setAllposts] = useState([]);
+
+  useEffect(() => {
+    initAllPosts();
+  }, [userInfo]);
+
+  const initAllPosts = () => {
+    const allPostsCopy = [...posts];
+    if (userInfo?.username === "test") {
+      setTimeout(() => {
+        setAllposts(allPostsCopy);
+      }, 2000);
+    } else {
+      setAllposts(allPostsCopy);
+    }
+  };
+
+  const toggleLike = async (post) => {
     const postCopy = { ...post };
     if (userInfo) {
       if (!postCopy.likes.includes(userInfo._id)) {
@@ -11,7 +29,7 @@ const Blog = ({ userInfo, posts, apiPostAction, modalAction, addMsg }) => {
       } else {
         postCopy.likes = postCopy.likes.filter((like) => like !== userInfo._id);
       }
-      apiPostAction(postCopy, `add-like/${postCopy._id}`, ["posts"]);
+      await apiPostAction(postCopy, `add-like/${postCopy._id}`, ["posts"]);
     } else {
       modalAction("open", "login");
       addMsg("Login required");
@@ -50,39 +68,50 @@ const Blog = ({ userInfo, posts, apiPostAction, modalAction, addMsg }) => {
   };
 
   return (
-    <div className="Blog">
-      <div className="post-container">
-        {userInfo ? (
-          userInfo.admin ? (
-            <div>
-              <button
-                className="button"
-                onClick={() => modalAction("open", "new-post")}
-              >
-                New post
-              </button>
-            </div>
-          ) : null
-        ) : null}
-        {[...posts].reverse().map((post) => (
-          <div className="post" key={post._id}>
-            <div>
-              <img src={post.image} alt="post-img" />
-            </div>
-            <div className="post-content">
-              <div className="post-text">
-                <h2>{post.title}</h2>
-                <p>{post.content}</p>
+    <>
+      {allPosts?.length ? (
+        <div className="Blog">
+          <div className="post-container">
+            {userInfo ? (
+              userInfo.admin ? (
+                <div>
+                  <button
+                    className="button"
+                    onClick={() => modalAction("open", "new-post")}
+                  >
+                    New post
+                  </button>
+                </div>
+              ) : null
+            ) : null}
+            {[...allPosts].reverse().map((post) => (
+              <div className="post" key={post._id}>
+                <div>
+                  <img src={post.image} alt="post-img" />
+                </div>
+                <div className="post-content">
+                  <div className="post-text">
+                    <h2>{post.title}</h2>
+                    <p>{post.content}</p>
+                  </div>
+                  <div className="like-container">
+                    {getLikes(post)}
+                    {getLikeButton(post)}
+                  </div>
+                </div>
               </div>
-              <div className="like-container">
-                {getLikes(post)}
-                {getLikeButton(post)}
-              </div>
-            </div>
+            ))}
           </div>
-        ))}
-      </div>
-    </div>
+        </div>
+      ) : (
+        <div className="spinner">
+          <div className="lds-ripple">
+            <div></div>
+            <div></div>
+          </div>
+        </div>
+      )}
+    </>
   );
 };
 export default Blog;

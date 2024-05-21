@@ -2,49 +2,43 @@
 
 .Footer{
     background-color: $dark-green;
-    color: white;
+    color: whitesmoke;
     width: 100vw; 
-    // padding-bottom: 30px;
-    height: 300px;
+    height: 260px;
     position: absolute;
     bottom: 0;
     display: flex;
     flex-direction: row;
     justify-content: space-around;
-    align-items: flex-start;
     h5{
         font-size: 16px;
     }
-    p{
-        margin: 3px 0px;
-    }
-
     .link {
-        margin: 8px 0px;
+        margin: 5px 0px;
         text-decoration: none;
-        color: white;
-        &:hover {
-            color: $soft-green;
-        }
+        color: whitesmoke;
     }
-
     .Contact{
-        display: flex;
-        flex-direction: column;
-        td {
-            padding: 0 5px 16px 0;
+        .contact-name {
+            display: inline-block;
+            width: 140px;
+            padding: 5px;
         }
+        
     }
     .icons{
-        margin: 3px;
+        margin: 0px 5px;
         color: rgb(255, 255, 255);
-        width: 20px;
-        height: 20px;
+        // width: 50px;
+        // height: 50px;
         border-radius: 50px;
         transition: 0.3s;
         &:hover {
-          color: $soft-green;
-          background-color: transparent;
+            color: $soft-green;
+        }
+        svg {
+            font-size: 1.2rem;
+            transform: translateY(4px);
         }
       }
     .Join {

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 const NewPlant = ({ apiPostAction, modalAction, addMsg }) => {
   const [newPlant, setNewPlant] = useState({
@@ -16,10 +16,6 @@ const NewPlant = ({ apiPostAction, modalAction, addMsg }) => {
     stock: 0,
     inStore: true,
   });
-
-  useEffect(() => {
-    // console.log("newPlant:", newPlant);
-  }, [newPlant]);
 
   const validateData = (plantData) => {
     let valid = true;
@@ -41,9 +37,6 @@ const NewPlant = ({ apiPostAction, modalAction, addMsg }) => {
       apiPostAction(newPlant, "new-plant", ["plants"]);
       addMsg("New plant created successfully");
       modalAction("close");
-      setTimeout(() => {
-        window.location.reload();
-      }, 2200);
     } else {
       addMsg("Please fill out all fields before submitting");
     }
@@ -69,15 +62,15 @@ const NewPlant = ({ apiPostAction, modalAction, addMsg }) => {
   const getNewPlantForm = () => {
     return (
       <div className="modal">
-        <form onSubmit={createPlant}>
+        <form className="form" onSubmit={createPlant}>
           <h2>New plant</h2>
-          <table>
+          <table className="table">
             <tbody>
               <tr>
                 <td>Image URL</td>
                 <td>
                   <input
-                    className="input-form"
+                    className="input i-table"
                     onChange={(event) => handleInput(event)}
                     type="text"
                     name="image"
@@ -89,7 +82,7 @@ const NewPlant = ({ apiPostAction, modalAction, addMsg }) => {
                 <td>Common name</td>
                 <td>
                   <input
-                    className="input-form"
+                    className="input i-table"
                     onChange={(event) => handleInput(event)}
                     type="text"
                     name="commonName"
@@ -101,7 +94,7 @@ const NewPlant = ({ apiPostAction, modalAction, addMsg }) => {
                 <td>Botanical name</td>
                 <td>
                   <input
-                    className="input-form"
+                    className="input i-table"
                     onChange={(event) => handleInput(event)}
                     type="text"
                     name="botanicalName"
@@ -113,7 +106,7 @@ const NewPlant = ({ apiPostAction, modalAction, addMsg }) => {
                 <td>Type</td>
                 <td>
                   <input
-                    className="input-form"
+                    className="input i-table"
                     onChange={(event) => handleInput(event)}
                     type="text"
                     name="type"
@@ -125,7 +118,7 @@ const NewPlant = ({ apiPostAction, modalAction, addMsg }) => {
                 <td>Maintenance</td>
                 <td>
                   <input
-                    className="input-form"
+                    className="input i-table"
                     onChange={(event) => handleInput(event)}
                     type="text"
                     name="maintenance"
@@ -137,7 +130,7 @@ const NewPlant = ({ apiPostAction, modalAction, addMsg }) => {
                 <td>Water</td>
                 <td>
                   <input
-                    className="input-form"
+                    className="input i-table"
                     onChange={(event) => handleInput(event)}
                     type="text"
                     name="water"
@@ -149,7 +142,7 @@ const NewPlant = ({ apiPostAction, modalAction, addMsg }) => {
                 <td>Exposure</td>
                 <td>
                   <input
-                    className="input-form"
+                    className="input i-table"
                     onChange={(event) => handleInput(event)}
                     type="text"
                     name="exposure"
@@ -161,7 +154,7 @@ const NewPlant = ({ apiPostAction, modalAction, addMsg }) => {
                 <td>Safety</td>
                 <td>
                   <input
-                    className="input-form"
+                    className="input i-table"
                     onChange={(event) => handleInput(event)}
                     type="text"
                     name="safety"
@@ -173,7 +166,6 @@ const NewPlant = ({ apiPostAction, modalAction, addMsg }) => {
                 <td>Purifying</td>
                 <td>
                   <input
-                    className="input-form"
                     onChange={(event) => handleInput(event)}
                     type="checkbox"
                     name="purifying"
@@ -185,6 +177,7 @@ const NewPlant = ({ apiPostAction, modalAction, addMsg }) => {
                 <td>About</td>
                 <td>
                   <textarea
+                    className="input i-table"
                     onChange={(event) => handleInput(event)}
                     name="about"
                     type="text"
@@ -196,7 +189,7 @@ const NewPlant = ({ apiPostAction, modalAction, addMsg }) => {
                 <td>Price</td>
                 <td>
                   <input
-                    className="input-form"
+                    className="input i-table"
                     onChange={(event) => handleInput(event)}
                     type="number"
                     name="price"
@@ -208,7 +201,7 @@ const NewPlant = ({ apiPostAction, modalAction, addMsg }) => {
                 <td>Stock</td>
                 <td>
                   <input
-                    className="input-form"
+                    className="input i-table"
                     onChange={(event) => handleInput(event)}
                     type="number"
                     name="stock"
@@ -220,7 +213,6 @@ const NewPlant = ({ apiPostAction, modalAction, addMsg }) => {
                 <td>In store</td>
                 <td>
                   <input
-                    className="input-form"
                     onChange={(event) => handleInput(event)}
                     type="checkbox"
                     name="inStore"

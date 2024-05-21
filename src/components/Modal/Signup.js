@@ -18,40 +18,45 @@ const Signup = ({ modalAction, signup }) => {
   const handleSignup = (event) => {
     event.preventDefault();
     signup(user);
+    modalAction("close");
   };
 
   const getSignupForm = () => {
     return (
       <div className="modal">
         <h2>Sign up</h2>
-        <form onSubmit={handleSignup}>
-          <label className="label-form" htmlFor="username">
+        <form className="form" onSubmit={handleSignup}>
+          <label className="label" htmlFor="username">
             Username
           </label>
           <input
-            className="input-form"
+            className="input i-form"
             type="text"
             name="username"
             onChange={handleChange}
           />
-          <label className="label-form" htmlFor="password">
+          <label className="label" htmlFor="password">
             Password
           </label>
           <input
-            className="input-form"
+            className="input i-form"
             type="password"
             name="password"
             onChange={handleChange}
           />
-          <button className="button">Register new user</button>
+          <div className="btns-container">
+            <button className="button">Register new user</button>
+          </div>
         </form>
-        <span>Do you have an account?</span>
-        <span>
-          Log in{" "}
-          <Link className="link" onClick={() => modalAction("open", "login")}>
-            here
-          </Link>
-        </span>
+        <div className="auth-info">
+          <span>Do you have an account?</span>
+          <span>
+            Log in{" "}
+            <Link className="link" onClick={() => modalAction("open", "login")}>
+              here
+            </Link>
+          </span>
+        </div>
       </div>
     );
   };

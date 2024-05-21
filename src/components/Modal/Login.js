@@ -26,35 +26,42 @@ const Login = ({ newUsername, modalAction, login }) => {
     return (
       <div className="modal">
         <h2>Login</h2>
-        <form onSubmit={handleLogin}>
-          <label className="label-form" htmlFor="username">
+        <form className="form" onSubmit={handleLogin}>
+          <label className="label" htmlFor="username">
             Username
           </label>
           <input
-            className="input-form"
+            className="input i-form"
             type="text"
             name="username"
             onChange={handleInput}
             value={user.username}
           />
-          <label className="label-form" htmlFor="password">
+          <label className="label" htmlFor="password">
             Password
           </label>
           <input
-            className="input-form"
+            className="input i-form"
             type="password"
             name="password"
             onChange={handleInput}
           />
-          <button className="button">Log in</button>
+          <div className="btns-container">
+            <button className="button">Log in</button>
+          </div>
         </form>
-        <span>Don't you have an account yet?</span>
-        <span>
-          Register by clicking{" "}
-          <Link className="link" onClick={() => modalAction("open", "signup")}>
-            here
-          </Link>
-        </span>
+        <div className="auth-info">
+          <span>Don't you have an account yet?</span>
+          <span>
+            Register by clicking{" "}
+            <Link
+              className="link"
+              onClick={() => modalAction("open", "signup")}
+            >
+              here
+            </Link>
+          </span>
+        </div>
       </div>
     );
   };

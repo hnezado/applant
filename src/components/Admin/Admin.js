@@ -9,11 +9,11 @@ const Admin = ({ userInfo, users, plants, posts, modalAction }) => {
     if (word) return word[0].toUpperCase() + word.slice(1);
   };
 
-  const showUsers = () => {
+  const getUsersTable = () => {
     return (
       <section className="table-container">
         <h2>List of users</h2>
-        <table>
+        <table className="table">
           <thead>
             <tr>
               <th>Username</th>
@@ -59,11 +59,11 @@ const Admin = ({ userInfo, users, plants, posts, modalAction }) => {
     );
   };
 
-  const showPlants = () => {
+  const getPlantsTable = () => {
     return (
       <section className="table-container">
         <h2>List of plants</h2>
-        <table>
+        <table className="table">
           <thead>
             <tr>
               <th>Name</th>
@@ -128,11 +128,11 @@ const Admin = ({ userInfo, users, plants, posts, modalAction }) => {
     );
   };
 
-  const showPosts = () => {
+  const getPostsTable = () => {
     return (
       <section className="table-container">
         <h2>List of Posts</h2>
-        <table>
+        <table className="table">
           <thead>
             <tr>
               <th>Title</th>
@@ -189,7 +189,7 @@ const Admin = ({ userInfo, users, plants, posts, modalAction }) => {
     );
   };
 
-  const showAdminForms = () => {
+  const getAdminTables = () => {
     if (userInfo) {
       if (userInfo.admin) {
         return (
@@ -197,17 +197,16 @@ const Admin = ({ userInfo, users, plants, posts, modalAction }) => {
             <Link
               title="Go to Stripe dashboard"
               className="button"
-              to={`https://dashboard.stripe.com/test/payments`}
+              to={`https://dashboard.stripe.com/test/payments?status[0]=successful`}
               target="_blank"
             >
               View transactions
             </Link>
+            {getUsersTable()}
             <hr />
-            {showUsers()}
+            {getPlantsTable()}
             <hr />
-            {showPlants()}
-            <hr />
-            {showPosts()}
+            {getPostsTable()}
           </div>
         );
       } else {
@@ -218,8 +217,7 @@ const Admin = ({ userInfo, users, plants, posts, modalAction }) => {
     }
   };
 
-  return <div className="Admin">{showAdminForms()}</div>;
+  return <div className="Admin">{getAdminTables()}</div>;
 };
 
-// (<a className="link" href={`https://dashboard.stripe.com/test/payments`}>Stripe dashboard</a>
 export default Admin;

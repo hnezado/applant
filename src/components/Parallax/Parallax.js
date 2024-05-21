@@ -39,9 +39,7 @@ const Parallax = () => {
             />
           </div>
           <div className="section white">
-            <h2>
-              <RiPlantFill /> APPLANT <RiPlantFill />
-            </h2>
+            <h1>APPLANT</h1>
             <p>helps you find the perfect plant for your spaces.</p>
           </div>
         </div>

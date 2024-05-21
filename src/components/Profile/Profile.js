@@ -1,91 +1,90 @@
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { GiFlowerPot } from "react-icons/gi";
 import "./Profile.scss";
 
-const Profile = ({ userInfo, apiPostAction, modalAction, addMsg }) => {
+const Profile = ({ userInfo, modalAction, addMsg }) => {
+  const [favoritePlants, setFavoritePlants] = useState();
+
   useEffect(() => {
-    if (!userInfo) {
+    initFavoritePlants();
+  }, [userInfo]);
+
+  const initFavoritePlants = () => {
+    if (userInfo) {
+      if (userInfo.favoritePlants?.length) {
+        const favoritesCopy = [...userInfo.favoritePlants];
+        if (userInfo?.username === "test") {
+          setTimeout(() => {
+            setFavoritePlants(favoritesCopy);
+          }, 2000);
+        } else {
+          setFavoritePlants(favoritesCopy);
+        }
+      }
+    } else {
       modalAction("open", "login");
       addMsg("Login required");
     }
-  }, [userInfo]);
+  };
 
   const toUpper = (word) => {
     if (word) return word[0].toUpperCase() + word.slice(1);
   };
 
   const getFavoritePlants = () => {
-    const { favoritePlants } = userInfo;
     if (favoritePlants && favoritePlants.length > 0) {
-      return favoritePlants.map((plant, index) => {
-        return (
-          <div key={index} className="Profile">
-            <div className="ProfileUp">
-              <div className="img">
+      return (
+        <div className="cards-container">
+          <h2 className="sub-heading">
+            <GiFlowerPot /> Your favorite plants <GiFlowerPot />
+          </h2>
+          {favoritePlants.map((plant, index) => {
+            return (
+              <div key={index} className="card">
                 <img src={plant.image} alt={plant.commonName} />
+                <div className="names">
+                  <p className="common">{toUpper(plant.commonName)}</p>
+                  <p className="botanical">
+                    <i>({toUpper(plant.botanicalName)})</i>
+                  </p>
+                </div>
+                <div className="btns-container">
+                  <Link className="button" to={`/plant-details/${plant._id}`}>
+                    View details page
+                  </Link>
+                  <Link className="button" to={`/store-item/${plant._id}`}>
+                    View in store
+                  </Link>
+                </div>
               </div>
-              <div className="Details">
-                <h2>{toUpper(plant.commonName)}</h2>
-                <h3>({toUpper(plant.botanicalName)})</h3>
-                <p>
-                  <b>Maintenance:</b> {toUpper(plant.maintenance)}
-                </p>
-                <p>
-                  <b>Watering:</b> {toUpper(plant.water)}
-                </p>
-                <p>
-                  <b>Type: </b>
-                  {plant.type
-                    ? plant.type.map((type) => {
-                        return `${toUpper(type)} `;
-                      })
-                    : null}
-                </p>
-                <p>
-                  <b>Exposure: </b>
-                  {plant.exposure
-                    ? plant.exposure.map((exposure) => toUpper(exposure) + " ")
-                    : null}
-                </p>
-                <p>
-                  <b>Air purifying:</b> {plant.purifying ? "Yes" : "No"}
-                </p>
-                <p>
-                  <b>Pet/baby safe:</b> {plant.safety}
-                </p>
-                <button
-                  className="link-btn"
-                  onClick={() =>
-                    apiPostAction(null, `remove-from-favorites/${plant._id}`, [
-                      "user",
-                    ])
-                  }
-                >
-                  Delete
-                </button>
-              </div>
-            </div>
-            <div className="ProfileDown">
-              <h3>
-                <b>About {toUpper(plant.commonName)}</b>
-              </h3>
-              <p>{plant.about}</p>
-            </div>
-          </div>
-        );
-      });
+            );
+          })}
+        </div>
+      );
+    } else {
+      return <h2 className="sub-heading">You have not favorites</h2>;
     }
   };
 
   return userInfo ? (
-    <div className="Profile">
-      <h1>{`${toUpper(userInfo.username)}'s profile`}</h1>
-      <p className="p">
-        Your favorite plants <GiFlowerPot />
-      </p>
-
-      <div>{getFavoritePlants()}</div>
-    </div>
+    <>
+      {favoritePlants?.length ? (
+        <div className="Profile">
+          <h1 className="heading">{`${toUpper(
+            userInfo.username
+          )}'s profile`}</h1>
+          {getFavoritePlants()}
+        </div>
+      ) : (
+        <div className="spinner">
+          <div className="lds-ripple">
+            <div></div>
+            <div></div>
+          </div>
+        </div>
+      )}
+    </>
   ) : (
     <h1 className="login-req">Login required</h1>
   );

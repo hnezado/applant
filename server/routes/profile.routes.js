@@ -2,72 +2,62 @@ const express = require("express");
 const router = express.Router();
 
 const User = require("../models/User.model");
-const Plant = require("../models/Plant.model");
-
-const toUpper = (word) => {
-  if (word) return word[0].toUpperCase() + word.slice(1);
-};
 
 // ------------ Append plant to favorites --------------- //
-router.post("/add-to-favorites/:_id", (req, res) => {
-  Plant.findById(req.params._id)
-    .then((plant) => {
-      if (plant) {
-        if (!req.user.favoritePlants.includes(plant._id)) {
-          User.findByIdAndUpdate(
-            req.user._id,
-            {
-              $push: { favoritePlants: plant._id },
-            },
-            { new: true }
-          )
-            .populate("favoritePlants")
-            .then((result) => {
-              res.send({
-                msg: `${toUpper(plant.commonName)} added to favorites`,
-                data: result,
-              });
-            });
-        } else {
-          res.send({ msg: "This plant is already in favorites" });
-        }
-      } else {
-        Plant.create(req.body).then((result) => {
-          User.findByIdAndUpdate(req.user._id, {
-            $push: { favoritePlants: result._id },
-          })
-            .populate("favoritePlants")
-            .then((result) => {
-              res.send({
-                msg: `${toUpper(
-                  result.commonName
-                )} created and added to favorites`,
-                data: result,
-              });
-            });
-        });
+router.post("/add-to-favorites/:_id", async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const plantId = req.params._id.toString();
+    const user = await User.findOne({ _id: userId });
+    if (user) {
+      const existingFavorite = user.favoritePlants.find(
+        (favorite) => favorite?.toString() === plantId.toString()
+      );
+      if (!existingFavorite) {
+        user.favoritePlants.push({ _id: plantId });
       }
-    })
-    .catch((err) => {
-      console.log(err.message);
-      res.send({ msg: "Error adding plant" });
-    });
+      await user.save();
+      const msg = `Plant added to favorites successfully`;
+      res.status(200).json({ msg });
+    } else {
+      const msg = `User not found`;
+      return res.status(404).json({ msg });
+    }
+  } catch (err) {
+    const msg = `Error adding plant to favorites`;
+    console.error(msg, err.message);
+    return res.status(500).json({ msg, err });
+  }
 });
 
 // -------------- Remove plant from favorites ------------------ //
-router.post("/remove-from-favorites/:_id", (req, res) => {
-  User.findByIdAndUpdate(req.user._id, {
-    $pull: { favoritePlants: req.params._id },
-  })
-    .then((result) => {
-      res.send({
-        msg: `${toUpper(result)} removed from favorites`,
-        data: result,
-      });
-    })
-    .catch((err) => {
-      res.send(err.message);
-    });
+router.post("/remove-from-favorites/:_id", async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const plantId = req.params._id;
+    const user = await User.findOne({ _id: userId });
+    if (user) {
+      const plantIndex = user.favoritePlants.findIndex(
+        (favorite) => favorite?.toString() === plantId
+      );
+      if (plantIndex > -1) {
+        user.favoritePlants.splice(plantIndex, 1);
+        user.save();
+        const msg = `Removed plant from favorites successfully`;
+        res.status(200).json({ msg });
+      } else {
+        const msg = `Plant not found in favorites`;
+        return res.status(404).json({ msg });
+      }
+    } else {
+      const msg = `User not found`;
+      res.status(404).json({ msg });
+    }
+  } catch (err) {
+    const msg = `Error removing plant from favorites`;
+    console.error(msg, err.message);
+    return res.status(500).json({ msg, err });
+  }
 });
 
 // -------------- Put item into cart ------------------ //
@@ -160,24 +150,6 @@ router.post("/remove-from-cart/:_id", async (req, res) => {
     const msg = `Error removing item from cart`;
     console.error(msg, err.message);
     res.status(500).json({ msg, err });
-  }
-});
-
-router.get("/get-user/:_id", async (req, res) => {
-  try {
-    const user = await User.findById(req.params._id).populate({
-      path: "cart.product",
-      model: Plant,
-    });
-    if (!user) {
-      const msg = `User not found`;
-      return res.status(404).json({ msg });
-    }
-    console.log("retrieving user:", user);
-    res.status(200).json({ data: user });
-  } catch (err) {
-    console.log(err.message);
-    res.status(500).json({ msg: "Error sending user" });
   }
 });
 

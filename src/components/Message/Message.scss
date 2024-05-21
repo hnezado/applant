@@ -1,25 +1,28 @@
-@import '../../App.scss';
+@import "../../App.scss";
 
-.Message{
-    text-align: center;
-    color: black;
-    font-weight: 600;
-    background-color: $medium-green;
-    max-width: 500px;
-    z-index: 999999999;
-    position: fixed;
-    bottom: 50px;
-    height: auto;
-    margin: 5px auto;
-    left: 0;
-    right: 0;
+.Message {
+  text-align: center;
+  color: black;
+  font-weight: 600;
+  max-width: 500px;
+  z-index: 999999999;
+  position: fixed;
+  bottom: 50px;
+  height: auto;
+  margin: 5px auto;
+  left: 0;
+  right: 0;
+  .msg-outer {
+    box-shadow: 0px 10px 16px 2px rgba(0, 0, 0, 0.3);
     border-radius: 8px;
-    .msg-container{
-        @include flexCenter(row, space-between, center);
-        padding: 16px;
-        font-size: 1.1rem;
+    background-color: $soft-green;
+    .msg-container {
+      @include flexCenter(row, space-between, center);
+      padding: 16px;
+      font-size: 1.1rem;
     }
-    article{
-        width: 100%;
+    article {
+      width: 100%;
     }
+  }
 }

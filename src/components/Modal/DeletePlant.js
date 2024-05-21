@@ -13,9 +13,6 @@ const DeletePlant = ({ plants, modal, apiPostAction, modalAction, addMsg }) => {
     apiPostAction(null, `delete-plant/${deletingPlant._id}`, ["plants"]);
     modalAction("close");
     addMsg("Plant deleted successfully");
-    setTimeout(() => {
-      window.location.reload();
-    }, 2200);
   };
 
   const getDeletePlantForm = () => {
@@ -23,15 +20,20 @@ const DeletePlant = ({ plants, modal, apiPostAction, modalAction, addMsg }) => {
       <div className="modal">
         <h2>Delete plant</h2>
         <h3>
-          Are you sure you want to delete the plant{" "}
-          <i>{toUpper(deletingPlant.commonName)}</i>?
+          Are you sure you want to delete{" "}
+          <u>
+            <i>{toUpper(deletingPlant.commonName)}</i>
+          </u>
+          ?
         </h3>
-        <button className="button" onClick={() => deletePlant()}>
-          DELETE
-        </button>
-        <button className="button" onClick={() => modalAction("close")}>
-          Cancel
-        </button>
+        <div className="btns-container">
+          <button className="button delete" onClick={() => deletePlant()}>
+            DELETE
+          </button>
+          <button className="button" onClick={() => modalAction("close")}>
+            Cancel
+          </button>
+        </div>
       </div>
     );
   };

@@ -55,8 +55,7 @@ const Navbar = ({ userInfo, modalAction, logout }) => {
             <img
               title="Go to homepage"
               className="applant-logo"
-              // src="../../../public/applant-logo.svg"
-              // src="../../../public/applant-logo.png"
+              // src="applant-logo.svg"
               src="https://i.ibb.co/CKL8bY6/logo-applant.png"
               alt="home-logo"
             />
@@ -69,11 +68,9 @@ const Navbar = ({ userInfo, modalAction, logout }) => {
           </Link>
         </div>
         <div className="nav-right">
-          {/* {logged ? ( */}
           {userInfo ? (
             <>
               {userInfo.admin && <AdminLink />}
-              {/* {admin && <AdminLink />} */}
               <ProfileLink />
               <LogoutLink />
               <CartLink />

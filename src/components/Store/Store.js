@@ -2,12 +2,23 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "./Store.scss";
 
-const Store = ({ plants }) => {
+const Store = ({ userInfo, plants }) => {
   const [filteredStoreItems, setFilteredStoreItems] = useState([]);
 
   useEffect(() => {
-    setFilteredStoreItems(plants.filter((plant) => plant.inStore));
-  }, [plants]);
+    initFilteredItems();
+  }, [userInfo]);
+
+  const initFilteredItems = () => {
+    const filteredItems = plants?.filter((plant) => plant.inStore);
+    if (userInfo?.username === "test") {
+      setTimeout(() => {
+        setFilteredStoreItems(filteredItems);
+      }, 2000);
+    } else {
+      setFilteredStoreItems(filteredItems);
+    }
+  };
 
   const filterStoreItems = (event, by, type) => {
     const itemsInStock = plants.filter((plant) => plant.inStore);
@@ -23,35 +34,32 @@ const Store = ({ plants }) => {
     setFilteredStoreItems(filteredItems);
   };
 
-  const getSearchBar = () => {
+  const getFilter = () => {
     return (
-      <input
-        className="inputSearchPlant"
-        type="text"
-        placeholder="Search plant"
-        onChange={(event) => filterStoreItems(event, "commonName")}
-      />
-    );
-  };
-
-  const getFilterButtons = () => {
-    return (
-      <div className="filter-buttons">
-        <button className="button" onClick={() => filterStoreItems()}>
-          All
-        </button>
-        <button
-          className="button"
-          onClick={() => filterStoreItems(null, "type", "indoors")}
-        >
-          Indoors
-        </button>
-        <button
-          className="button"
-          onClick={() => filterStoreItems(null, "type", "outdoors")}
-        >
-          Outdoors
-        </button>
+      <div className="filter">
+        <div className="filter-btns">
+          <button className="button" onClick={() => filterStoreItems()}>
+            All
+          </button>
+          <button
+            className="button"
+            onClick={() => filterStoreItems(null, "type", "indoors")}
+          >
+            Indoors
+          </button>
+          <button
+            className="button"
+            onClick={() => filterStoreItems(null, "type", "outdoors")}
+          >
+            Outdoors
+          </button>
+        </div>
+        <input
+          className="input search-bar"
+          type="text"
+          placeholder="Search plant"
+          onChange={(event) => filterStoreItems(event, "commonName")}
+        />
       </div>
     );
   };
@@ -60,7 +68,7 @@ const Store = ({ plants }) => {
     return filteredStoreItems.map((plant, index) => {
       return (
         <div key={index} className="plant-card">
-          <Link className="link" to={`/store-items/${plant._id}`}>
+          <Link className="link" to={`/store-item/${plant._id}`}>
             <img src={plant.image} alt={plant.commonName} />
           </Link>
           <h2>
@@ -85,11 +93,21 @@ const Store = ({ plants }) => {
   };
 
   return (
-    <div className="Store">
-      {getFilterButtons()}
-      {getSearchBar()}
-      <div className="plant-cards-container">{getStoreItems()}</div>
-    </div>
+    <>
+      {filteredStoreItems?.length ? (
+        <div className="Store">
+          {getFilter()}
+          <div className="plant-cards-container">{getStoreItems()}</div>
+        </div>
+      ) : (
+        <div className="spinner">
+          <div className="lds-ripple">
+            <div></div>
+            <div></div>
+          </div>
+        </div>
+      )}
+    </>
   );
 };
 export default Store;

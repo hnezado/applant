@@ -1,13 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 const EditPost = ({ posts, modal, apiPostAction, modalAction, addMsg }) => {
   const [editingPost, setEditingPost] = useState(
     posts.filter((post) => modal.split("/")[1] === post._id)[0]
   );
-
-  useEffect(() => {
-    // console.log("editingPost:", editingPost);
-  }, [editingPost]);
 
   const validateData = (postData) => {
     let valid = true;
@@ -24,9 +20,6 @@ const EditPost = ({ posts, modal, apiPostAction, modalAction, addMsg }) => {
       apiPostAction(editingPost, `edit-post/${editingPost._id}`, ["posts"]);
       addMsg("Post edited successfully");
       modalAction("close");
-      setTimeout(() => {
-        window.location.reload();
-      }, 2200);
     } else {
       addMsg("Please fill out all fields before submitting");
     }
@@ -42,14 +35,15 @@ const EditPost = ({ posts, modal, apiPostAction, modalAction, addMsg }) => {
   const getEditPostForm = () => {
     return (
       <div className="modal">
-        <form onSubmit={editPost}>
+        <form className="form" onSubmit={editPost}>
           <h2>Edit post</h2>
-          <table>
+          <table className="table">
             <tbody>
               <tr>
                 <td>Image URL</td>
                 <td>
                   <input
+                    className="input i-table"
                     onChange={(event) => handleInput(event)}
                     type="text"
                     name="image"
@@ -61,6 +55,7 @@ const EditPost = ({ posts, modal, apiPostAction, modalAction, addMsg }) => {
                 <td>Title</td>
                 <td>
                   <input
+                    className="input i-table"
                     onChange={(event) => handleInput(event)}
                     type="text"
                     name="title"
@@ -72,6 +67,7 @@ const EditPost = ({ posts, modal, apiPostAction, modalAction, addMsg }) => {
                 <td>Content</td>
                 <td>
                   <textarea
+                    className="input i-table"
                     onChange={(event) => handleInput(event)}
                     type="text"
                     name="content"
@@ -81,14 +77,18 @@ const EditPost = ({ posts, modal, apiPostAction, modalAction, addMsg }) => {
               </tr>
             </tbody>
           </table>
-          <button className="button">Edit post</button>
+          <div className="btns-container">
+            <button className="button edit">Edit post</button>
+            <button
+              className="button pre-delete"
+              onClick={() =>
+                modalAction("open", `delete-post/${editingPost._id}`)
+              }
+            >
+              Delete post
+            </button>
+          </div>
         </form>
-        <button
-          className="button"
-          onClick={() => modalAction("open", `delete-post/${editingPost._id}`)}
-        >
-          Delete post
-        </button>
       </div>
     );
   };
