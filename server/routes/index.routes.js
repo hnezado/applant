@@ -13,7 +13,7 @@ router.get("/users", (req, res, next) => {
       res.send({ data: result });
     })
     .catch((err) => {
-      console.log(err);
+      console.error(err);
     });
 });
 
@@ -23,7 +23,7 @@ router.post("/edit-user/:_id", (req, res, next) => {
       res.send({ msg: `User ${result.username} edited`, data: result });
     })
     .catch((err) => {
-      console.log(err);
+      console.error(err);
     });
 });
 
@@ -33,7 +33,7 @@ router.post("/delete-user/:_id", (req, res, next) => {
       res.send({ msg: `User ${result.username} deleted`, data: result });
     })
     .catch((err) => {
-      console.log(err);
+      console.error(err);
     });
 });
 

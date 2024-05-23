@@ -42,7 +42,7 @@ router.post("/signup", (req, res, next) => {
 router.post("/login", (req, res) => {
   passport.authenticate("local", (err, user, failureDetails) => {
     if (err) {
-      console.log(err);
+      console.error(err);
       res.send({ msg: "Error with Passport Authentication" });
       return;
     }
@@ -56,7 +56,7 @@ router.post("/login", (req, res) => {
     });
     req.login(user, (err) => {
       if (err) {
-        console.log(err);
+        console.error(err);
         res.send({ msg: "Error logging in" });
       } else {
         User.findById(user._id)
@@ -87,12 +87,10 @@ router.get("/user", async (req, res) => {
         model: Plant,
       })
       .then((user) => {
-        // console.log("retrieving user:", user);
-        // console.log("cart after populate:", user.cart[0]);
         res.status(200).json({ data: user });
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err);
         res.status(500).json({ msg: "Error sending user" });
       });
   } else {

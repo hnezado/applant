@@ -16,6 +16,17 @@ import Blog from "./components/Blog/Blog";
 import Admin from "./components/Admin/Admin";
 import Profile from "./components/Profile/Profile";
 
+const configFn = require("./config_server");
+let config;
+
+const load_config = async () => {
+  try {
+    config = await configFn.getConfig();
+  } catch (err) {
+    console.error(`Error loading configuration`, err);
+  }
+};
+
 function App() {
   const navigate = useNavigate();
   const [userInfo, setUserInfo] = useState({});
@@ -27,30 +38,13 @@ function App() {
   const [modalOpened, setModalOpened] = useState(false);
   const [message, setMessage] = useState("");
 
-  // useEffect(() => {
-  //   console.log("(Apps.js) userInfo updated to:", userInfo);
-  // }, [userInfo]);
-
-  // useEffect(() => {
-  //   console.log("(Apps.js) plants updated to:", plants);
-  // }, [plants]);
-
-  // useEffect(() => {
-  //   console.log("(Apps.js) State users updated to:", users);
-  // }, [users]);
-
-  // useEffect(() => {
-  //   console.log("(Apps.js) plants updated to:", plants);
-  // }, [plants]);
-
   const apiGetAction = useCallback(async (url) => {
     try {
       const response = await axios({
         method: "get",
-        url: `http://localhost:5000/server/${url}`,
+        url: `${config.DB_SERVER_URL}/${url}`,
         withCredentials: true,
       });
-      // console.log(`(Apps.js) Returning retrieved data (${url}):`, response);
       return response.data;
     } catch (err) {
       throw err;
@@ -80,7 +74,7 @@ function App() {
     try {
       const response = await axios({
         method: "post",
-        url: `http://localhost:5000/server/${url}`,
+        url: `${config.DB_SERVER_URL}/${url}`,
         data: data,
         withCredentials: true,
       });
@@ -140,7 +134,6 @@ function App() {
   const login = async (user) => {
     const result = await authAction(user, "login");
     if (result.data && result.data.successLogin) {
-      // const loggedUser = result.data;
       setNewUsername("");
       updateState("user");
       modalAction("close");
@@ -160,6 +153,8 @@ function App() {
   const cleanMsg = () => {
     setMessage("");
   };
+
+  load_config();
 
   return (
     <div className="App">

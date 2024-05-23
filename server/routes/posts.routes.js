@@ -9,7 +9,7 @@ router.get("/posts", (req, res, next) => {
       res.send({ data: result });
     })
     .catch((err) => {
-      console.log(err);
+      console.error(err);
     });
 });
 
@@ -19,7 +19,7 @@ router.post("/new-post", (req, res, next) => {
       res.send({ msg: `Post created`, data: result });
     })
     .catch((err) => {
-      console.log(err);
+      console.error(err);
     });
 });
 
@@ -29,7 +29,7 @@ router.post("/edit-post/:_id", (req, res, next) => {
       res.send({ msg: `Post edited`, data: result });
     })
     .catch((err) => {
-      console.log(err);
+      console.error(err);
     });
 });
 
@@ -39,7 +39,7 @@ router.post("/delete-post/:_id", (req, res, next) => {
       res.send({ msg: `Post deleted`, data: result });
     })
     .catch((err) => {
-      console.log(err);
+      console.error(err);
     });
 });
 

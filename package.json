@@ -8,11 +8,9 @@
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "aws-sdk": "^2.1627.0",
     "axios": "^1.6.8",
-    "dotenv": "^16.4.5",
     "materialize-css": "^1.0.0",
-    "mongoose": "^8.3.5",
-    "nodemon": "^3.1.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-icons": "^5.2.1",
@@ -30,8 +28,7 @@
     "eject": "react-scripts eject",
     "watch-css": "sass src/:src/ --watch",
     "dev-front": "concurrently \"npm start\" \"npm run watch-css\"",
-    "dev": "concurrently \"npm start\" \"cd server && npm run dev\" \"npm run watch-css\"",
-    "dev-test": "nodemon testing/test"
+    "dev": "concurrently \"npm start\" \"cd server && npm run dev\" \"npm run watch-css\""
   },
   "eslintConfig": {
     "extends": [

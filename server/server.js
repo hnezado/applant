@@ -11,104 +11,137 @@ const cors = require("cors");
 const path = require("path");
 const LocalStrategy = require("passport-local").Strategy;
 const User = require("./models/User.model");
+const fs = require("fs");
+const https = require("https");
+const configFn = require("./config_server");
 
 // ---------- Mongoose ---------- //
 const mongoose = require("mongoose");
 
-mongoose
-  .connect(process.env.MONGO_URL, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useFindAndModify: false,
-  })
-  .then((x) => {
-    console.log(
-      `Connected to Mongo! Database name: "${x.connections[0].name}"`
-    );
-  })
-  .catch((err) => {
-    console.error("Error connecting to mongo", err);
-  });
-
-// ---------- Express ---------- //
 const server = express();
+let config;
+
+const initialize = async () => {
+  try {
+    config = await configFn.getConfig();
+    setUpMiddleware();
+    setUpRoutes();
+
+    https.createServer(getHttpsOptions(), server).listen(config.port, () => {
+      console.log(chalk.green.inverse(`Listening on port ${config.port}`));
+    });
+  } catch (err) {
+    console.error(`Error loading server configuration`, err);
+  }
+};
 
 // ---------- Middleware setup ---------- //
-server.use(bodyParser.json());
-server.use(bodyParser.urlencoded({ extended: false }));
-server.use(cookieParser());
-server.use(express.static(path.join(__dirname, "public")));
+const setUpMiddleware = () => {
+  server.use(bodyParser.json());
+  server.use(bodyParser.urlencoded({ extended: false }));
+  server.use(cookieParser());
+  server.use(flash());
+  server.use(express.static(path.join(__dirname, "public")));
 
-// -------- CORS --------
-server.use(
-  cors({
-    methods: ["GET", "POST"],
-    credentials: true,
-    origin: "http://localhost:3000",
-  })
-);
+  server.use(
+    session({
+      secret: config.session.SECRET,
+      resave: true,
+      saveUninitialized: true,
+    })
+  );
+  server.use(
+    cors({
+      methods: ["GET", "POST"],
+      credentials: true,
+      origin: "*",
+    })
+  );
 
-// -------- PASSPORT --------
-server.use(
-  session({
-    secret: "cAdeNA%aleaTorIa",
-    resave: true,
-    saveUninitialized: true,
-  })
-);
-passport.serializeUser((user, callback) => {
-  callback(null, user._id);
-});
-passport.deserializeUser((id, callback) => {
-  User.findById(id)
-    .then((result) => {
-      callback(null, result);
+  initPassport();
+  initDb();
+};
+
+const initDb = () => {
+  mongoose
+    .connect(
+      `mongodb+srv://${config.db.auth.DB_USER}:${config.db.auth.DB_PASS}@${config.db.HOST}/${config.db.auth.DB_NAME}?retryWrites=true&w=majority`,
+      {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+        useFindAndModify: false,
+      }
+    )
+    .then((res) => {
+      console.log(
+        `Connected to Mongo! Database name: "${res.connections[0].name}"`
+      );
     })
     .catch((err) => {
-      callback(err);
+      console.error("Error connecting to mongo", err);
     });
-});
-server.use(flash());
-passport.use(
-  new LocalStrategy(
-    {
-      usernameField: `username`,
-      passwordField: `password`,
-      passReqToCallback: true,
-    },
-    (req, username, password, next) => {
-      User.findOne({ username })
-        .then((user) => {
-          if (!user) {
-            return next(null, false, {
-              msg: `Incorrect username or password`,
-            });
-          }
-          if (!bcrypt.compareSync(password, user.password)) {
-            return next(null, false, {
-              msg: `Incorrect username or password`,
-            });
-          }
-          return next(null, user);
-        })
-        .catch((err) => {
-          next(err);
-        });
-    }
-  )
-);
-server.use(passport.initialize());
-server.use(passport.session());
+};
 
-// ---------- ROUTES ---------- //
-server.use("/server", require("./routes/index.routes"));
-server.use("/server", require("./routes/auth.routes"));
-server.use("/server", require("./routes/allPlants.routes"));
-server.use("/server", require("./routes/posts.routes"));
-server.use("/server", require("./routes/profile.routes"));
-server.use("/server", require("./routes/stripe.routes"));
+const initPassport = () => {
+  passport.serializeUser((user, callback) => {
+    callback(null, user._id);
+  });
+  passport.deserializeUser((id, callback) => {
+    User.findById(id)
+      .then((result) => {
+        callback(null, result);
+      })
+      .catch((err) => {
+        callback(err);
+      });
+  });
 
-// ---------- LISTENER ---------- //
-server.listen(5000, () => {
-  console.log(chalk.green.inverse("Backend listening on port 5000"));
-});
+  passport.use(
+    new LocalStrategy(
+      {
+        usernameField: `username`,
+        passwordField: `password`,
+        passReqToCallback: true,
+      },
+      (req, username, password, next) => {
+        User.findOne({ username })
+          .then((user) => {
+            if (!user) {
+              return next(null, false, {
+                msg: `Incorrect username or password`,
+              });
+            }
+            if (!bcrypt.compareSync(password, user.password)) {
+              return next(null, false, {
+                msg: `Incorrect username or password`,
+              });
+            }
+            return next(null, user);
+          })
+          .catch((err) => {
+            next(err);
+          });
+      }
+    )
+  );
+  server.use(passport.initialize());
+  server.use(passport.session());
+};
+
+const setUpRoutes = () => {
+  server.use("/server", require("./routes/index.routes"));
+  server.use("/server", require("./routes/auth.routes"));
+  server.use("/server", require("./routes/allPlants.routes"));
+  server.use("/server", require("./routes/posts.routes"));
+  server.use("/server", require("./routes/profile.routes"));
+  server.use("/server", require("./routes/stripe.routes"));
+};
+
+const getHttpsOptions = () => {
+  return {
+    cert: fs.readFileSync(config.httpsServer.CERT_PATH),
+    key: fs.readFileSync(config.httpsServer.PRIV_KEY),
+  };
+};
+
+initialize();

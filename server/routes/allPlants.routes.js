@@ -13,7 +13,7 @@ router.get("/plants", (req, res) => {
       res.send({ data: result });
     })
     .catch((err) => {
-      console.log(err);
+      console.error(err);
     });
 });
 
@@ -26,7 +26,7 @@ router.post("/new-plant", (req, res) => {
       });
     })
     .catch((err) => {
-      console.log(err);
+      console.error(err);
     });
 });
 
@@ -39,7 +39,7 @@ router.post("/edit-plant/:_id", (req, res) => {
       });
     })
     .catch((err) => {
-      console.log(err);
+      console.error(err);
     });
 });
 
