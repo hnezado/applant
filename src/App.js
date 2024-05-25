@@ -16,18 +16,7 @@ import Blog from "./components/Blog/Blog";
 import Admin from "./components/Admin/Admin";
 import Profile from "./components/Profile/Profile";
 
-const configFn = require("./config_server");
-let config;
-
-const load_config = async () => {
-  try {
-    config = await configFn.getConfig();
-  } catch (err) {
-    console.error(`Error loading configuration`, err);
-  }
-};
-
-function App() {
+const App = ({ apiUrl }) => {
   const navigate = useNavigate();
   const [userInfo, setUserInfo] = useState({});
   const [newUsername, setNewUsername] = useState("");
@@ -38,18 +27,21 @@ function App() {
   const [modalOpened, setModalOpened] = useState(false);
   const [message, setMessage] = useState("");
 
-  const apiGetAction = useCallback(async (url) => {
-    try {
-      const response = await axios({
-        method: "get",
-        url: `${config.DB_SERVER_URL}/${url}`,
-        withCredentials: true,
-      });
-      return response.data;
-    } catch (err) {
-      throw err;
-    }
-  }, []);
+  const apiGetAction = useCallback(
+    async (url) => {
+      try {
+        const response = await axios({
+          method: "get",
+          url: `${apiUrl}/${url}`,
+          withCredentials: true,
+        });
+        return response.data;
+      } catch (err) {
+        throw err;
+      }
+    },
+    [apiUrl]
+  );
 
   const updateState = useCallback(
     async (state) => {
@@ -74,7 +66,7 @@ function App() {
     try {
       const response = await axios({
         method: "post",
-        url: `${config.DB_SERVER_URL}/${url}`,
+        url: `${apiUrl}/${url}`,
         data: data,
         withCredentials: true,
       });
@@ -109,7 +101,7 @@ function App() {
   const authAction = async (data, url) => {
     return axios({
       method: "post",
-      url: `http://localhost:5000/server/${url}`,
+      url: `${apiUrl}/${url}`,
       data: data,
       withCredentials: true,
     })
@@ -153,8 +145,6 @@ function App() {
   const cleanMsg = () => {
     setMessage("");
   };
-
-  load_config();
 
   return (
     <div className="App">
@@ -257,6 +247,6 @@ function App() {
       <Footer modalAction={modalAction} addMsg={addMsg} />
     </div>
   );
-}
+};
 
 export default App;

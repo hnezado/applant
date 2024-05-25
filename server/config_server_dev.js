@@ -33,26 +33,18 @@ const getConfig = async () => {
       SECRET: await getParam("APPLANT_SESSION_SECRET"),
     },
     cors: {
-      origin: "https://applant.hnezado.com",
+      origin: "http://localhost:3000",
       methods: "GET, HEAD, PUT, PATCH, POST, DELETE",
       credentials: true,
       optionsSuccessStatus: 204,
     },
     httpsServer: {
-      CERT_PATH: "/etc/letsencrypt/live/hnezado.com/fullchain.pem",
-      PRIV_KEY: "/etc/letsencrypt/live/hnezado.com/privkey.pem",
+      CERT_PATH: "C:/Users/Jekthor/Documents/https/hnezado.com/fullchain1.pem",
+      PRIV_KEY: "C:/Users/Jekthor/Documents/https/hnezado.com/privkey1.pem",
     },
   };
 };
 
-const getStripeConfig = async () => {
-  console.log("Getting getStripeConfig!");
-  const secretKey = await getParam("STRIPE_SECRET_KEY");
-  console.log("secretKey:", secretKey);
-  return { STRIPE_SECRET_KEY: secretKey };
-};
-
 module.exports = {
   getConfig,
-  getStripeConfig,
 };

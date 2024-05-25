@@ -1,9 +1,14 @@
 const express = require("express");
 const router = express.Router();
-
 const User = require("../models/User.model");
 
-const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
+const configFn = require("../config_server");
+let stripe;
+const getStripeConfig = async () => {
+  const stripeConfig = await configFn.getStripeConfig();
+  stripe = require("stripe")(stripeConfig.STRIPE_SECRET_KEY);
+};
+getStripeConfig();
 
 router.post("/get-payment-intent", async (req, res) => {
   const { amount } = req.body;
