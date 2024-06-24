@@ -27,11 +27,11 @@ const Homepage = ({ userInfo, plants }) => {
         setFilteredPlants(filteredPlants);
       }
     },
-    [userInfo]
+    [userInfo, plants]
   );
 
   useEffect(() => {
-    filterPlants(null);
+    filterPlants();
   }, [userInfo, plants, filterPlants]);
 
   const navigateToDetails = (plantId) => {
