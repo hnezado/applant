@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const User = require("../models/User.model");
 
-const configFn = require("../config_server");
+const configFn = require("../config");
 let stripe;
 const getStripeConfig = async () => {
   const stripeConfig = await configFn.getStripeConfig();

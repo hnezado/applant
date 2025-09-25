@@ -13,7 +13,7 @@ const LocalStrategy = require("passport-local").Strategy;
 const User = require("./models/User.model");
 const fs = require("fs");
 const https = require("https");
-const configFn = require("./config_server_dev");
+const configFn = require("./config");
 
 // ---------- Mongoose ---------- //
 const mongoose = require("mongoose");
@@ -130,11 +130,15 @@ const initialize = async () => {
     setUpMiddleware();
     setUpRoutes();
 
-    const server = https.createServer(getHttpsOptions(), app);
+    // const server = https.createServer(getHttpsOptions(), app);
+    // server.listen(config.PORT, () => {
+    //   console.log(chalk.green.inverse(`Listening on port: ${config.PORT}`));
+    // });
 
-    server.listen(config.port, () => {
-      console.log(chalk.green.inverse(`Listening on port: ${config.port}`));
+    app.listen(config.PORT, () => {
+      console.log(`Listening on port ${config.PORT}`);
     });
+
   } catch (err) {
     console.error(`Error loading server configuration`, err);
   }
